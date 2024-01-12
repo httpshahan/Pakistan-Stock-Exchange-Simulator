@@ -4,9 +4,24 @@ const AdminLogin = () => {
   const [Adminemail, setAdminEmail] = useState('');
   const [Adminpassword, setAdminPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     
     console.log('Logging in with:', { Adminemail, Adminpassword });
+
+    const userData = {
+      email: Adminemail,
+      password: Adminpassword,
+    };
+
+    console.log(userData);
+    const response = await fetch('http://localhost:3000/api/auth/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
+    const data = await response.json();
+    console.log(data);
+
     // API call to authenticate the user
   };
 

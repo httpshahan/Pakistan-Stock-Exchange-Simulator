@@ -4,10 +4,21 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     //  login logic 
-    console.log('Logging in with:', { email, password });
-    //  API call to authenticate the user
+    const userData = {
+      email: email,
+      password: password,
+    };
+    console.log(userData);
+    const response = await fetch('http://localhost:3000/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
+    const data = await response.json();
+    console.log(data);
+    
     
   };
 

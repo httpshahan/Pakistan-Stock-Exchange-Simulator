@@ -19,9 +19,27 @@ const Register = () => {
     setPasswordMatch(password === e.target.value);
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
+    try {
+      console.log('Registering user...');
+      const userData = {
+        username: name,
+        email: email,
+        password: password,
+      };
+      console.log(userData);
 
-    console.log('Registering with:', { name, email, password, confirmPassword });
+      const response = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+      const data = await response.json();
+      console.log(data);
+
+    } catch (error) {
+      console.error(error);
+    }
     //API call to register the user
   };
 
