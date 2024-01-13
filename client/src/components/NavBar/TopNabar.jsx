@@ -1,17 +1,17 @@
 import SearchBar from "./SearchBar";
 
-function TopNavbar(){
-    return(
-        <div className="top-navbar">
-            <div className="top-navbar-left">
-                <h1>Logo</h1>
-            </div>
-            <div className="top-navbar-right">
-                <SearchBar />
-                <h1>Profile</h1>
-            </div>
-        </div>
-    );
+function TopNavbar() {
+  return (
+    <div class="flex items-center justify-between h-16 bg-gray-800 p-8">
+      <div class="top-navbar-left">
+        
+      </div>
+      <div class="top-navbar-right flex items-center">
+        <SearchBar />
+        <h1 class="text-white ml-4">Profile</h1>
+      </div>
+    </div>
+  );
 }
 
 export default TopNavbar;

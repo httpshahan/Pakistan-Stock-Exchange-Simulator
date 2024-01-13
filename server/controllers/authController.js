@@ -44,7 +44,7 @@ const login = async (req, res) => {
     // Check if the user exists
     const user = await getUserByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(404).json({ error: 'Invalid email or password' });
     }
 
     // Compare passwords
