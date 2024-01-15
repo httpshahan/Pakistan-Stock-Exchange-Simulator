@@ -6,11 +6,10 @@ function Dashboard() {
       <SideNavbar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-4">
-          <h1>Dashoard</h1>
-        </main>
+        <h1 className="text-2xl font-semibold m-4">Dashboard</h1>
       </div>
     </div>
+    
   );
 }
 

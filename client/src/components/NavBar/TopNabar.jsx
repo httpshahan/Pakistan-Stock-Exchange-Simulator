@@ -9,6 +9,14 @@ function TopNavbar() {
       <div class="top-navbar-right flex items-center">
         <SearchBar />
         <h1 class="text-white ml-4">Profile</h1>
+        <button class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            window.location.href = "/";
+          }}>
+          Logout
+        </button>
       </div>
     </div>
   );
