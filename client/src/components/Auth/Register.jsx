@@ -35,11 +35,26 @@ const Register = () => {
         body: JSON.stringify(userData),
       });
       const data = await response.json();
+      if (response.status === 400) {
+        console.log("User already exists");
+        setConfirmPassword("");
+        setConfirmation(false);
+        setPassword("");
+        setEmail("");
+        setName("");
+        alert("User already exists");
+        return;
+      }
+      else if (response.status === 200) {
+        console.log("User registered successfully");
+        window.location.href = "/";
+        alert("User registered successfully");
+        return;
+      }
       console.log(data);
     } catch (error) {
       console.error(error);
     }
-    //API call to register the user
   };
 
   return (
