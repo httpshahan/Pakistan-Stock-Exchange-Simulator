@@ -35,8 +35,6 @@ const insertScrapedData = async (data) => {
   }
 };
 
-
-
 const getAllStocks = async () => {
   try {
     const result = await pool.query('SELECT * FROM stock_data');
