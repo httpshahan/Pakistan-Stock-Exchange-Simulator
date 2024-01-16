@@ -1,12 +1,14 @@
-// DataTable.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const DataTable = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timestamp, setTimestamp] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Number of items to display per page
 
   useEffect(() => {
     // Fetch data from the database or API
@@ -15,7 +17,7 @@ const DataTable = () => {
       .then((response) => {
         setData(response.data.data);
         const data = response.data.data;
-        setTimestamp(data[0].timestamp);
+        setTimestamp(data.length > 0 ? data[0].timestamp : "");
         setLoading(false);
       })
       .catch((error) => {
@@ -56,42 +58,83 @@ const DataTable = () => {
     }
   };
 
+  // Calculate the indexes of the items to be displayed on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = data.slice(startIndex, endIndex);
+
+  // Function to handle page changes
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <>
-      <h1 className="text-3xl font-semibold tracking-wide mt-6 mb-2">
+      <h1 className="text-3xl font-semibold tracking-wide mt-6 mb-2 text-center">
         Market Watch
       </h1>
-      <p className="text-gray-500">{timestamp}</p>
-      <div className="mt-8 mx-auto max-h-screen overflow-y-auto">
-        <table className="w-full border">
-          <thead>
-            <tr className="bg-gray-200">
+      <p className="text-gray-500 text-center mb-2">{timestamp}</p>
+      <div className="mx-auto max-h-screen overflow-x-auto">
+        <table className="w-full border rounded-md overflow-hidden">
+          <thead className="bg-gray-200">
+            <tr>
               {columns.map((column) => (
-                <th key={column.accessor} className="border p-2">
+                <th
+                  key={column.accessor}
+                  className="border p-3 text-left font-semibold"
+                >
                   {column.Header}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {data.map((row) => (
+            {currentData.map((row) => (
               <tr key={row.id} className="border-t">
                 {columns.map((column) => (
                   <td
                     key={column.accessor}
-                    className={`border p-2 ${
+                    className={`border p-3 ${
                       ["change", "change_percent"].includes(column.accessor)
                         ? getConditionalClass(row[column.accessor])
                         : ""
                     }`}
                   >
-                    {row[column.accessor]}
+                    {column.accessor === "stock_symbol" ? (
+                      <Link
+                        to={`/stock/${row[column.accessor]}`}
+                        className="text-blue-500 underline"
+                      >
+                        {row[column.accessor]}
+                      </Link>
+                    ) : (
+                      row[column.accessor]
+                    )}
                   </td>
                 ))}
               </tr>
             ))}
           </tbody>
         </table>
+        <div className="flex justify-between items-center mt-4">
+          <button
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <button
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === Math.ceil(data.length / itemsPerPage)}
+          >
+            Next
+          </button>
+        </div>
+        <p className="text-gray-500 mt-2 text-center">
+          Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
+        </p>
       </div>
     </>
   );
