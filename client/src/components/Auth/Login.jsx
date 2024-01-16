@@ -37,6 +37,10 @@ const Login = () => {
     else if (response.status === 200) {
       setInvalid(false);
       setInvalidPassword(false);
+      console.log(data);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.userId);
+      localStorage.setItem('userName', data.username);
       console.log('Login Success');
       alert('Login Success');
       naviagte('/dashboard');
@@ -96,6 +100,14 @@ const Login = () => {
             Login
           </button>
         </form>
+        <div className="mt-4">
+          <p className="text-sm text-gray-600">
+            Not registered yet?{' '}
+            <a href="/register" className="text-blue-500">
+              Register
+            </a>
+          </p>
+          </div>
       </div>
     </div>
   );
