@@ -13,7 +13,7 @@ const DataTable = () => {
   useEffect(() => {
     // Fetch data from the database or API
     axios
-      .get("http://localhost:3000/api/scraper/getStocks")
+      .get("http://localhost:3000/api/stocks/getStocks")
       .then((response) => {
         setData(response.data.data);
         const data = response.data.data;

@@ -1,4 +1,3 @@
-// controllers/authController.js
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { createUser, getUserByEmail, createAdmin, getAdminByEmail } = require('../models/User');
@@ -9,7 +8,6 @@ const register = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-
     console.log("Register Api Called");
     // Check if the email is already registered
     const existingUser = await getUserByEmail(email);

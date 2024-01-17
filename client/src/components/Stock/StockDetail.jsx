@@ -1,15 +1,11 @@
-// StockDetails.js
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const StockDetails = () => {
   const { symbol } = useParams();
   console.log(symbol);
-
-  // Fetch additional details based on the stock symbol
-  // ...
-
+  
   return (
     <div>
       <h1>Stock Details</h1>

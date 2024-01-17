@@ -2,32 +2,6 @@ const { exec } = require('child_process');
 const stockDataModel = require('../models/stockData');
 const path = require('path');
 
-const getStocks = async (req, res) => {
-    try {
-        const result = await stockDataModel.getAllStocks();
-        if(!result)
-            res.status(404).json({error: 'Stock not found'});
-            res.status(200).json({message:'Succesfully Get all the Stocks', data: result});
-    } catch (error) {
-        console.error('Error getting all stocks:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-}
-
-const getStock = async (req, res) => {
-    try {
-        console.log(req.params.symbol);
-        const result = await stockDataModel.getStockBySymbol(req.params.symbol);
-        if (!result) {
-            return res.status(404).json({ error: 'Stock not found' });
-        }
-        res.status(200).json({message:'Succesfully Get the Stock', data: result});
-    } catch (error) {
-        console.error('Error getting all stocks:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-}
-
 const runScraper = async (req, res) => {
   try {
     const pythonScriptPath = path.join(__dirname, '..', 'scraper', 'scraper.py');
@@ -66,4 +40,4 @@ const runScraper = async (req, res) => {
   }
 };
 
-module.exports = { runScraper, getStocks, getStock };
+module.exports = { runScraper };
