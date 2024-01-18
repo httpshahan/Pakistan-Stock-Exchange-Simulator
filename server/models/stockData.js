@@ -56,7 +56,10 @@ const getStockBySymbol = async (symbol) => {
   try {
     //console.log(symbol);
     const result = await pool.query(
-      "SELECT * FROM stock_data WHERE stock_symbol = $1",
+      `SELECT s.*, sd.*
+      FROM stock s
+      JOIN stock_data sd ON s.symbol = sd.stock_symbol
+      WHERE s.symbol = $1`,
       [symbol]
     );
     if (result.rows.length === 0) {
