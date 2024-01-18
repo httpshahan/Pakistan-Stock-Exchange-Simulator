@@ -8,7 +8,7 @@ const DataTable = () => {
   const [error, setError] = useState(null);
   const [timestamp, setTimestamp] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Number of items to display per page
+  const itemsPerPage = 15; // Number of items to display per page
 
   useEffect(() => {
     // Fetch data from the database or API
@@ -74,8 +74,8 @@ const DataTable = () => {
         Market Watch
       </h1>
       <p className="text-gray-500 text-center mb-2">{timestamp}</p>
-      <div className="mx-auto max-h-screen overflow-x-auto">
-        <table className="w-full border rounded-md overflow-hidden">
+      <div className="mx-auto">
+        <table className="w-full border rounded-md">
           <thead className="bg-gray-200">
             <tr>
               {columns.map((column) => (
