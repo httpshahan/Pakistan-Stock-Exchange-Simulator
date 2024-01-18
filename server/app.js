@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const stockRoutes = require('./routes/stockRoutes');
 const scraperRoutes = require('./routes/scraperRoutes');
+const verifyToken = require('./middleware/verifyToken');
 
 
 dotenv.config();
@@ -14,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
-app.use('/api/stocks', stockRoutes);
+app.use('/api/stocks',verifyToken, stockRoutes);
 app.use('/api/scraper', scraperRoutes);
 
 

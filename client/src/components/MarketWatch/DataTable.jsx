@@ -13,7 +13,11 @@ const DataTable = () => {
   useEffect(() => {
     // Fetch data from the database or API
     axios
-      .get("http://localhost:3000/api/stocks/getStocks")
+    .get("http://localhost:3000/api/stocks/getStocks", {
+      headers: {
+        "auth-token": `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
       .then((response) => {
         setData(response.data.data);
         const data = response.data.data;
