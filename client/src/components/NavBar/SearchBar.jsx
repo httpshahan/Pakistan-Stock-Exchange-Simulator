@@ -9,20 +9,23 @@ function SearchBar() {
           className="w-64 h-10 px-4 pr-16 text-sm text-gray-900 placeholder-gray-500 bg-[#F7F6F9] border border-transparent rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
           placeholder="Stocks....."
         />
-        <button className="absolute w-5 h-5 text-gray-400 top-3 right-3 dark:text-gray-300">
+        <div className="absolute w-5 h-5 text-gray-400 top-3 right-3 dark:text-gray-300">
           <svg
-            className="w-5 h-5"
+            className="w-4 h-4 text-gray-500 dark:text-gray-400"
             aria-hidden="true"
-            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
             viewBox="0 0 20 20"
           >
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="m13.707 12.293-1.414 1.414-4.293-4.293 1.414-1.414 4.293 4.293Zm-1.414-2.586 1.414-1.414 4.293 4.293-1.414 1.414-4.293-4.293Z"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
             />
           </svg>
-        </button>
+        </div>
       </div>
     </div>
 

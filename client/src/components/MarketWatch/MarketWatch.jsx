@@ -7,7 +7,7 @@ const MarketWatch = () => {
   return (
     <div className="flex h-full">
       <SideNavbar />
-      <div className="flex flex-col flex-1 ">
+      <div className="flex flex-col flex-1">
         <TopNavbar />
         <DataTable />
       </div>

@@ -7,7 +7,7 @@ function Dashboard() {
       <SideNavbar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
-        <div className="flex-1 overflow-auto bg-gray-200">
+        <div className="flex-1 overflow-auto">
           <div className="p-8">
             <div className="flex flex-col">
               <h1 className="text-2xl font-semibold">Hello {userName}</h1>

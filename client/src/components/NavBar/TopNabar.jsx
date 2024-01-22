@@ -8,7 +8,7 @@ function TopNavbar() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <div className="flex items-center h-16 p-8">
+    <div className="flex items-center bg-white h-20 p-8">
       <div className="w-full">
         <p className="text-[#2C2C2C] text-xl font-medium">Hello, {userName}</p>
       </div>
