@@ -25,9 +25,13 @@ const DataTable = () => {
         setLoading(false);
       })
       .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          window.location.href = "/";
+        } else {
         console.error("Error fetching data:", error);
         setError("Error fetching data. Please try again later.");
         setLoading(false);
+      }
       });
   }, []);
 
