@@ -10,8 +10,7 @@ function Dashboard() {
         <div className="flex-1 overflow-auto">
           <div className="p-8">
             <div className="flex flex-col">
-              <h1 className="text-2xl font-semibold">Hello {userName}</h1>
-              <p className="text-lg text-gray-600">Welcome to the dashboard</p>
+              <h1 className="text-2xl font-semibold">Dashboard</h1>
             </div>
           </div>
         </div>

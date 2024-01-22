@@ -5,7 +5,7 @@ import DataTable from "../MarketWatch/DataTable";
 
 const MarketWatch = () => {
   return (
-    <div className="flex h-full">
+    <div className="flex h-screen">
       <SideNavbar />
       <div className="flex flex-col flex-1">
         <TopNavbar />

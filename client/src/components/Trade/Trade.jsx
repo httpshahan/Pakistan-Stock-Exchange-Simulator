@@ -4,11 +4,17 @@ import TopNavbar from '../NavBar/TopNabar'
 
 const Trade = () => {
   return (
-    <div className="flex h-full">
+    <div className="flex h-screen">
       <SideNavbar />
       <div className="flex flex-col flex-1">
         <TopNavbar />
-        <h1>Trade</h1>
+        <div className="flex-1 overflow-auto">
+          <div className="p-8">
+            <div className="flex flex-col">
+              <h1 className="text-2xl font-semibold">Trade</h1>
+            </div>
+          </div>
+        </div>
       </div>
       </div>
   )
