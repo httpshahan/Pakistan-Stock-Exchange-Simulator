@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import apiService from "../../services/apiService";
 import { Link } from "react-router-dom";
 
 const DataTable = () => {
@@ -12,27 +12,19 @@ const DataTable = () => {
 
   useEffect(() => {
     // Fetch data from the database or API
-    axios
-    .get("http://localhost:3000/api/stocks/getStocks", {
-      headers: {
-        "auth-token": `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
+    const data = async () => {
+      try {
+        const response = await apiService.get("/stocks/getStocks");
         setData(response.data.data);
         const data = response.data.data;
         setTimestamp(data.length > 0 ? data[0].timestamp : "");
         setLoading(false);
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 401) {
-          window.location.href = "/";
-        } else {
+      } catch (error) {
         console.error("Error fetching data:", error);
         setError("Error fetching data. Please try again later.");
-        setLoading(false);
       }
-      });
+    };
+    data();
   }, []);
 
   const columns = [
