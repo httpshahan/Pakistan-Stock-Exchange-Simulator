@@ -35,9 +35,9 @@ const Login = () => {
       setInvalid(false);
       setInvalidPassword(false);
       console.log(data);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.userId);
-      localStorage.setItem("userName", data.username);
+      sessionStorage.setItem("token", data.token);
+      sessionStorage.setItem("userId", data.userId);
+      sessionStorage.setItem("userName", data.username);
       console.log("Login Success");
       alert("Login Success");
       naviagte("/dashboard");
