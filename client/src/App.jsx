@@ -4,7 +4,7 @@ import AdminLogin from "./components/Auth/AdminLogin";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
 import MarketWatch from "./components/MarketWatch/MarketWatch";
-import Dashboard from "./components/DashBoard";
+import Dashboard from "./components/Dashboard/DashBoard";
 import StockDetail from "./components/Stock/StockDetail";
 import Portfolio from "./components/Portfolio/Portfolio";
 import Transaction from "./components/Transaction/Transaction";

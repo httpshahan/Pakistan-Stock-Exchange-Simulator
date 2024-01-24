@@ -74,26 +74,45 @@ const getStockBySymbol = async (symbol) => {
 
 const getTopStock = async () => {
   try {
-    const result = await pool.query(
-      "SELECT * FROM stock_data ORDER BY CAST(REPLACE(change_percent, '%', '') AS DECIMAL(10, 2)) DESC LIMIT 10"
-    );
+    const result = await pool.query(`
+      SELECT 
+        sd.stock_symbol,
+        s.company_name,
+        sd.current,
+        sd.change_percent,
+        sd.change
+      FROM stock_data sd
+      JOIN stock s ON sd.stock_symbol = s.symbol
+      ORDER BY CAST(REPLACE(sd.change_percent, '%', '') AS DECIMAL(10, 2)) DESC
+      LIMIT 10
+    `);
     return result.rows;
   } catch (err) {
-    console.error("Error getting all stocks:", err);
+    console.error("Error getting active stocks:", err);
     throw err;
   }
 };
 
 const getDeclinerStock = async () => {
-  try {
-    const result = await pool.query(
-      "SELECT * FROM stock_data ORDER BY CAST(REPLACE(change_percent, '%', '') AS DECIMAL(10, 2)) ASC LIMIT 10"
-    );
-    return result.rows;
-  } catch (err) {
-    console.error("Error getting all stocks:", err);
-    throw err;
-  }
+    try {
+      const result = await pool.query(`
+        SELECT 
+          sd.stock_symbol,
+          s.company_name,
+          sd.current,
+          sd.change_percent,
+          sd.change
+        FROM stock_data sd
+        JOIN stock s ON sd.stock_symbol = s.symbol
+        ORDER BY CAST(REPLACE(sd.change_percent, '%', '') AS DECIMAL(10, 2)) ASC
+        LIMIT 10
+      `);
+      return result.rows;
+    } catch (err) {
+      console.error("Error getting decliner stocks:", err);
+      throw err;
+    }
+  
 };
 
 const getActiveStocks = async () => {
