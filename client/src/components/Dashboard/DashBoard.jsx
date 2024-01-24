@@ -24,7 +24,9 @@ const Dashboard = () => {
         setTopAdvancers(topAdvancersResponse.data.data);
 
         // Fetch data for Top Decliners
-        const topDeclinersResponse = await apiService.get("/stocks/declinerStocks");
+        const topDeclinersResponse = await apiService.get(
+          "/stocks/declinerStocks"
+        );
         setTopDecliners(topDeclinersResponse.data.data);
 
         // Set loading to false after scraping and fetching processes complete
@@ -36,8 +38,6 @@ const Dashboard = () => {
 
     fetchData();
   }, []); // Empty dependency array ensures that the effect runs only once on component mount
-
-  
 
   return (
     <div className="flex h-screen">
@@ -57,12 +57,8 @@ const Dashboard = () => {
                 <h1 className="text-2xl font-semibold">Dashboard</h1>
 
                 <div className="flex gap-2 mt-8">
-
-                {/* Use StockTable component for Top Advancers */}
-                <StockTable title="Top Advancers" data={topAdvancers} />
-
-                {/* Use StockTable component for Top Decliners */}
-                <StockTable title="Top Decliners" data={topDecliners} />
+                  <StockTable title="Top Advancers" data={topAdvancers} />
+                  <StockTable title="Top Decliners" data={topDecliners} />
                 </div>
               </div>
             </div>

@@ -18,7 +18,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/stocks',verifyToken, stockRoutes);
 app.use('/api/scraper', scraperRoutes);
 
-app.get('/api/delay', (req, res) => {
+app.get('/api/delay', verifyToken, (req, res) => {
   setTimeout(() => {
     res.send('delayed response');
   }, 3000);
