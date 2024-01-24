@@ -40,26 +40,58 @@ const Dashboard = () => {
   }, []); // Empty dependency array ensures that the effect runs only once on component mount
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-100">
       <SideNavbar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto p-8">
           {loading ? (
-            // Display loader while loading is true
             <div className="flex justify-center items-center h-screen">
               <div className="animate-spin rounded-full border-t-4 border-blue-500 border-opacity-25 h-12 w-12"></div>
             </div>
           ) : (
-            // Display dashboard content once loading is false
-            <div className="p-8">
-              <div className="flex flex-col">
-                <h1 className="text-2xl font-semibold">Dashboard</h1>
+            <div className="flex flex-col space-y-8">
+              <div className="text-3xl font-semibold mb-4">
+                Dashboard Overview
+              </div>
 
-                <div className="flex gap-2 mt-8">
-                  <StockTable title="Top Advancers" data={topAdvancers} />
-                  <StockTable title="Top Decliners" data={topDecliners} />
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Total Portfolio Value
+                  </h2>
+                  <p className="text-2xl font-bold text-indigo-600">0000000</p>
                 </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Invested Amount
+                  </h2>
+                  <p className="text-2xl font-bold text-green-600">0000000</p>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Growth Percentage
+                  </h2>
+                  <p
+                    className={`text-2xl font-bold ${
+                      16 >= 0 ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    16%
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h2 className="text-xl font-semibold mb-2">Cash in Hand</h2>
+                  <p className="text-2xl font-bold text-blue-600">9999999</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 mt-8">
+                <StockTable title="Top Advancers" data={topAdvancers} />
+                <StockTable title="Top Decliners" data={topDecliners} />
               </div>
             </div>
           )}
