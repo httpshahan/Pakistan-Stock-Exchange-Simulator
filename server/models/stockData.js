@@ -44,13 +44,19 @@ const insertScrapedData = async (data) => {
 
 const getAllStocks = async () => {
   try {
-    const result = await pool.query("SELECT * FROM stock_data");
+    const result = await pool.query(`
+      SELECT stock_data.*, stock.company_name
+      FROM stock_data
+      INNER JOIN stock ON stock_data.stock_symbol = stock.symbol
+    `);
+
     return result.rows;
   } catch (err) {
     console.error("Error getting all stocks:", err);
     throw err;
   }
 };
+
 
 const getStockBySymbol = async (symbol) => {
   try {
