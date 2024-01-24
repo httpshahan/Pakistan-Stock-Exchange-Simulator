@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import apiService from "../../services/apiService";
 import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 
@@ -11,15 +11,11 @@ const StockDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/stocks/getStock/${symbol}`, {
-          headers: {
-            "auth-token": `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await apiService.get(`/stocks/getStock/${symbol}`);
         setData(response.data.data);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
-        // You might want to set an error state here if needed
       }
     };
 
