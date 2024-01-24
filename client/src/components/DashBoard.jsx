@@ -14,14 +14,12 @@ function Dashboard() {
         const scrape = await apiService.get("/delay");
         console.log(scrape.data);
         console.log("Scraping Complete");
-
         // Set loading to false after scraping process completes
         setLoading(false);
       } catch (error) {
         console.error("Error running Scraper:", error);
       }
     };
-
     fetchData();
   }, []); // Empty dependency array ensures that the effect runs only once on component mount
 
@@ -34,7 +32,7 @@ function Dashboard() {
           {loading ? (
             // Display loader while loading is true
             <div className="flex justify-center items-center h-screen">
-              <div className="animate-spin rounded-full border-t-4 border-blue-500 border-opacity-25 h-12 w-12"></div>
+              <div className="animate-spin rounded-full border-t-4 border-black border-opacity-25 h-12 w-12"></div>
             </div>
           ) : (
             // Display dashboard content once loading is false

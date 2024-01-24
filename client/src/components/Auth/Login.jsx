@@ -1,47 +1,36 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import authService from "../../services/authService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
   const [invalid, setInvalid] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
   const handleLogin = async () => {
-    //  login logic
-    const userData = {
-      email: email,
-      password: password,
-    };
-    const response = await fetch("http://localhost:3000/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
-    });
-    const data = await response.json();
-    console.log(data);
-    if (response.status === 404) {
-      setInvalid(true);
-      console.log("Invalid Credentials");
-      alert("Email not Found");
-      return;
-    } else if (response.status === 401) {
-      setInvalidPassword(true);
-      setPassword("");
-      alert("Invalid Password");
-      return;
-    } else if (response.status === 200) {
+    try {
+      const data = await authService.login(email, password);
+
       setInvalid(false);
       setInvalidPassword(false);
+
       console.log(data);
-      sessionStorage.setItem("token", data.token);
-      sessionStorage.setItem("userId", data.userId);
-      sessionStorage.setItem("userName", data.username);
       console.log("Login Success");
       alert("Login Success");
-      naviagte("/dashboard");
-      return;
+      navigate("/dashboard");
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          setInvalidPassword(true);
+        } else if (error.response.status === 404) {
+          setInvalid(true);
+        }
+      } else {
+        console.error("Error during login:", error);
+      }
+      alert("Invalid Credentials");
     }
   };
 
