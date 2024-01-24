@@ -17,6 +17,9 @@ const Login = () => {
       setInvalidPassword(false);
 
       console.log(data);
+      sessionStorage.setItem("token", data.token);
+      sessionStorage.setItem("userId", data.userId);
+      sessionStorage.setItem("username", data.username);
       console.log("Login Success");
       alert("Login Success");
       navigate("/dashboard");

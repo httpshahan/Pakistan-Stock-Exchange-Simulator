@@ -15,6 +15,7 @@ const DataTable = () => {
     const data = async () => {
       try {
         const response = await apiService.get("/stocks/getStocks");
+        console.log(response.data.data);
         setData(response.data.data);
         const data = response.data.data;
         setTimestamp(data.length > 0 ? data[0].timestamp : "");

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SearchBar from "./SearchBar";
 
 function TopNavbar() {
-  const userName = sessionStorage.getItem("userName");
+  const userName = sessionStorage.getItem("username");
 
   return (
     <div className="flex items-center bg-white h-20 p-8 shadow-md">
