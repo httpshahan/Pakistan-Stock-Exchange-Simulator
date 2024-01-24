@@ -21,7 +21,7 @@ app.use('/api/scraper', scraperRoutes);
 app.get('/api/delay', (req, res) => {
   setTimeout(() => {
     res.send('delayed response');
-  }, 15000);
+  }, 3000);
 });
 
 const PORT = process.env.PORT || 3001;
