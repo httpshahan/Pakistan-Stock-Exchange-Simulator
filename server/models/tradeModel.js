@@ -18,6 +18,13 @@ const transactionsModel = {
         VALUES ($1, $2, 'B', $3, $4)
       `, [userId, stockSymbol, quantity, transactionPrice]);
 
+      //insertion in user_assets
+
+      await pool.query(`
+        INSERT INTO user_assets (user_id, stock_symbol, quantity, purchase_price)
+        VALUES ($1, $2, $3, $4)
+      `, [userId, stockSymbol, quantity, transactionPrice]);
+
       // Update user balance
       await pool.query('UPDATE users SET balance = balance - $1 WHERE id = $2', [totalTransactionCost, userId]);
 
@@ -46,6 +53,13 @@ const transactionsModel = {
         INSERT INTO user_transactions (user_id, stock_symbol, transaction_type, quantity, transaction_price)
         VALUES ($1, $2, 'S', $3, $4)
       `, [userId, stockSymbol, quantity, transactionPrice]);
+
+      // Update user assets
+      await pool.query(`
+        UPDATE user_assets
+        SET quantity = quantity - $1
+        WHERE user_id = $2 AND stock_symbol = $3
+      `, [quantity, userId, stockSymbol]);
 
       // Update user balance
       await pool.query('UPDATE users SET balance = balance + $1 WHERE id = $2', [quantity * transactionPrice, userId]);

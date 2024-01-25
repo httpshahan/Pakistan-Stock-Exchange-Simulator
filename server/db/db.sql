@@ -42,8 +42,8 @@ CREATE TABLE user_assets (
     stock_symbol VARCHAR(20) NOT NULL,
     quantity INTEGER NOT NULL,
     purchase_price NUMERIC(10,2) NOT NULL,
-    purchase_date TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (stock_symbol) REFERENCES stock(symbol)
 );
 
 CREATE TABLE user_watchlist (
