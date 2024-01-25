@@ -44,6 +44,7 @@ const SearchDialog = ({ closeSearch }) => {
   };
 
   const handleSuggestionClick = (suggestion) => {
+    console.log(suggestion.stock_symbol);
     navigate(`/stock/${suggestion.stock_symbol}`);
     closeSearch();
   };

@@ -39,12 +39,10 @@ const getStock = async (req, res) => {
 const searchStock = async (req, res) => {
   try {
     const query = req.query.q; // Assuming the search query is provided as a query parameter
-    console.log(query);
     if (!query) {
       return res.status(400).json({ error: 'Search query is required.' });
     }
     const searchResults = await searchStocks(query);
-    console.log(searchResults);
     res.status(200).json(searchResults);
   } catch (error) {
     console.error('Error in stock search route:', error);
