@@ -12,6 +12,14 @@ const SearchDialog = ({ closeSearch }) => {
     inputRef.current.focus();
   }, []);
 
+  const handleClickOutside = (event) => {
+    if (inputRef.current && !inputRef.current.contains(event.target)) {
+      closeSearch();
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
   useEffect(() => {
     const fetchSuggestions = async () => {
       try {
