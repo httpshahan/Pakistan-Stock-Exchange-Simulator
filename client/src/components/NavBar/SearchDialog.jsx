@@ -62,7 +62,7 @@ const SearchDialog = ({ closeSearch }) => {
         />
 
         {suggestions.length > 0 && (
-          <ul className="mb-4 max-h-40 overflow-y-auto w-full divide-y divide-gray-200">
+          <ul ref={inputRef} className="mb-4 max-h-40 overflow-y-auto w-full divide-y divide-gray-200">
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}
