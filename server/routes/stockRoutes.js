@@ -10,5 +10,6 @@ router.get("/getStock/:symbol", stockController.getStock);
 router.get("/topStocks/", stockController.getTopStocks);
 router.get("/declinerStocks/", stockController.getDeclinerStocks);
 router.get("/activeStocks/", stockController.activeStocks);
+router.get("/searchStocks", stockController.searchStock);
 
 module.exports = router;

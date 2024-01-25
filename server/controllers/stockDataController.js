@@ -5,6 +5,7 @@ const {
   getTopStock,
   getDeclinerStock,
   getActiveStocks,
+  searchStocks,
 } = require("../models/stockData");
 
 const getStocks = async (req, res) => {
@@ -32,6 +33,22 @@ const getStock = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const searchStock = async (req, res) => {
+  try {
+    const query = req.query.q; // Assuming the search query is provided as a query parameter
+    console.log(query);
+    if (!query) {
+      return res.status(400).json({ error: 'Search query is required.' });
+    }
+    const searchResults = await searchStocks(query);
+    console.log(searchResults);
+    res.status(200).json(searchResults);
+  } catch (error) {
+    console.error('Error in stock search route:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -86,4 +103,5 @@ module.exports = {
   getTopStocks,
   getDeclinerStocks,
   activeStocks,
+  searchStock,
 };

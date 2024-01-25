@@ -57,6 +57,22 @@ const getAllStocks = async () => {
   }
 };
 
+const searchStocks = async (query) => {
+  try {
+    const result = await pool.query(`
+      SELECT stock_data.*, stock.company_name
+      FROM stock_data
+      INNER JOIN stock ON stock_data.stock_symbol = stock.symbol
+      WHERE stock.company_name ILIKE $1 OR stock_data.stock_symbol ILIKE $1
+    `, [`%${query}%`]);
+    return result.rows;
+  } catch (err) {
+    console.error("Error searching stocks:", err);
+    throw err;
+  }
+};
+
+
 
 const getStockBySymbol = async (symbol) => {
   try {
@@ -140,4 +156,5 @@ module.exports = {
   getTopStock,
   getDeclinerStock,
   getActiveStocks,
+  searchStocks,
 };
