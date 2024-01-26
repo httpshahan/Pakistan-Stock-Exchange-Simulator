@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import apiService from "../../services/apiService";
 
 const Sell = () => {
@@ -10,20 +10,37 @@ const Sell = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [options, setOptions] = useState([]);
+  const [error, setError] = useState(null);
 
   const userId = sessionStorage.getItem("userId");
+  const searchInputRef = useRef(null);
 
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         const response = await apiService.get(`/stocks/userAssets/${userId}`);
-        console.log(response.data.data);
         setOptions(response.data.data);
       } catch (error) {
         console.error("Error fetching options:", error);
       }
     };
     fetchOptions();
+  }, [userId]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchInputRef.current && !searchInputRef.current.contains(event.target)) {
+        setIsSearching(false);
+      }
+    };
+
+    // Attach the event listener
+    document.addEventListener("click", handleClickOutside);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   const filteredOptions = options.filter(
@@ -38,50 +55,70 @@ const Sell = () => {
   };
 
   const handleOptionClick = (option) => {
+    setSearchTerm(option.company_name);
     setSymbol(option.stock_symbol);
     setPrice(option.current);
     setMaxQuantity(option.quantity);
-    setSearchTerm("");
     setIsSearching(false);
   };
+
   const handleChange = (event) => {
-    if (event.target.value > maxQuantity) {
-      setQuantity(maxQuantity);
-    } else if (event.target.value < 1) {
-      setQuantity(1);
+    const inputQuantity = parseInt(event.target.value, 10);
+
+    if (isNaN(inputQuantity) || inputQuantity < 1 || inputQuantity > maxQuantity) {
+      setError("Invalid quantity. Please enter a valid quantity.");
     } else {
-      setQuantity(event.target.value);
+      setError(null);
+      setQuantity(inputQuantity);
     }
   };
 
-  const handleClick = () => {
-    const transaction = parseFloat(quantity * price - 0.5 * quantity).toFixed(
-      2
-    );
-    console.log({
-      userId,
-      symbol,
-      quantity,
-      price,
-      transaction,
-    });
-  };
+  const handleClick = async () => {
+    if (!symbol || !quantity || !price) {
+      setError("Please select a stock and enter a valid quantity.");
+      return;
+    }
 
+    const transaction = parseFloat(quantity * price - 0.5 * quantity).toFixed(2);
+    const totalPrice = parseFloat(price) + 0.5;
+
+    try {
+      const response = await apiService.post(`/trade/sell/${userId}`, {
+        symbol,
+        quantity,
+        totalPrice,
+        transaction,
+      });
+      console.log(response.data);
+
+      // Reset form values on successful transaction
+      setSymbol("");
+      setQuantity("");
+      setPrice("");
+      setMaxQuantity(0);
+      setSearchTerm("");
+      setError(null);
+    } catch (error) {
+      console.error("Error selling stock:", error);
+    }
+  };
   return (
     <div className="max-w-md mx-auto p-6 ">
+      <form>
       <div className="flex flex-col mb-4">
         <label htmlFor="stock" className="text-sm font-semibold mb-2">
           Stock
         </label>
-        <div className="relative">
+        <div className="relative" >
           <input
             type="text"
             id="stock"
             className="p-2 w-full border rounded-md mb-4"
             placeholder="Enter stock symbol"
-            value={symbol || searchTerm}
+            value={searchTerm}
             onChange={handleInputChange}
             required
+            ref={searchInputRef}
           />
           {isSearching && (
             <div className="absolute z-10 w-full bg-white rounded-md shadow-lg">
@@ -92,10 +129,12 @@ const Sell = () => {
                   onClick={() => handleOptionClick(option)}
                 >
                   <p className="text-gray-900 font-medium">
-                      {option.stock_symbol}
-                    </p>
-                    <p className="text-gray-600">{option.company_name}</p>
-                    <p className="text-gray-600 text-xs">Price: {option.current} - Max Quantity:{option.quantity} </p>
+                    {option.stock_symbol}
+                  </p>
+                  <p className="text-gray-600">{option.company_name}</p>
+                  <p className="text-gray-600 text-xs">
+                    Price: {option.current} - Max Quantity:{option.quantity}{" "}
+                  </p>
                 </div>
               ))}
             </div>
@@ -192,10 +231,13 @@ const Sell = () => {
         </span>
       </div>
 
+      <div className="text-red-500 text-sm mb-4">{error}</div>
+
       <div className="flex space-x-4">
         <button
           className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
           onClick={handleClick}
+          disabled={!!error} // Disable the button if there's an error
         >
           Sell
         </button>
@@ -203,6 +245,7 @@ const Sell = () => {
           Cancel
         </button>
       </div>
+      </form>
     </div>
   );
 };

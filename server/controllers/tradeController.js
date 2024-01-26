@@ -4,8 +4,8 @@ const transactionsController = {
   async buyStock(req, res) {
     try {
       const { userId } = req.params;
-      const { stockSymbol, quantity, price, transaction } = req.body;
-      const result = await transactionsModel.buyStock(userId, stockSymbol, quantity, price, transaction);
+      const { stockSymbol, quantity, totalPrice, transaction } = req.body;
+      const result = await transactionsModel.buyStock(userId, stockSymbol, quantity, totalPrice, transaction);
       res.status(201).json(result); // 201 Created
     } catch (error) {
       console.error('Error buying stock:', error);
@@ -20,8 +20,8 @@ const transactionsController = {
   async sellStock(req, res) {
     try {
       const { userId } = req.params;
-      const { symbol, quantity, price, transaction } = req.body;
-      const result = await transactionsModel.sellStock(userId, symbol, quantity, price, transaction);
+      const { symbol, quantity, totalPrice, transaction } = req.body;
+      const result = await transactionsModel.sellStock(userId, symbol, quantity, totalPrice, transaction);
       res.status(201).json(result); // 201 Created
     } catch (error) {
       console.error('Error selling stock:', error);

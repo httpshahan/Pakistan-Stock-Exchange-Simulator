@@ -44,7 +44,12 @@ const BuyForm = () => {
 
   const handleQuantityChange = (event) => {
     const newQuantity = event.target.value;
-    setQuantity(newQuantity);
+    if (newQuantity < 1){
+        setQuantity(1);
+    }
+    else{
+        setQuantity(newQuantity);
+    }
 
     // Calculate total price based on quantity and stock price
     const totalPrice = parseFloat(newQuantity) * parseFloat(price);
@@ -79,19 +84,25 @@ const BuyForm = () => {
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
+        console.log("here");
+        const totalPrice = parseFloat(price) + 0.5;
+        
       const formData = {
         stockSymbol: symbol,
         quantity: quantity,
-        price: price,
+        totalPrice: totalPrice,
         transaction: parseFloat(quantity * price + 0.5 * quantity).toFixed(2),
       };
       try {
-        console.log(formData);
         const response = await apiService.post(
           `/trade/buy/${userId}`,
           formData
         );
         console.log(response);
+        setPrice("");
+        setQuantity("");
+        setSymbol("");
+
       } catch (error) {
         console.error("Error fetching suggestions:", error);
       }
@@ -183,7 +194,7 @@ const BuyForm = () => {
               errors.quantity ? "border-red-500" : ""
             }`}
             placeholder="Enter quantity"
-            value={quantity || 0}
+            value={quantity}
             min="1"
             onChange={handleQuantityChange}
             required

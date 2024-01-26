@@ -5,6 +5,7 @@ const transactionsModel = {
     try {
       const quantityInt = parseInt(quantity);
       const totalTransactionCost = parseFloat(transactionValue);
+      const transactionPriceFloat = parseFloat(transactionPrice);
       // Check if the user already owns the stock
       const existingStockResult = await pool.query(
         "SELECT * FROM user_assets WHERE user_id = $1 AND stock_symbol = $2",
@@ -28,6 +29,9 @@ const transactionsModel = {
         // Update existing stock with the new purchase
         const existingQuantity = parseInt(existingStockResult.rows[0].quantity);
         const newTotalQuantity = existingQuantity + quantityInt;
+        const price = parseFloat(existingStockResult.rows[0].purchase_price);
+        const newPrice = (price + transactionPriceFloat)/2;
+
 
         await pool.query(
           `
@@ -35,7 +39,7 @@ const transactionsModel = {
           SET quantity = $1, purchase_price = $2
           WHERE user_id = $3 AND stock_symbol = $4
         `,
-          [newTotalQuantity, newTotalValue, userId, stockSymbol]
+          [newTotalQuantity, newPrice, userId, stockSymbol]
         );
       } else {
         // Insert new record for buying
@@ -82,8 +86,6 @@ const transactionsModel = {
       if (userStockResult.rows.length === 0 || userStockResult.rows[0].quantity < quantityInt) {
         throw new Error("Insufficient quantity of the specified stock for the sell transaction.");
       }
-  
-      
   
       // Update user_assets to deduct the sold quantity
       const existingQuantity = userStockResult.rows[0].quantity;
