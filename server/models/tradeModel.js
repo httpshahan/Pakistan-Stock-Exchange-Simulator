@@ -1,16 +1,24 @@
-const { pool } = require("../db/pool"); // Adjust this based on your database configuration
+const pool = require("../db/pool");
 
 const transactionsModel = {
   async buyStock(userId, stockSymbol, quantity, transactionPrice) {
     try {
+      console.log("buyStock");
+      console.log(userId);
+      console.log(stockSymbol);
+      console.log(quantity);
+      console.log(transactionPrice);
+
+      const quantityInt = parseInt(quantity);
+      const transactionPriceFlt = parseFloat(transactionPrice);
       // Check if the user already owns the stock
       const existingStockResult = await pool.query(
         "SELECT * FROM user_assets WHERE user_id = $1 AND stock_symbol = $2",
         [userId, stockSymbol]
       );
 
-      const totalTransactionCost = quantity * transactionPrice;
-
+      const totalTransactionCost = quantityInt * transactionPriceFlt;
+      console.log("totalTransactionCost" + totalTransactionCost);
       // Check if the user has enough balance to make the purchase
       const userBalanceResult = await pool.query(
         "SELECT balance FROM users WHERE id = $1",
@@ -21,16 +29,26 @@ const transactionsModel = {
       if (userBalance < totalTransactionCost) {
         throw new Error("Insufficient funds for the transaction.");
       }
+      console.log("userBalance: " + userBalance);
 
       if (existingStockResult.rows.length > 0) {
         // Update existing stock with the new purchase
-        const existingQuantity = existingStockResult.rows[0].quantity;
-        const existingPurchasePrice = existingStockResult.rows[0].purchase_price;
-        const newTotalQuantity = existingQuantity + quantity;
+        const existingQuantity = parseInt(existingStockResult.rows[0].quantity);
+        console.log("existingQuantity: " + existingQuantity);
+        const existingPurchasePrice = parseFloat(existingStockResult.rows[0].purchase_price);
+        console.log("existingPurchasePrice: " + existingPurchasePrice);
+        const newTotalQuantity = existingQuantity + quantityInt;
         const newTotalValue =
           (existingQuantity * existingPurchasePrice +
-            quantity * transactionPrice) /
+            quantityInt * transactionPriceFlt) /
           newTotalQuantity;
+          console.log("newTotalValue: " + newTotalValue);
+          console.log("newTotalQuantity: " + newTotalQuantity);
+
+          const a = parseInt(existingQuantity);
+          const	b = parseInt(quantity);
+          const sum = a + b;
+          console.log(sum);
 
         await pool.query(
           `
@@ -55,7 +73,7 @@ const transactionsModel = {
       await pool.query(
         `
         INSERT INTO user_transactions (user_id, stock_symbol, transaction_type, quantity, transaction_price)
-        VALUES ($1, $2, 'B', $3, $4)
+        VALUES ($1, $2, 'B', $3, $4) RETURNING *
       `,
         [userId, stockSymbol, quantity, transactionPrice]
       );
@@ -66,7 +84,7 @@ const transactionsModel = {
         [totalTransactionCost, userId]
       );
 
-      return { message: "Stock purchased successfully." };
+      return { message: "Stock purchased successfully."};
     } catch (error) {
       throw error;
     }

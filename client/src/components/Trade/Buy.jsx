@@ -9,6 +9,8 @@ const BuyForm = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [errors, setErrors] = useState({});
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const userId = sessionStorage.getItem('userId');
+  
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -52,7 +54,7 @@ const BuyForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const errors = {};
@@ -78,15 +80,25 @@ const BuyForm = () => {
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      console.log("Form submitted:", {
-        symbol,
-        quantity,
-        price,
-        totalPrice,
-        transactionType: "buy",
-      });
+        const formData = {
+            stockSymbol: symbol,
+            quantity: quantity,
+            transactionPrice: price
+        }
+        try {
+            console.log(formData);
+            const response = await apiService.post(`/trade/buy/${userId}`, formData);
+            console.log(response);
+        }
+        catch (error) {
+            console.error("Error fetching suggestions:", error);
+        }
     }
+    
+    
+
   };
+
 
   return (
     <div>
@@ -183,9 +195,6 @@ const BuyForm = () => {
           />
           {errors.totalPrice && <p className="text-red-500 text-xs mt-1">{errors.totalPrice}</p>}
         </div>
-
-
-        {/* ... submit button ... */}
 
         <button
             type="submit"

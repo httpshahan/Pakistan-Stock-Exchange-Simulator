@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const stockRoutes = require('./routes/stockRoutes');
 const scraperRoutes = require('./routes/scraperRoutes');
+const tradeRoutes = require('./routes/tradeRoute');
 const verifyToken = require('./middleware/verifyToken');
 
 
@@ -17,6 +18,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/stocks',verifyToken, stockRoutes);
 app.use('/api/scraper', scraperRoutes);
+app.use('/api/trade',verifyToken, tradeRoutes);
+
 
 app.get('/api/delay', verifyToken, (req, res) => {
   setTimeout(() => {
