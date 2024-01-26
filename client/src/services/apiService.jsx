@@ -17,6 +17,9 @@ apiService.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       // Redirect to login page upon receiving a 401 response
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('userId');
+      sessionStorage.removeItem('username')
       window.location.href = '/';
     }
     return Promise.reject(error);

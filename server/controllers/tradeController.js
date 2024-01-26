@@ -20,8 +20,8 @@ const transactionsController = {
   async sellStock(req, res) {
     try {
       const { userId } = req.params;
-      const { stockSymbol, quantity, transactionPrice } = req.body;
-      const result = await transactionsModel.sellStock(userId, stockSymbol, quantity, transactionPrice);
+      const { symbol, quantity, price, transaction } = req.body;
+      const result = await transactionsModel.sellStock(userId, symbol, quantity, price, transaction);
       res.status(201).json(result); // 201 Created
     } catch (error) {
       console.error('Error selling stock:', error);

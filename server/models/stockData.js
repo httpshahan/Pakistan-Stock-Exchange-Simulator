@@ -72,6 +72,23 @@ const searchStocks = async (query) => {
   }
 };
 
+const getUserAssets = async (userId) => {
+  try {
+    const result = await pool.query(
+      `SELECT ua.quantity, s.company_name, sd.current, ua.stock_symbol
+      FROM user_assets ua
+      JOIN stock s ON ua.stock_symbol = s.symbol
+      JOIN stock_data sd ON s.symbol = sd.stock_symbol
+      WHERE ua.user_id = $1`,
+      [userId]
+    );
+    return result.rows;
+  } catch (err) {
+    console.error("Error getting user assets:", err);
+    throw err;
+  }
+};
+
 
 
 const getStockBySymbol = async (symbol) => {
@@ -157,4 +174,5 @@ module.exports = {
   getDeclinerStock,
   getActiveStocks,
   searchStocks,
+  getUserAssets,
 };

@@ -3,6 +3,10 @@ import SideNavbar from '../NavBar/SideNavBar'
 import TopNavbar from '../NavBar/TopNabar'
 
 const Watchlist = () => {
+  if (!sessionStorage.getItem('token')) {
+    console.log("No token");
+    window.location.href = '/';
+  }
   return (
     <div className="flex h-screen">
       <SideNavbar />

@@ -2,192 +2,204 @@ import React, { useState, useEffect } from "react";
 import apiService from "../../services/apiService";
 
 const Sell = () => {
-  const [symbol, setSymbol] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [maxQuantity, setMaxQuantity] = useState(0);
   const [price, setPrice] = useState("");
-  const [change, setChange] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [errors, setErrors] = useState({});
-  const [showSuggestions, setShowSuggestions] = useState(true);
+  const [symbol, setSymbol] = useState("");
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [options, setOptions] = useState([]);
+
+  const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
-    const fetchSuggestions = async () => {
+    const fetchOptions = async () => {
       try {
-        const response = await apiService.get(
-          `/stocks/searchStocks?q=${symbol}`
-        );
-        setSuggestions(response.data);
+        const response = await apiService.get(`/stocks/userAssets/${userId}`);
+        console.log(response.data.data);
+        setOptions(response.data.data);
       } catch (error) {
-        console.error("Error fetching suggestions:", error);
+        console.error("Error fetching options:", error);
       }
     };
+    fetchOptions();
+  }, []);
 
-    if (symbol.trim() !== "") {
-      fetchSuggestions();
-    } else {
-      setSuggestions([]);
-    }
-  }, [symbol]);
+  const filteredOptions = options.filter(
+    (option) =>
+      option.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      option.stock_symbol.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const handleSuggestionClick = (suggestion) => {
-    setSymbol(suggestion.stock_symbol);
-    setPrice(suggestion.current);
-    setChange(suggestion.change);
-    setShowSuggestions(false);
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
+    setIsSearching(true);
   };
 
+  const handleOptionClick = (option) => {
+    setSymbol(option.stock_symbol);
+    setPrice(option.current);
+    setMaxQuantity(option.quantity);
+
+    setSearchTerm("");
+    setIsSearching(false);
+  };
   const handleChange = (event) => {
-    setSymbol(event.target.value);
-    setShowSuggestions(true);
-  };
-
-  const handleQuantityChange = (event) => {
-    const newQuantity = event.target.value;
-    setQuantity(newQuantity);
-
-    // Calculate total price based on quantity and stock price
-    const totalPrice = parseFloat(newQuantity) * parseFloat(price);
-    if (!isNaN(totalPrice)) {
-      setErrors((prevErrors) => ({ ...prevErrors, totalPrice: "" }));
+    if (event.target.value > maxQuantity) {
+      setQuantity(maxQuantity);
+    } else if (event.target.value < 1) {
+      setQuantity(1);
+    } else {
+      setQuantity(event.target.value);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const errors = {};
-
-    if (!symbol.trim()) {
-      errors.symbol = "Symbol is required";
-    }
-
-    if (quantity.trim() === "" || isNaN(quantity) || parseFloat(quantity) < 0) {
-      errors.quantity = "Please enter a non-negative quantity";
-    }
-
-    if (!price.trim() || isNaN(price) || parseFloat(price) <= 0) {
-      errors.price = "Please enter a valid price";
-    }
-
-    // Calculate total price based on quantity and stock price
-    const totalPrice = parseFloat(quantity) * parseFloat(price);
-    if (isNaN(totalPrice)) {
-      errors.totalPrice = "Please enter a valid quantity";
-    }
-
-    setErrors(errors);
-
-    if (Object.keys(errors).length === 0) {
-      console.log("Form submitted:", {
-        symbol,
-        quantity,
-        price,
-        totalPrice,
-        transactionType: "buy",
-      });
-    }
+  const handleClick = () => {
+    const transaction = parseFloat(quantity * price - 0.5 * quantity).toFixed(
+      2
+    );
+    console.log({
+      userId,
+      symbol,
+      quantity,
+      price,
+      transaction,
+    });
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="symbol" className="block text-sm font-medium text-gray-600">
-            Symbol
-          </label>
+    <div className="max-w-md mx-auto p-6 ">
+      <div className="flex flex-col mb-4">
+        <label htmlFor="stock" className="text-sm font-semibold mb-2">
+          Stock
+        </label>
+        <div className="relative">
           <input
             type="text"
-            id="symbol"
-            className={`p-2 w-full border rounded-md ${errors.symbol ? "border-red-500" : ""}`}
-            placeholder="Enter symbol"
-            value={symbol}
-            onChange={handleChange}
+            id="stock"
+            className="p-2 w-full border rounded-md mb-4"
+            placeholder="Enter stock symbol"
+            value={symbol || searchTerm}
+            onChange={handleInputChange}
             required
           />
-          {errors.symbol && <p className="text-red-500 text-xs mt-1">{errors.symbol}</p>}
-
-          {showSuggestions && (
-            <div className="absolute z-10 w-full bg-white rounded-md shadow-lg mt-1">
-              {suggestions.map((suggestion) => (
+          {isSearching && (
+            <div className="absolute z-10 w-full bg-white rounded-md shadow-lg">
+              {filteredOptions.map((option) => (
                 <div
-                  key={suggestion.stock_symbol}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSuggestionClick(suggestion)}
+                  key={option.stock_symbol}
+                  className="p-2 cursor-pointer hover:bg-gray-200"
+                  onClick={() => handleOptionClick(option)}
                 >
-                  <p className="text-gray-900 font-medium">{suggestion.stock_symbol}</p>
-                  <p className="text-gray-600">{suggestion.stock_name}</p>
+                  {`${option.company_name} (${option.company_name}) - Price: $${option.current} | Max Quantity: ${option.quantity}`}
                 </div>
               ))}
             </div>
           )}
         </div>
+      </div>
 
-        <div className="mb-4">
-            <label htmlFor="price" className="block text-sm font-medium text-gray-600">
-                Price
-            </label>
-            <input
-                type="text"
-                id="price"
-                className={`p-2 w-full border rounded-md bg-gray-100`}
-                value={price}
-                readOnly
-            />
-            {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price}</p>}
-        </div>
-
-        <div className="mb-4">
-            <label htmlFor="change" className="block text-sm font-medium text-gray-600">
-                Change
-            </label>
-            <input
-                type="text"
-                id="change"
-                className={`p-2 w-full border rounded-md bg-gray-100`}
-                value={change}
-                readOnly
-            />
-            {errors.change && <p className="text-red-500 text-xs mt-1">{errors.change}</p>}
-        </div>
-
-
-        <div className="mb-4">
-          <label htmlFor="quantity" className="block text-sm font-medium text-gray-600">
-            Quantity
+      <div className="flex mb-4">
+        <div className="flex flex-col w-1/2 pr-2">
+          <label htmlFor="price" className="text-sm font-semibold mb-2">
+            Price
           </label>
           <input
-            type="number"
-            id="quantity"
-            className={`p-2 w-full border rounded-md ${errors.quantity ? "border-red-500" : ""}`}
-            placeholder="Enter quantity"
-            value={quantity}
-            onChange={handleQuantityChange}
-            required
+            type="text"
+            id="price"
+            className="p-2 w-full border rounded-md bg-gray-100"
+            value={price || 0}
+            readOnly
           />
-          {errors.quantity && <p className="text-red-500 text-xs mt-1">{errors.quantity}</p>}
         </div>
+        <div className="flex flex-col w-1/2 pl-2">
+          <label htmlFor="brokerageFee" className="text-sm font-semibold mb-2">
+            Brokerage Fee
+          </label>
+          <input
+            type="text"
+            id="brokerageFee"
+            className="p-2 w-full border rounded-md bg-gray-100"
+            value={0.5}
+            readOnly
+          />
+        </div>
+      </div>
 
-        <div className="mb-4">
-          <label htmlFor="totalPrice" className="block text-sm font-medium text-gray-600">
+      <label htmlFor="quantity" className="text-sm font-semibold mb-2">
+        Quantity
+      </label>
+      <input
+        type="number"
+        id="quantity"
+        className="p-2 w-full border rounded-md mb-4"
+        placeholder="Enter quantity"
+        value={quantity}
+        min="0"
+        max={maxQuantity || 0}
+        onChange={handleChange}
+        required
+      />
+
+      <div className="flex mb-4">
+        <div className="flex flex-col w-1/2 pr-2">
+          <label htmlFor="cashBalance" className="text-sm font-semibold mb-2">
+            Cash Balance
+          </label>
+          <input
+            type="text"
+            id="cashBalance"
+            className="p-2 w-full border rounded-md bg-gray-100"
+            value={123}
+            readOnly
+          />
+        </div>
+        <div className="flex flex-col w-1/2 pl-2">
+          <label htmlFor="totalPrice" className="text-sm font-semibold mb-2">
             Total Price
           </label>
           <input
             type="text"
             id="totalPrice"
             className="p-2 w-full border rounded-md bg-gray-100"
-            value={isNaN(parseFloat(quantity) * parseFloat(price)) ? "" : (parseFloat(quantity) * parseFloat(price)).toFixed(2)}
+            value={parseFloat(quantity * price || 0).toFixed(2)}
             readOnly
           />
-          {errors.totalPrice && <p className="text-red-500 text-xs mt-1">{errors.totalPrice}</p>}
         </div>
+      </div>
 
+      <div className="flex flex-col border-y py-5 mb-4">
+        <div className="flex justify-between">
+          <span className="text-sm font-semibold">Cost</span>
+          <span className="text-sm font-semibold">
+            {parseFloat(quantity * price || 0).toFixed(2)}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm font-semibold">Brokerage Fee</span>
+          <span className="text-sm font-semibold">{0.5 * quantity}</span>
+        </div>
+      </div>
+
+      <div className="flex justify-between mb-5">
+        <span className="text-md font-semibold">Total</span>
+        <span className="text-md font-semibold">
+          {parseFloat(quantity * price - 0.5 * quantity || 0).toFixed(2)}
+        </span>
+      </div>
+
+      <div className="flex space-x-4">
         <button
-            type="submit"
-            className="w-full bg-red-500 hover:bg-blue-600 text-white font-semibold p-3 rounded-md"
-            >
-            Sell
+          className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
+          onClick={handleClick}
+        >
+          Sell
         </button>
-      </form>
+        <button className="bg-red-500 hover:bg-red-600 text-white font-semibold p-2 w-full rounded-md">
+          Cancel
+        </button>
+      </div>
     </div>
   );
 };

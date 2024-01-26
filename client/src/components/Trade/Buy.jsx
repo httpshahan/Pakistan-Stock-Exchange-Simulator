@@ -176,6 +176,7 @@ const BuyForm = () => {
             className={`p-2 w-full border rounded-md ${errors.quantity ? "border-red-500" : ""}`}
             placeholder="Enter quantity"
             value={quantity}
+            min="1"
             onChange={handleQuantityChange}
             required
           />

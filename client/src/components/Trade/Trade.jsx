@@ -7,6 +7,11 @@ import SellForm from "./Sell";
 const Trade = () => {
   const [activeTab, setActiveTab] = useState("buy");
 
+  if (!sessionStorage.getItem('token')) {
+    console.log("No token");
+    window.location.href = '/';
+  }
+
   return (
     <div className="flex h-screen">
       <SideNavbar />

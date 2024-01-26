@@ -1,24 +1,17 @@
 const pool = require("../db/pool");
 
 const transactionsModel = {
-  async buyStock(userId, stockSymbol, quantity, transactionPrice) {
+  async buyStock(userId, stockSymbol, quantity, transactionPrice, transactionValue) {
     try {
-      console.log("buyStock");
-      console.log(userId);
-      console.log(stockSymbol);
-      console.log(quantity);
-      console.log(transactionPrice);
-
       const quantityInt = parseInt(quantity);
-      const transactionPriceFlt = parseFloat(transactionPrice);
+      const totalTransactionCost = parseFloat(transactionValue);
       // Check if the user already owns the stock
       const existingStockResult = await pool.query(
         "SELECT * FROM user_assets WHERE user_id = $1 AND stock_symbol = $2",
         [userId, stockSymbol]
       );
 
-      const totalTransactionCost = quantityInt * transactionPriceFlt;
-      console.log("totalTransactionCost" + totalTransactionCost);
+      
       // Check if the user has enough balance to make the purchase
       const userBalanceResult = await pool.query(
         "SELECT balance FROM users WHERE id = $1",
@@ -34,21 +27,8 @@ const transactionsModel = {
       if (existingStockResult.rows.length > 0) {
         // Update existing stock with the new purchase
         const existingQuantity = parseInt(existingStockResult.rows[0].quantity);
-        console.log("existingQuantity: " + existingQuantity);
-        const existingPurchasePrice = parseFloat(existingStockResult.rows[0].purchase_price);
-        console.log("existingPurchasePrice: " + existingPurchasePrice);
         const newTotalQuantity = existingQuantity + quantityInt;
-        const newTotalValue =
-          (existingQuantity * existingPurchasePrice +
-            quantityInt * transactionPriceFlt) /
-          newTotalQuantity;
-          console.log("newTotalValue: " + newTotalValue);
-          console.log("newTotalQuantity: " + newTotalQuantity);
-
-          const a = parseInt(existingQuantity);
-          const	b = parseInt(quantity);
-          const sum = a + b;
-          console.log(sum);
+        
 
         await pool.query(
           `
@@ -90,23 +70,25 @@ const transactionsModel = {
     }
   },
 
-  async sellStock(userId, stockSymbol, quantity, transactionPrice) {
+  async sellStock(userId, stockSymbol, quantity, transactionPrice, transactionValue) {
     try {
+      const quantityInt = parseInt(quantity);
+      const totalTransactionValue = parseFloat(transactionValue)
       // Check if the user owns enough quantity of the specified stock
       const userStockResult = await pool.query(
         "SELECT * FROM user_assets WHERE user_id = $1 AND stock_symbol = $2",
         [userId, stockSymbol]
       );
   
-      if (userStockResult.rows.length === 0 || userStockResult.rows[0].quantity < quantity) {
+      if (userStockResult.rows.length === 0 || userStockResult.rows[0].quantity < quantityInt) {
         throw new Error("Insufficient quantity of the specified stock for the sell transaction.");
       }
   
-      const totalTransactionValue = quantity * transactionPrice;
+      
   
       // Update user_assets to deduct the sold quantity
       const existingQuantity = userStockResult.rows[0].quantity;
-      const newQuantity = existingQuantity - quantity;
+      const newQuantity = existingQuantity - quantityInt;
   
       if (newQuantity === 0) {
         // If selling all stocks, delete the record from user_assets

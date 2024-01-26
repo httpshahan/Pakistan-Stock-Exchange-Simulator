@@ -11,5 +11,6 @@ router.get("/topStocks/", stockController.getTopStocks);
 router.get("/declinerStocks/", stockController.getDeclinerStocks);
 router.get("/activeStocks/", stockController.activeStocks);
 router.get("/searchStocks", stockController.searchStock);
+router.get("/userAssets/:userId", stockController.getUserStocks);	
 
 module.exports = router;

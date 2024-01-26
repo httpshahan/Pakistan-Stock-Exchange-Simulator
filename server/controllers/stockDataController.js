@@ -6,6 +6,7 @@ const {
   getDeclinerStock,
   getActiveStocks,
   searchStocks,
+  getUserAssets,
 } = require("../models/stockData");
 
 const getStocks = async (req, res) => {
@@ -35,6 +36,21 @@ const getStock = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+const getUserStocks = async (req, res) => {
+  try {
+    const result = await getUserAssets(req.params.userId);
+    if (!result) {
+      return res.status(404).json({ error: "Stock not found" });
+    }
+    res
+      .status(200)
+      .json({ message: "Succesfully Get the User Stocks", data: result });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 const searchStock = async (req, res) => {
   try {
@@ -102,4 +118,5 @@ module.exports = {
   getDeclinerStocks,
   activeStocks,
   searchStock,
+  getUserStocks,
 };
