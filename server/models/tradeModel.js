@@ -28,7 +28,6 @@ const transactionsModel = {
         // Update existing stock with the new purchase
         const existingQuantity = parseInt(existingStockResult.rows[0].quantity);
         const newTotalQuantity = existingQuantity + quantityInt;
-        
 
         await pool.query(
           `

@@ -41,7 +41,6 @@ const Sell = () => {
     setSymbol(option.stock_symbol);
     setPrice(option.current);
     setMaxQuantity(option.quantity);
-
     setSearchTerm("");
     setIsSearching(false);
   };
@@ -92,7 +91,11 @@ const Sell = () => {
                   className="p-2 cursor-pointer hover:bg-gray-200"
                   onClick={() => handleOptionClick(option)}
                 >
-                  {`${option.company_name} (${option.company_name}) - Price: $${option.current} | Max Quantity: ${option.quantity}`}
+                  <p className="text-gray-900 font-medium">
+                      {option.stock_symbol}
+                    </p>
+                    <p className="text-gray-600">{option.company_name}</p>
+                    <p className="text-gray-600 text-xs">Price: {option.current} - Max Quantity:{option.quantity} </p>
                 </div>
               ))}
             </div>

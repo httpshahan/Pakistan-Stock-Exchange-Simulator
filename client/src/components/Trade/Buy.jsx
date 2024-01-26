@@ -9,8 +9,7 @@ const BuyForm = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [errors, setErrors] = useState({});
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const userId = sessionStorage.getItem('userId');
-  
+  const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -80,129 +79,188 @@ const BuyForm = () => {
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-        const formData = {
-            stockSymbol: symbol,
-            quantity: quantity,
-            transactionPrice: price
-        }
-        try {
-            console.log(formData);
-            const response = await apiService.post(`/trade/buy/${userId}`, formData);
-            console.log(response);
-        }
-        catch (error) {
-            console.error("Error fetching suggestions:", error);
-        }
+      const formData = {
+        stockSymbol: symbol,
+        quantity: quantity,
+        price: price,
+        transaction: parseFloat(quantity * price + 0.5 * quantity).toFixed(2),
+      };
+      try {
+        console.log(formData);
+        const response = await apiService.post(
+          `/trade/buy/${userId}`,
+          formData
+        );
+        console.log(response);
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+      }
     }
-    
-    
-
   };
-
-
   return (
-    <div>
-      {/* Buy form content */}
-      {/* ... */}
+    <div className="max-w-md mx-auto p-6">
       <form onSubmit={handleSubmit}>
-        {/* ... other form elements ... */}
-        <div className="mb-4">
-          <label htmlFor="symbol" className="block text-sm font-medium text-gray-600">
+        <div className="flex flex-col mb-4">
+          <label htmlFor="symbol" className="text-sm font-semibold mb-2">
             Symbol
           </label>
-          <input
-            type="text"
-            id="symbol"
-            className={`p-2 w-full border rounded-md ${errors.symbol ? "border-red-500" : ""}`}
-            placeholder="Enter symbol"
-            value={symbol}
-            onChange={handleChange}
-            required
-          />
-          {errors.symbol && <p className="text-red-500 text-xs mt-1">{errors.symbol}</p>}
+          <div className="relative">
+            <input
+              type="text"
+              id="symbol"
+              className={`p-2 w-full border rounded-md mb-4 ${
+                errors.symbol ? "border-red-500" : ""
+              }`}
+              placeholder="Enter stock symbol"
+              value={symbol}
+              onChange={handleChange}
+              required
+            />
+            {errors.symbol && (
+              <p className="text-red-500 text-xs mt-1">{errors.symbol}</p>
+            )}
 
-          {showSuggestions && (
-            <div className="absolute z-10 w-full bg-white rounded-md shadow-lg mt-1">
-              {suggestions.map((suggestion) => (
-                <div
-                  key={suggestion.stock_symbol}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
-                  <p className="text-gray-900 font-medium">{suggestion.stock_symbol}</p>
-                  <p className="text-gray-600">{suggestion.stock_name}</p>
-                </div>
-              ))}
-            </div>
-          )}
+            {showSuggestions && (
+              <div className="absolute z-10 w-full bg-white rounded-md shadow-lg">
+                {suggestions.map((suggestion) => (
+                  <div
+                    key={suggestion.stock_symbol}
+                    className="p-2 cursor-pointer hover:bg-gray-200"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    <p className="text-gray-900 font-medium">
+                      {suggestion.stock_symbol}
+                    </p>
+                    <p className="text-gray-600">{suggestion.company_name}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="mb-4">
-            <label htmlFor="price" className="block text-sm font-medium text-gray-600">
-                Price
+        <div className="flex mb-4">
+          <div className="lex flex-col w-1/2 pr-2">
+            <label htmlFor="price" className="text-sm font-semibold mb-2">
+              Price
             </label>
             <input
-                type="text"
-                id="price"
-                className={`p-2 w-full border rounded-md bg-gray-100`}
-                value={price}
-                readOnly
+              type="text"
+              id="price"
+              className={`p-2 w-full border rounded-md bg-gray-100`}
+              value={price || 0}
+              readOnly
             />
-            {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price}</p>}
-        </div>
-
-        <div className="mb-4">
-            <label htmlFor="change" className="block text-sm font-medium text-gray-600">
-                Change
+            {errors.price && (
+              <p className="text-red-500 text-xs mt-1">{errors.price}</p>
+            )}
+          </div>
+          <div className="flex flex-col w-1/2 pl-2">
+            <label
+              htmlFor="brokerageFee"
+              className="text-sm font-semibold mb-2"
+            >
+              Brokerage Fee
             </label>
             <input
-                type="text"
-                id="change"
-                className={`p-2 w-full border rounded-md bg-gray-100`}
-                value={change}
-                readOnly
+              type="text"
+              id="brokerageFee"
+              className="p-2 w-full border rounded-md bg-gray-100"
+              value={0.5}
+              readOnly
             />
-            {errors.change && <p className="text-red-500 text-xs mt-1">{errors.change}</p>}
+          </div>
         </div>
 
-
         <div className="mb-4">
-          <label htmlFor="quantity" className="block text-sm font-medium text-gray-600">
+          <label htmlFor="quantity" className="text-sm font-semibold mb-2">
             Quantity
           </label>
           <input
             type="number"
             id="quantity"
-            className={`p-2 w-full border rounded-md ${errors.quantity ? "border-red-500" : ""}`}
+            className={`p-2 w-full border rounded-md mb-4 ${
+              errors.quantity ? "border-red-500" : ""
+            }`}
             placeholder="Enter quantity"
-            value={quantity}
+            value={quantity || 0}
             min="1"
             onChange={handleQuantityChange}
             required
           />
-          {errors.quantity && <p className="text-red-500 text-xs mt-1">{errors.quantity}</p>}
+          {errors.quantity && (
+            <p className="text-red-500 text-xs mt-1">{errors.quantity}</p>
+          )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="totalPrice" className="block text-sm font-medium text-gray-600">
-            Total Price
-          </label>
-          <input
-            type="text"
-            id="totalPrice"
-            className="p-2 w-full border rounded-md bg-gray-100"
-            value={isNaN(parseFloat(quantity) * parseFloat(price)) ? "" : (parseFloat(quantity) * parseFloat(price)).toFixed(2)}
-            readOnly
-          />
-          {errors.totalPrice && <p className="text-red-500 text-xs mt-1">{errors.totalPrice}</p>}
-        </div>
-
-        <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold p-3 rounded-md"
+        <div className="flex mb-4">
+          <div className="flex flex-col w-1/2 pr-2">
+            <label htmlFor="cashBalance" className="text-sm font-semibold mb-2">
+              Cash Balance
+            </label>
+            <input
+              type="text"
+              id="cashBalance"
+              className="p-2 w-full border rounded-md bg-gray-100"
+              value={123}
+              readOnly
+            />
+          </div>
+          <div className="flex flex-col w-1/2 pl-2">
+            <label
+              htmlFor="totalPrice"
+              className="text-sm font-semibold mb-2"
             >
-            Buy
+              Total Price
+            </label>
+            <input
+              type="text"
+              id="totalPrice"
+              className="p-2 w-full border rounded-md bg-gray-100"
+              value={
+                isNaN(parseFloat(quantity) * parseFloat(price))
+                  ? ""
+                  : (parseFloat(quantity) * parseFloat(price)).toFixed(2)
+              }
+              readOnly
+            />
+            {errors.totalPrice && (
+              <p className="text-red-500 text-xs mt-1">{errors.totalPrice}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col border-y py-5 mb-4">
+        <div className="flex justify-between">
+          <span className="text-sm font-semibold">Cost</span>
+          <span className="text-sm font-semibold">
+            {parseFloat(quantity * price || 0).toFixed(2)}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-sm font-semibold">Brokerage Fee</span>
+          <span className="text-sm font-semibold">{0.5 * quantity}</span>
+        </div>
+      </div>
+
+      <div className="flex justify-between mb-5">
+        <span className="text-md font-semibold">Total</span>
+        <span className="text-md font-semibold">
+          {parseFloat(quantity * price + 0.5 * quantity || 0).toFixed(2)}
+        </span>
+      </div>
+
+      <div className="flex space-x-4">
+        <button
+          className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
+          type="submit"
+        >
+          Buy
         </button>
+        <button className="bg-red-500 hover:bg-red-600 text-white font-semibold p-2 w-full rounded-md">
+          Cancel
+        </button>
+      </div>
       </form>
     </div>
   );

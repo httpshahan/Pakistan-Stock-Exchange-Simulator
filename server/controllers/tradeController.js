@@ -4,8 +4,8 @@ const transactionsController = {
   async buyStock(req, res) {
     try {
       const { userId } = req.params;
-      const { stockSymbol, quantity, transactionPrice } = req.body;
-      const result = await transactionsModel.buyStock(userId, stockSymbol, quantity, transactionPrice);
+      const { stockSymbol, quantity, price, transaction } = req.body;
+      const result = await transactionsModel.buyStock(userId, stockSymbol, quantity, price, transaction);
       res.status(201).json(result); // 201 Created
     } catch (error) {
       console.error('Error buying stock:', error);
