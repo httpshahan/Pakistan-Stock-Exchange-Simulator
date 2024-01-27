@@ -123,6 +123,17 @@ const transactionsModel = {
     }
   }
   ,
+  async getTransactions(userId) {
+    try {
+      const result = await pool.query(
+        "SELECT * FROM user_transactions WHERE user_id = $1 ORDER BY transaction_date DESC",
+        [userId]
+      );
+      return result.rows;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 module.exports = transactionsModel;

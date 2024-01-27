@@ -32,6 +32,17 @@ const transactionsController = {
       }
     }
   },
+
+  async getTransactions(req, res) {
+    try {
+      const { userId } = req.params;
+      const result = await transactionsModel.getTransactions(userId);
+      res.status(200).json(result); // 200 OK
+    } catch (error) {
+      console.error('Error getting transactions:', error);
+      res.status(500).json({ error: 'Internal Server Error' }); // 500 Internal Server Error
+    }
+  },
 };
 
 module.exports = transactionsController;
