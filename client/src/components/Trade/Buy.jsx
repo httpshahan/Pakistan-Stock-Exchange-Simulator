@@ -10,6 +10,14 @@ const BuyForm = () => {
   const [errors, setErrors] = useState({});
   const [showSuggestions, setShowSuggestions] = useState(true);
   const userId = sessionStorage.getItem("userId");
+  const balence = sessionStorage.getItem("balance");
+
+  const brokerageFee = 0.5;
+  const [perShare, setPerShare] = useState();
+  const [totalCost, setTotalCost] = useState();
+  const [totalPrice, setTotalPrice] = useState();
+  const [totalBrokerageFee, setTotalBrokerageFee] = useState();
+  const maxQuantity = Math.floor(balence / perShare);
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -34,6 +42,7 @@ const BuyForm = () => {
     setSymbol(suggestion.stock_symbol);
     setPrice(suggestion.current);
     setChange(suggestion.change);
+    setPerShare(brokerageFee + parseFloat(suggestion.current));
     setShowSuggestions(false);
   };
 
@@ -47,14 +56,22 @@ const BuyForm = () => {
     if (newQuantity < 1){
         setQuantity(1);
     }
+    else if (newQuantity > maxQuantity){
+        setQuantity(maxQuantity);
+        setTotalCost(parseFloat(maxQuantity * price).toFixed(2));
+        setTotalBrokerageFee(parseFloat(maxQuantity * brokerageFee).toFixed(2));
+        setTotalPrice(parseFloat(maxQuantity * perShare).toFixed(2));
+    }
     else{
         setQuantity(newQuantity);
+        setTotalCost(parseFloat(newQuantity * price).toFixed(2));
+        setTotalBrokerageFee(parseFloat(newQuantity * brokerageFee).toFixed(2));
+        setTotalPrice(parseFloat(newQuantity * perShare).toFixed(2));
     }
 
     // Calculate total price based on quantity and stock price
-    const totalPrice = parseFloat(newQuantity) * parseFloat(price);
-    if (!isNaN(totalPrice)) {
-      setErrors((prevErrors) => ({ ...prevErrors, totalPrice: "" }));
+    if (!isNaN(totalCost)) {
+      setErrors((prevErrors) => ({ ...prevErrors, totalCost: "" }));
     }
   };
 
@@ -76,23 +93,20 @@ const BuyForm = () => {
     }
 
     // Calculate total price based on quantity and stock price
-    const totalPrice = parseFloat(quantity) * parseFloat(price);
-    if (isNaN(totalPrice)) {
-      errors.totalPrice = "Please enter a valid quantity";
+    if (isNaN(totalCost)) {
+      errors.totalCost = "Please enter a valid quantity";
     }
 
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-        console.log("here");
-        const totalPrice = parseFloat(price) + 0.5;
         
       const formData = {
         stockSymbol: symbol,
         quantity: quantity,
-        totalPrice: totalPrice,
-        transaction: parseFloat(quantity * price + 0.5 * quantity).toFixed(2),
-      };
+        totalPrice: perShare,
+        transaction: totalPrice,
+      }; 
       try {
         const response = await apiService.post(
           `/trade/buy/${userId}`,
@@ -151,7 +165,7 @@ const BuyForm = () => {
         </div>
 
         <div className="flex mb-4">
-          <div className="lex flex-col w-1/2 pr-2">
+          <div className="flex flex-col w-1/2 pr-2">
             <label htmlFor="price" className="text-sm font-semibold mb-2">
               Price
             </label>
@@ -177,7 +191,7 @@ const BuyForm = () => {
               type="text"
               id="brokerageFee"
               className="p-2 w-full border rounded-md bg-gray-100"
-              value={0.5}
+              value={brokerageFee || 0}
               readOnly
             />
           </div>
@@ -185,7 +199,7 @@ const BuyForm = () => {
 
         <div className="mb-4">
           <label htmlFor="quantity" className="text-sm font-semibold mb-2">
-            Quantity
+            Quantity <span className="text-xs text-gray-500">{maxQuantity ? "Max: " + maxQuantity : ""}</span>
           </label>
           <input
             type="number"
@@ -193,7 +207,7 @@ const BuyForm = () => {
             className={`p-2 w-full border rounded-md mb-4 ${
               errors.quantity ? "border-red-500" : ""
             }`}
-            placeholder="Enter quantity"
+            placeholder = {`${maxQuantity ? "Max: " + maxQuantity : "Select a Stock"}`}
             value={quantity}
             min="1"
             onChange={handleQuantityChange}
@@ -213,7 +227,7 @@ const BuyForm = () => {
               type="text"
               id="cashBalance"
               className="p-2 w-full border rounded-md bg-gray-100"
-              value={123}
+              value={balence}
               readOnly
             />
           </div>
@@ -222,20 +236,16 @@ const BuyForm = () => {
               htmlFor="totalPrice"
               className="text-sm font-semibold mb-2"
             >
-              Total Price
+              Total Cost
             </label>
             <input
               type="text"
               id="totalPrice"
               className="p-2 w-full border rounded-md bg-gray-100"
-              value={
-                isNaN(parseFloat(quantity) * parseFloat(price))
-                  ? ""
-                  : (parseFloat(quantity) * parseFloat(price)).toFixed(2)
-              }
+              value={totalCost || 0}
               readOnly
             />
-            {errors.totalPrice && (
+            {errors.totalCost && (
               <p className="text-red-500 text-xs mt-1">{errors.totalPrice}</p>
             )}
           </div>
@@ -245,19 +255,19 @@ const BuyForm = () => {
         <div className="flex justify-between">
           <span className="text-sm font-semibold">Cost</span>
           <span className="text-sm font-semibold">
-            {parseFloat(quantity * price || 0).toFixed(2)}
+            {totalCost || 0}
           </span>
         </div>
         <div className="flex justify-between">
           <span className="text-sm font-semibold">Brokerage Fee</span>
-          <span className="text-sm font-semibold">{0.5 * quantity}</span>
+          <span className="text-sm font-semibold">{totalBrokerageFee || 0}</span>
         </div>
       </div>
 
       <div className="flex justify-between mb-5">
-        <span className="text-md font-semibold">Total</span>
+        <span className="text-md font-semibold">Total Price</span>
         <span className="text-md font-semibold">
-          {parseFloat(quantity * price + 0.5 * quantity || 0).toFixed(2)}
+          {totalPrice || 0}
         </span>
       </div>
 
