@@ -20,6 +20,7 @@ const Login = () => {
       sessionStorage.setItem("token", data.token);
       sessionStorage.setItem("userId", data.userId);
       sessionStorage.setItem("username", data.username);
+      sessionStorage.setItem("balance", data.balance);
       console.log("Login Success");
       alert("Login Success");
       navigate("/dashboard");
