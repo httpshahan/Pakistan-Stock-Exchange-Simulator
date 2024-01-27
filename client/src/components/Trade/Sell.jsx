@@ -15,6 +15,14 @@ const Sell = () => {
   const userId = sessionStorage.getItem("userId");
   const searchInputRef = useRef(null);
 
+  const balence = parseFloat(sessionStorage.getItem("balance"));
+  const brokerageFee = 0.5;
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalBrokerageFee, setTotalBrokerageFee] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
+  const [newbalence, setNewBalence] = useState(balence);
+  
+
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -68,26 +76,42 @@ const Sell = () => {
     if (isNaN(inputQuantity) || inputQuantity < 1 || inputQuantity > maxQuantity) {
       setError("Invalid quantity. Please enter a valid quantity.");
     } else {
-      setError(null);
-      setQuantity(inputQuantity);
+      // Calculate intermediate values
+    const cost = parseFloat(inputQuantity * price).toFixed(2);
+    const brokerageFee = parseFloat(inputQuantity * 0.5).toFixed(2);
+    const totalPrice = (parseFloat(cost) - parseFloat(brokerageFee)).toFixed(2);
+    const newBalance = (parseFloat(balence) + parseFloat(cost) - parseFloat(brokerageFee)).toFixed(2);
+
+    // Update state values
+    setQuantity(inputQuantity);
+    setTotalCost(cost);
+    setTotalBrokerageFee(brokerageFee);
+    setTotalPrice(totalPrice);
+    setNewBalence(newBalance);
+
+    console.log("inputQuantity", inputQuantity);
+    console.log("cost", cost);
+    console.log("brokerageFee", brokerageFee);
+    console.log("totalPrice", totalPrice);
+    console.log("newBalance", newBalance);
     }
   };
 
-  const handleClick = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!symbol || !quantity || !price) {
       setError("Please select a stock and enter a valid quantity.");
       return;
     }
 
-    const transaction = parseFloat(quantity * price - 0.5 * quantity).toFixed(2);
-    const totalPrice = parseFloat(price) + 0.5;
+    const perShare = parseFloat(price) - 0.5;
 
     try {
       const response = await apiService.post(`/trade/sell/${userId}`, {
         symbol,
         quantity,
+        perShare,
         totalPrice,
-        transaction,
       });
       console.log(response.data);
 
@@ -104,7 +128,7 @@ const Sell = () => {
   };
   return (
     <div className="max-w-md mx-auto p-6 ">
-      <form>
+      <form onSubmit={handleSubmit}>
       <div className="flex flex-col mb-4">
         <label htmlFor="stock" className="text-sm font-semibold mb-2">
           Stock
@@ -163,14 +187,14 @@ const Sell = () => {
             type="text"
             id="brokerageFee"
             className="p-2 w-full border rounded-md bg-gray-100"
-            value={0.5}
+            value={brokerageFee}
             readOnly
           />
         </div>
       </div>
 
       <label htmlFor="quantity" className="text-sm font-semibold mb-2">
-        Quantity
+        Quantity <span className="text-xs text-gray-600">{maxQuantity ? ("Max: " + maxQuantity) : ""}</span>
       </label>
       <input
         type="number"
@@ -193,19 +217,19 @@ const Sell = () => {
             type="text"
             id="cashBalance"
             className="p-2 w-full border rounded-md bg-gray-100"
-            value={123}
+            value={newbalence || 0}
             readOnly
           />
         </div>
         <div className="flex flex-col w-1/2 pl-2">
           <label htmlFor="totalPrice" className="text-sm font-semibold mb-2">
-            Total Price
+            Total Cost
           </label>
           <input
             type="text"
             id="totalPrice"
             className="p-2 w-full border rounded-md bg-gray-100"
-            value={parseFloat(quantity * price || 0).toFixed(2)}
+            value={totalCost}
             readOnly
           />
         </div>
@@ -213,21 +237,21 @@ const Sell = () => {
 
       <div className="flex flex-col border-y py-5 mb-4">
         <div className="flex justify-between">
-          <span className="text-sm font-semibold">Cost</span>
+          <span className="text-sm font-semibold">Total Cost</span>
           <span className="text-sm font-semibold">
-            {parseFloat(quantity * price || 0).toFixed(2)}
+            {totalCost || 0}
           </span>
         </div>
         <div className="flex justify-between">
           <span className="text-sm font-semibold">Brokerage Fee</span>
-          <span className="text-sm font-semibold">{0.5 * quantity}</span>
+          <span className="text-sm font-semibold">{totalBrokerageFee}</span>
         </div>
       </div>
 
       <div className="flex justify-between mb-5">
         <span className="text-md font-semibold">Total</span>
         <span className="text-md font-semibold">
-          {parseFloat(quantity * price - 0.5 * quantity || 0).toFixed(2)}
+          {totalPrice || 0}
         </span>
       </div>
 
@@ -236,7 +260,7 @@ const Sell = () => {
       <div className="flex space-x-4">
         <button
           className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
-          onClick={handleClick}
+          type="submit"
           disabled={!!error} // Disable the button if there's an error
         >
           Sell
