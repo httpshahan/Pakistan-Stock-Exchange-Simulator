@@ -10,13 +10,14 @@ const BuyForm = () => {
   const [errors, setErrors] = useState({});
   const [showSuggestions, setShowSuggestions] = useState(true);
   const userId = sessionStorage.getItem("userId");
-  const balence = sessionStorage.getItem("balance");
+  const balence = parseFloat(sessionStorage.getItem("balance")).toFixed(2);
 
   const brokerageFee = 0.5;
   const [perShare, setPerShare] = useState();
   const [totalCost, setTotalCost] = useState();
-  const [totalPrice, setTotalPrice] = useState();
+  const [totalPrice, setTotalPrice] = useState(0);
   const [totalBrokerageFee, setTotalBrokerageFee] = useState();
+  const [newBalance, setNewBalence] = useState(balence);
   const maxQuantity = Math.floor(balence / perShare);
 
   useEffect(() => {
@@ -61,12 +62,15 @@ const BuyForm = () => {
         setTotalCost(parseFloat(maxQuantity * price).toFixed(2));
         setTotalBrokerageFee(parseFloat(maxQuantity * brokerageFee).toFixed(2));
         setTotalPrice(parseFloat(maxQuantity * perShare).toFixed(2));
+        setNewBalence(parseFloat(balence - totalPrice).toFixed(2));
     }
     else{
         setQuantity(newQuantity);
         setTotalCost(parseFloat(newQuantity * price).toFixed(2));
         setTotalBrokerageFee(parseFloat(newQuantity * brokerageFee).toFixed(2));
         setTotalPrice(parseFloat(newQuantity * perShare).toFixed(2));
+        const bal = parseFloat(balence - newQuantity * perShare).toFixed(2);
+        setNewBalence(bal);
     }
 
     // Calculate total price based on quantity and stock price
@@ -113,7 +117,10 @@ const BuyForm = () => {
           formData
         );
         console.log(response);
+        sessionStorage.setItem("balance", newBalance);
         setPrice("");
+        setTotalCost(0);
+        setTotalPrice(0);
         setQuantity("");
         setSymbol("");
 
@@ -227,7 +234,7 @@ const BuyForm = () => {
               type="text"
               id="cashBalance"
               className="p-2 w-full border rounded-md bg-gray-100"
-              value={balence}
+              value={newBalance}
               readOnly
             />
           </div>

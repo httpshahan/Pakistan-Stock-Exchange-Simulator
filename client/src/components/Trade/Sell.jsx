@@ -115,6 +115,8 @@ const Sell = () => {
       });
       console.log(response.data);
 
+      sessionStorage.setItem("balance", newbalence);
+
       // Reset form values on successful transaction
       setSymbol("");
       setQuantity("");

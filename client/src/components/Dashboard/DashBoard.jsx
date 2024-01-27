@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [topAdvancers, setTopAdvancers] = useState([]);
   const [topDecliners, setTopDecliners] = useState([]);
+  const balence = sessionStorage.getItem("balance");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,7 +86,7 @@ const Dashboard = () => {
 
                 <div className="bg-white p-6 rounded-lg shadow-md">
                   <h2 className="text-xl font-semibold mb-2">Cash in Hand</h2>
-                  <p className="text-2xl font-bold text-blue-600">9999999</p>
+                  <p className="text-2xl font-bold text-blue-600">{balence}</p>
                 </div>
               </div>
 
