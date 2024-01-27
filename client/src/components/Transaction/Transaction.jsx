@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
+import apiService from "../../services/apiService";
 
 const Transaction = () => {
-  if (!sessionStorage.getItem("token")) {
-    console.log("No token");
-    window.location.href = "/";
-  }
+  const userId = sessionStorage.getItem("userId");
+  const [data, setData] = useState([]);
 
-  const transactions = [
-    { id: 1, date: "2022-01-01", stock: "AAPL", quantity: 10, price: 150 },
-    { id: 2, date: "2022-01-05", stock: "GOOGL", quantity: 5, price: 200 },
-    // Add more transactions as needed
-  ];
+  useEffect(() => {
+    const getHistory = async () => {
+      try {
+        const response = await apiService.get(`/trade/history/${userId}`);
+        setData(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getHistory();
+  }, [userId]);
 
   return (
     <div className="flex h-screen">
@@ -31,22 +38,26 @@ const Transaction = () => {
                     <th className="py-2 px-4 border-b">Date</th>
                     <th className="py-2 px-4 border-b">Stock</th>
                     <th className="py-2 px-4 border-b">Quantity</th>
+                    <th className="py-2 px-4 border-b">Type</th>
                     <th className="py-2 px-4 border-b">Price</th>
                     {/* Add more headers as needed */}
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((transaction) => (
+                  {data.map((transaction) => (
                     <tr key={transaction.id}>
-                      <td className="py-2 px-4 border-b">{transaction.date}</td>
+                      <td className="py-2 px-4 border-b">{transaction.transaction_date}</td>
                       <td className="py-2 px-4 border-b">
-                        {transaction.stock}
+                        {transaction.stock_symbol}
                       </td>
                       <td className="py-2 px-4 border-b">
                         {transaction.quantity}
                       </td>
                       <td className="py-2 px-4 border-b">
-                        {transaction.price}
+                        {transaction.transaction_type}
+                      </td>
+                      <td className="py-2 px-4 border-b">
+                        {transaction.transaction_price}
                       </td>
                       {/* Add more cells based on your transaction object */}
                     </tr>
