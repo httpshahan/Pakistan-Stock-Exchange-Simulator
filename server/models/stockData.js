@@ -4,6 +4,10 @@ const insertScrapedData = async (data) => {
   try {
     await pool.query("TRUNCATE stock_data RESTART IDENTITY");
 
+    // Assuming main_table is the name of your main table
+    const mainTableSymbolsQuery = await pool.query("SELECT symbol FROM stock");
+    const mainTableSymbols = mainTableSymbolsQuery.rows.map(row => row.symbol);
+
     const values = data.map((item) => [
       item[0], // symbol
       item[1].replace(/,/g, ""), // LDCP
@@ -13,33 +17,44 @@ const insertScrapedData = async (data) => {
       item[5].replace(/,/g, ""), // CURRENT
       item[6], // CHANGE
       item[7], // CHANGE (%)
-      item[8].replace(/,/g, ""), //VOLUME
+      item[8].replace(/,/g, ""), // VOLUME
       item[9], // Timestamp
     ]);
 
-    const placeholders = values
-      .map(
-        (_, index) =>
-          `($${index * 10 + 1}, $${index * 10 + 2}, $${index * 10 + 3}, $${
-            index * 10 + 4
-          }, $${index * 10 + 5}, $${index * 10 + 6}, $${index * 10 + 7}, $${
-            index * 10 + 8
-          }, $${index * 10 + 9}, $${index * 10 + 10})`
-      )
-      .join(",");
+    // Filter values to include only those with stock_symbol present in the main table
+    const validValues = values.filter((item) => mainTableSymbols.includes(item[0]));
 
-    const stockData = await pool.query(
-      `INSERT INTO stock_data (stock_symbol, ldcp, open, high, low, current, change, change_percent, volume, timestamp) 
-       VALUES ${placeholders} Returning *`,
-      values.flat()
-    );
+    if (validValues.length > 0) {
+        const placeholders = validValues
+          .map(
+            (_, index) =>
+              `($${index * 10 + 1}, $${index * 10 + 2}, $${index * 10 + 3}, $${
+                index * 10 + 4
+              }, $${index * 10 + 5}, $${index * 10 + 6}, $${index * 10 + 7}, $${
+                index * 10 + 8
+              }, $${index * 10 + 9}, $${index * 10 + 10})`
+          )
+          .join(",");
 
-    return stockData.rows;
-    //console.log("Scraped data inserted into the stock_data table.");
-  } catch (error) {
-    console.error("Error inserting scraped data:", error);
-    throw error;
-  }
+        const params = validValues.flat();
+        const stockData = await pool.query(
+          `INSERT INTO stock_data (stock_symbol, ldcp, open, high, low, current, change, change_percent, volume, timestamp) 
+           VALUES ${placeholders} Returning *`,
+          params
+        );
+
+        // Process the successful insertion here, if needed
+    } else {
+        console.log('No valid data to insert.');
+    }
+
+} catch (error) {
+    // Handle errors
+    console.error('Error during insertion:', error.message);
+}
+
+
+
 };
 
 const getAllStocks = async () => {

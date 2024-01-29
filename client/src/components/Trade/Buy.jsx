@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../../services/apiService";
+import { Button, Dialog, DialogPanel, Title, List, ListItem } from "@tremor/react";
 
 const BuyForm = () => {
   const [symbol, setSymbol] = useState("");
@@ -11,6 +12,7 @@ const BuyForm = () => {
   const [showSuggestions, setShowSuggestions] = useState(true);
   const userId = sessionStorage.getItem("userId");
   const balence = parseFloat(sessionStorage.getItem("balance")).toFixed(2);
+  const [showDialog, setShowDialog] = useState(false);
 
   const brokerageFee = 0.5;
   const [perShare, setPerShare] = useState();
@@ -104,6 +106,14 @@ const BuyForm = () => {
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
+      setShowDialog(true);
+    }
+
+  };
+
+  const handleDone = async () => {
+
+    if (Object.keys(errors).length === 0) {
         
       const formData = {
         stockSymbol: symbol,
@@ -118,6 +128,7 @@ const BuyForm = () => {
         );
         console.log(response);
         sessionStorage.setItem("balance", newBalance);
+        setShowDialog(false);
         setPrice("");
         setTotalCost(0);
         setTotalPrice(0);
@@ -129,6 +140,7 @@ const BuyForm = () => {
       }
     }
   };
+
   return (
     <div className="max-w-md mx-auto p-6">
       <form onSubmit={handleSubmit}>
@@ -290,6 +302,41 @@ const BuyForm = () => {
         </button>
       </div>
       </form>
+
+      <Dialog
+        open={showDialog}
+        onClose={() => setShowDialog(false)}
+        className="max-w-md"
+      >
+        <DialogPanel>
+          <Title>Transaction Successful</Title>
+          <List>
+            <ListItem>
+              <span className="font-semibold">Symbol:</span> {symbol}
+            </ListItem>
+            <ListItem>
+              <span className="font-semibold">Quantity:</span> {quantity}
+            </ListItem>
+            <ListItem>
+              <span className="font-semibold">Price:</span> {price}
+            </ListItem>
+            <ListItem>
+              <span className="font-semibold">Total Price:</span> {totalPrice}
+            </ListItem>
+          </List>
+          <p className="text-sm text-gray-500 mt-2">
+            Your transaction has been successfully processed.
+          </p>
+          <div className="flex justify-end mt-4">
+            <Button
+              className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
+              onClick={handleDone}
+            >
+              OK
+            </Button>
+          </div>
+        </DialogPanel>
+      </Dialog>
     </div>
   );
 };
