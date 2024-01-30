@@ -87,7 +87,7 @@ const DataTable = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Market Watch</h1>
         <Badge className="bg-[#F7F7F7] text-[#84828A]">
-          Last Updated: {timestamp}
+          Last Updated: {new Date(timestamp).toLocaleString()}
         </Badge>
       </div>
       <div className="overflow-x-auto mt-6 border p-6 bg-white rounded-md shadow-md">
