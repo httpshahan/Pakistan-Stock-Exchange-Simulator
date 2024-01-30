@@ -7,6 +7,7 @@ const Watchlist = () => {
     console.log("No token");
     window.location.href = '/';
   }
+  
   return (
     <div className="flex h-screen">
       <SideNavbar />

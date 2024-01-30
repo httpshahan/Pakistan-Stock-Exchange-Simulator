@@ -47,9 +47,10 @@ const Dashboard = () => {
         <TopNavbar />
         <div className="flex-1 overflow-auto p-8">
           {loading ? (
-            <div className="flex justify-center items-center h-screen">
-              <div className="animate-spin rounded-full border-t-4 border-blue-500 border-opacity-25 h-12 w-12"></div>
-            </div>
+            <div class="flex justify-center items-center h-screen">
+            <div class="animate-spin rounded-full border-t-4 border-green-500 border-solid h-12 w-12"></div>
+            <div class="ml-3 text-xl font-semibold text-green-500">Loading...</div>
+          </div>
           ) : (
             <div className="flex flex-col space-y-8">
               <div className="text-3xl font-semibold mb-4">
