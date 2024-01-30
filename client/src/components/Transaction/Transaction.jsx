@@ -2,6 +2,17 @@ import React, { useState, useEffect } from "react";
 import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import apiService from "../../services/apiService";
+import {
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+  Text,
+  Title,
+} from "@tremor/react";
 
 const Transaction = () => {
   const userId = sessionStorage.getItem("userId");
@@ -28,43 +39,34 @@ const Transaction = () => {
         <TopNavbar />
         <div className="flex-1 overflow-auto">
           <div className="p-8">
-            <div className="flex flex-col">
-              <h1 className="text-2xl font-semibold">Transaction</h1>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border border-gray-300">
-                <thead>
-                  <tr>
-                    <th className="py-2 px-4 border-b">Date</th>
-                    <th className="py-2 px-4 border-b">Stock</th>
-                    <th className="py-2 px-4 border-b">Quantity</th>
-                    <th className="py-2 px-4 border-b">Type</th>
-                    <th className="py-2 px-4 border-b">Price</th>
-                    {/* Add more headers as needed */}
-                  </tr>
-                </thead>
-                <tbody>
+            <Card>
+              <div className="text-2xl font-semibold text-center">Transaction History</div>
+              <Table className="mt-6">
+                <TableHead>
+                  <TableRow>
+                    <TableHeaderCell>Date</TableHeaderCell>
+                    <TableHeaderCell>Stock</TableHeaderCell>
+                    <TableHeaderCell>Quantity</TableHeaderCell>
+                    <TableHeaderCell>Type</TableHeaderCell>
+                    <TableHeaderCell>Price</TableHeaderCell>
+                    <TableHeaderCell>Total Value</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                   {data.map((transaction) => (
-                    <tr key={transaction.id}>
-                      <td className="py-2 px-4 border-b">{transaction.transaction_date}</td>
-                      <td className="py-2 px-4 border-b">
-                        {transaction.stock_symbol}
-                      </td>
-                      <td className="py-2 px-4 border-b">
-                        {transaction.quantity}
-                      </td>
-                      <td className="py-2 px-4 border-b">
-                        {transaction.transaction_type}
-                      </td>
-                      <td className="py-2 px-4 border-b">
-                        {transaction.transaction_price}
-                      </td>
-                      {/* Add more cells based on your transaction object */}
-                    </tr>
+                    <TableRow key={transaction.id}>
+                      <TableCell>{new Date(transaction.transaction_date).toLocaleString()}</TableCell>
+                      <TableCell >{transaction.stock_symbol}</TableCell>
+                      <TableCell>{transaction.quantity}</TableCell>
+                      <TableCell>{transaction.transaction_type == "B" ? "Buy" : "Sell"}</TableCell>
+                      <TableCell>{transaction.transaction_price}</TableCell>
+                      <TableCell>{transaction.quantity * transaction.transaction_price}</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
-            </div>
+                </TableBody>
+              </Table>
+            </Card>
+            
           </div>
         </div>
       </div>
