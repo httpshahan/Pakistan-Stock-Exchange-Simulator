@@ -133,6 +133,7 @@ const BuyForm = () => {
         setTotalCost(0);
         setTotalPrice(0);
         setQuantity("");
+        setTotalBrokerageFee(0);
         setSymbol("");
 
       } catch (error) {
@@ -310,22 +311,26 @@ const BuyForm = () => {
       >
         <DialogPanel>
           <Title>Transaction Successful</Title>
-          <List>
+          <List className="p-6">
             <ListItem>
-              <span className="font-semibold">Symbol:</span> {symbol}
+              <span className="font-semibold">Symbol:</span> 
+              <span> {symbol} </span>
             </ListItem>
             <ListItem>
-              <span className="font-semibold">Quantity:</span> {quantity}
+              <span className="font-semibold">Quantity:</span> 
+              <span> {quantity}</span>
             </ListItem>
             <ListItem>
-              <span className="font-semibold">Price:</span> {price}
+              <span className="font-semibold">Price:</span> 
+              <span>{price}</span>
             </ListItem>
             <ListItem>
-              <span className="font-semibold">Total Price:</span> {totalPrice}
+              <span className="font-semibold">Total Price:</span> 
+              <span>{totalPrice}</span>
             </ListItem>
           </List>
           <p className="text-sm text-gray-500 mt-2">
-            Your transaction has been successfully processed.
+            Click ok for succesful transaction.
           </p>
           <div className="flex justify-end mt-4">
             <Button
