@@ -58,9 +58,9 @@ const DataTable = () => {
 
   if (loading) {
     return (
-      <div class="flex justify-center items-center h-screen">
-        <div class="animate-spin rounded-full border-t-4 border-green-500 border-solid h-12 w-12"></div>
-        <div class="ml-3 text-xl font-semibold text-green-500">Loading...</div>
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-green-500 border-solid h-12 w-12"></div>
+        <div className="ml-3 text-xl font-semibold text-green-500">Loading...</div>
       </div>
     );
   }

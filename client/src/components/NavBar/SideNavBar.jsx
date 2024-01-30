@@ -11,9 +11,14 @@ const SideNavbar = () => {
 
   return (
     <nav className="w-60 sticky flex-shrink-0  bg-white">
+
       <div className="flex items-center p-8 h-16">
-        <span className="text-2xl font-bold">PSX</span>
+        <Link to="/dashboard">
+          <span className="text-2xl font-bold text-[#6425FE]">PSX</span>
+          <span className="text-2xl font-bold text-[#7E7D82]">Trade</span>
+        </Link>
       </div>
+
       <div className="p-5 mt-8">
         <span className="text-[#7E7D82] text-xs">User Pannel</span>
         <ul className="m-2">

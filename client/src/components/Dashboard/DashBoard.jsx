@@ -1,10 +1,9 @@
-// Dashboard.js
-
 import React, { useEffect, useState } from "react";
 import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import apiService from "../../services/apiService";
 import StockTable from "./StockTable";
+import { Card, Grid, Metric, Text } from "@tremor/react";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -47,49 +46,38 @@ const Dashboard = () => {
         <TopNavbar />
         <div className="flex-1 overflow-auto p-8">
           {loading ? (
-            <div class="flex justify-center items-center h-screen">
-            <div class="animate-spin rounded-full border-t-4 border-green-500 border-solid h-12 w-12"></div>
-            <div class="ml-3 text-xl font-semibold text-green-500">Loading...</div>
-          </div>
+            <div className="flex justify-center items-center h-screen">
+              <div className="animate-spin rounded-full border-t-4 border-green-500 border-solid h-12 w-12"></div>
+              <div className="ml-3 text-xl font-semibold text-green-500">
+                Loading...
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col space-y-8">
               <div className="text-3xl font-semibold mb-4">
                 Dashboard Overview
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold mb-2">
-                    Total Portfolio Value
-                  </h2>
-                  <p className="text-2xl font-bold text-indigo-600">0000000</p>
-                </div>
+              <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
+                <Card>
+                  <Text>Portfolio Value</Text>
+                  <Metric>0000000</Metric>
+                </Card>
+                <Card>
+                  <Text>Invested Amount</Text>
+                  <Metric>0000000</Metric>
+                </Card>
+                <Card>
+                  <Text>Growth</Text>
+                  <Metric>0000000</Metric>
+                </Card>
+                <Card>
+                  <Text>Cash</Text>
+                  <Metric>{balence}</Metric>
+                </Card>
+              </Grid>
 
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold mb-2">
-                    Invested Amount
-                  </h2>
-                  <p className="text-2xl font-bold text-green-600">0000000</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold mb-2">
-                    Growth Percentage
-                  </h2>
-                  <p
-                    className={`text-2xl font-bold ${
-                      16 >= 0 ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    16%
-                  </p>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <h2 className="text-xl font-semibold mb-2">Cash in Hand</h2>
-                  <p className="text-2xl font-bold text-blue-600">{balence}</p>
-                </div>
-              </div>
+              
 
               <div className="flex gap-4 mt-8">
                 <StockTable title="Top Advancers" data={topAdvancers} />
