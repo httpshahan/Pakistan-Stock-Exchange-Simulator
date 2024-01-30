@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../../services/apiService";
-import { Button, Dialog, DialogPanel, Title, List, ListItem } from "@tremor/react";
+import {
+  Button,
+  Dialog,
+  DialogPanel,
+  Title,
+  List,
+  ListItem,
+} from "@tremor/react";
 
 const BuyForm = () => {
   const [symbol, setSymbol] = useState("");
@@ -56,23 +63,21 @@ const BuyForm = () => {
 
   const handleQuantityChange = (event) => {
     const newQuantity = event.target.value;
-    if (newQuantity < 1){
-        setQuantity(1);
-    }
-    else if (newQuantity > maxQuantity){
-        setQuantity(maxQuantity);
-        setTotalCost(parseFloat(maxQuantity * price).toFixed(2));
-        setTotalBrokerageFee(parseFloat(maxQuantity * brokerageFee).toFixed(2));
-        setTotalPrice(parseFloat(maxQuantity * perShare).toFixed(2));
-        setNewBalence(parseFloat(balence - totalPrice).toFixed(2));
-    }
-    else{
-        setQuantity(newQuantity);
-        setTotalCost(parseFloat(newQuantity * price).toFixed(2));
-        setTotalBrokerageFee(parseFloat(newQuantity * brokerageFee).toFixed(2));
-        setTotalPrice(parseFloat(newQuantity * perShare).toFixed(2));
-        const bal = parseFloat(balence - newQuantity * perShare).toFixed(2);
-        setNewBalence(bal);
+    if (newQuantity < 1) {
+      setQuantity(1);
+    } else if (newQuantity > maxQuantity) {
+      setQuantity(maxQuantity);
+      setTotalCost(parseFloat(maxQuantity * price).toFixed(2));
+      setTotalBrokerageFee(parseFloat(maxQuantity * brokerageFee).toFixed(2));
+      setTotalPrice(parseFloat(maxQuantity * perShare).toFixed(2));
+      setNewBalence(parseFloat(balence - totalPrice).toFixed(2));
+    } else {
+      setQuantity(newQuantity);
+      setTotalCost(parseFloat(newQuantity * price).toFixed(2));
+      setTotalBrokerageFee(parseFloat(newQuantity * brokerageFee).toFixed(2));
+      setTotalPrice(parseFloat(newQuantity * perShare).toFixed(2));
+      const bal = parseFloat(balence - newQuantity * perShare).toFixed(2);
+      setNewBalence(bal);
     }
 
     // Calculate total price based on quantity and stock price
@@ -108,19 +113,16 @@ const BuyForm = () => {
     if (Object.keys(errors).length === 0) {
       setShowDialog(true);
     }
-
   };
 
   const handleDone = async () => {
-
     if (Object.keys(errors).length === 0) {
-        
       const formData = {
         stockSymbol: symbol,
         quantity: quantity,
         totalPrice: perShare,
         transaction: totalPrice,
-      }; 
+      };
       try {
         const response = await apiService.post(
           `/trade/buy/${userId}`,
@@ -135,7 +137,6 @@ const BuyForm = () => {
         setQuantity("");
         setTotalBrokerageFee(0);
         setSymbol("");
-
       } catch (error) {
         console.error("Error fetching suggestions:", error);
       }
@@ -144,7 +145,18 @@ const BuyForm = () => {
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        onReset={() => {
+          setSymbol("");
+          setQuantity("");
+          setPrice("");
+          setTotalBrokerageFee(0);
+          setTotalCost(0);
+          setTotalPrice(0);
+          setSearchTerm("");
+        }}
+      >
         <div className="flex flex-col mb-4">
           <label htmlFor="symbol" className="text-sm font-semibold mb-2">
             Symbol
@@ -219,7 +231,10 @@ const BuyForm = () => {
 
         <div className="mb-4">
           <label htmlFor="quantity" className="text-sm font-semibold mb-2">
-            Quantity <span className="text-xs text-gray-500">{maxQuantity ? "Max: " + maxQuantity : ""}</span>
+            Quantity{" "}
+            <span className="text-xs text-gray-500">
+              {maxQuantity ? "Max: " + maxQuantity : ""}
+            </span>
           </label>
           <input
             type="number"
@@ -227,7 +242,9 @@ const BuyForm = () => {
             className={`p-2 w-full border rounded-md mb-4 ${
               errors.quantity ? "border-red-500" : ""
             }`}
-            placeholder = {`${maxQuantity ? "Max: " + maxQuantity : "Select a Stock"}`}
+            placeholder={`${
+              maxQuantity ? "Max: " + maxQuantity : "Select a Stock"
+            }`}
             value={quantity}
             min="1"
             onChange={handleQuantityChange}
@@ -252,10 +269,7 @@ const BuyForm = () => {
             />
           </div>
           <div className="flex flex-col w-1/2 pl-2">
-            <label
-              htmlFor="totalPrice"
-              className="text-sm font-semibold mb-2"
-            >
+            <label htmlFor="totalPrice" className="text-sm font-semibold mb-2">
               Total Cost
             </label>
             <input
@@ -272,36 +286,37 @@ const BuyForm = () => {
         </div>
 
         <div className="flex flex-col border-y py-5 mb-4">
-        <div className="flex justify-between">
-          <span className="text-sm font-semibold">Cost</span>
-          <span className="text-sm font-semibold">
-            {totalCost || 0}
-          </span>
+          <div className="flex justify-between">
+            <span className="text-sm font-semibold">Cost</span>
+            <span className="text-sm font-semibold">{totalCost || 0}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm font-semibold">Brokerage Fee</span>
+            <span className="text-sm font-semibold">
+              {totalBrokerageFee || 0}
+            </span>
+          </div>
         </div>
-        <div className="flex justify-between">
-          <span className="text-sm font-semibold">Brokerage Fee</span>
-          <span className="text-sm font-semibold">{totalBrokerageFee || 0}</span>
+
+        <div className="flex justify-between mb-5">
+          <span className="text-md font-semibold">Total Price</span>
+          <span className="text-md font-semibold">{totalPrice || 0}</span>
         </div>
-      </div>
 
-      <div className="flex justify-between mb-5">
-        <span className="text-md font-semibold">Total Price</span>
-        <span className="text-md font-semibold">
-          {totalPrice || 0}
-        </span>
-      </div>
-
-      <div className="flex space-x-4">
-        <button
-          className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
-          type="submit"
-        >
-          Buy
-        </button>
-        <button className="bg-red-500 hover:bg-red-600 text-white font-semibold p-2 w-full rounded-md">
-          Cancel
-        </button>
-      </div>
+        <div className="flex space-x-4">
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
+            type="submit"
+          >
+            Buy
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold p-2 w-full rounded-md"
+            type="reset"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
 
       <Dialog
@@ -310,22 +325,22 @@ const BuyForm = () => {
         className="max-w-md"
       >
         <DialogPanel>
-          <Title>Transaction Successful</Title>
+          <Title>Transaction Recipt</Title>
           <List className="p-6">
             <ListItem>
-              <span className="font-semibold">Symbol:</span> 
+              <span className="font-semibold">Symbol:</span>
               <span> {symbol} </span>
             </ListItem>
             <ListItem>
-              <span className="font-semibold">Quantity:</span> 
+              <span className="font-semibold">Quantity:</span>
               <span> {quantity}</span>
             </ListItem>
             <ListItem>
-              <span className="font-semibold">Price:</span> 
+              <span className="font-semibold">Price:</span>
               <span>{price}</span>
             </ListItem>
             <ListItem>
-              <span className="font-semibold">Total Price:</span> 
+              <span className="font-semibold">Total Price:</span>
               <span>{totalPrice}</span>
             </ListItem>
           </List>
