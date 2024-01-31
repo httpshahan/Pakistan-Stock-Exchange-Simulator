@@ -1,12 +1,12 @@
 /* tailwind.css or your custom stylesheet */
 
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
-  --bg-primary: #F7F6F9;
-  --font-family: 'Poppins', sans-serif;
+  --bg-primary: #f7f6f9;
+  --font-family: "Poppins", sans-serif;
 }
 
 @layer utilities {
@@ -61,19 +61,19 @@
 
   /* Hover States */
   .hover\:bg-stock-primary:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #1a5e27; /* Adjusted for higher contrast */
   }
 
   .hover\:text-stock-light:hover {
-    color: #5cb85c; /* Darker green text on hover */
+    color: #4aa84a; /* Adjusted for higher contrast */
   }
 
   .hover\:border-stock-secondary:hover {
-    border-color: #e0a800; /* Darker yellow border on hover */
+    border-color: #cda200; /* Adjusted for higher contrast */
   }
 
   .hover\:bg-stock-tertiary:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #004b8f; /* Adjusted for higher contrast */
   }
 
   /* Dark Theme */
@@ -123,5 +123,21 @@
 
   .dark .border-stock-tertiary {
     border-color: #003366; /* Dark blue border for dark theme */
+  }
+  /* Dark Theme Hover States */
+  .dark .hover\:bg-stock-primary:hover {
+    background-color: #163a1f; /* Adjusted for higher contrast in dark theme */
+  }
+
+  .dark .hover\:text-stock-light:hover {
+    color: #98a7a4; /* Adjusted for higher contrast in dark theme */
+  }
+
+  .dark .hover\:border-stock-secondary:hover {
+    border-color: #946c00; /* Adjusted for higher contrast in dark theme */
+  }
+
+  .dark .hover\:bg-stock-tertiary:hover {
+    background-color: #002c56; /* Adjusted for higher contrast in dark theme */
   }
 }
