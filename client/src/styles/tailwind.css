@@ -1,8 +1,127 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* tailwind.css or your custom stylesheet */
 
-:root{
-    background-color: #F7F6F9; 
-    font-family: 'Poppins', sans-serif;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  --bg-primary: #F7F6F9;
+  --font-family: 'Poppins', sans-serif;
+}
+
+@layer utilities {
+  /* Light Theme */
+  .bg-stock-primary {
+    background-color: #28a745;
+  }
+
+  .text-stock-primary {
+    color: #28a745;
+  }
+
+  .border-stock-primary {
+    border-color: #28a745;
+  }
+
+  .bg-stock-light {
+    background-color: #d4edda;
+  }
+
+  .text-stock-light {
+    color: #d4edda;
+  }
+
+  .border-stock-light {
+    border-color: #d4edda;
+  }
+
+  .bg-stock-secondary {
+    background-color: #ffc107;
+  }
+
+  .text-stock-secondary {
+    color: #ffc107;
+  }
+
+  .border-stock-secondary {
+    border-color: #ffc107;
+  }
+
+  .bg-stock-tertiary {
+    background-color: #007bff;
+  }
+
+  .text-stock-tertiary {
+    color: #007bff;
+  }
+
+  .border-stock-tertiary {
+    border-color: #007bff;
+  }
+
+  /* Hover States */
+  .hover\:bg-stock-primary:hover {
+    background-color: #218838; /* Darker green on hover */
+  }
+
+  .hover\:text-stock-light:hover {
+    color: #5cb85c; /* Darker green text on hover */
+  }
+
+  .hover\:border-stock-secondary:hover {
+    border-color: #e0a800; /* Darker yellow border on hover */
+  }
+
+  .hover\:bg-stock-tertiary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+
+  /* Dark Theme */
+  .dark .bg-stock-primary {
+    background-color: #204529; /* Dark green for dark theme */
+  }
+
+  .dark .text-stock-primary {
+    color: #204529; /* Dark green text for dark theme */
+  }
+
+  .dark .border-stock-primary {
+    border-color: #204529; /* Dark green border for dark theme */
+  }
+
+  .dark .bg-stock-light {
+    background-color: #2d362f; /* Darker background for dark theme */
+  }
+
+  .dark .text-stock-light {
+    color: #c0c0c0; /* Light gray text for dark theme */
+  }
+
+  .dark .border-stock-light {
+    border-color: #2d362f; /* Darker border for dark theme */
+  }
+
+  .dark .bg-stock-secondary {
+    background-color: #c79100; /* Dark yellow for dark theme */
+  }
+
+  .dark .text-stock-secondary {
+    color: #c79100; /* Dark yellow text for dark theme */
+  }
+
+  .dark .border-stock-secondary {
+    border-color: #c79100; /* Dark yellow border for dark theme */
+  }
+
+  .dark .bg-stock-tertiary {
+    background-color: #003366; /* Dark blue for dark theme */
+  }
+
+  .dark .text-stock-tertiary {
+    color: #003366; /* Dark blue text for dark theme */
+  }
+
+  .dark .border-stock-tertiary {
+    border-color: #003366; /* Dark blue border for dark theme */
+  }
 }
