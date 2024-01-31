@@ -12,6 +12,7 @@ import {
   TableRow,
   TableCell,
   BadgeDelta,
+  Table,
 } from "@tremor/react";
 
 const Portfolio = () => {
@@ -53,8 +54,7 @@ const Portfolio = () => {
   const growth = portfolioValue - investedAmount;
   const growthPercentage =
     ((portfolioValue - investedAmount) / investedAmount) * 100;
-  const totalCash = balance - investedAmount;
-  const accountValue = totalCash + portfolioValue;
+  const accountValue = balance + portfolioValue;
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -62,9 +62,8 @@ const Portfolio = () => {
       <div className="flex flex-col flex-1">
         <TopNavbar />
         <div className="flex-1 overflow-auto p-6">
-          <Metric className="mb-6 text-3xl text-blue-600 font-semibold">
-            {" "}
-            Portfolio{" "}
+          <Metric className="mb-6 text-3xl font-semibold">
+            Portfolio
           </Metric>
 
           {/* Cards Section */}
@@ -74,13 +73,13 @@ const Portfolio = () => {
                 title: "Account Value",
                 value: accountValue,
                 color: "bg-blue-200",
-                text: "text-blue-700",
+                text: "text-gray-800",
               },
               {
                 title: "Cash in Hand",
-                value: totalCash,
-                color: "bg-green-200",
-                text: "text-green-700",
+                value: balance,
+                color: "bg-gray-200",
+                text: "text-gray-700",
               },
               {
                 title: "Invested",
@@ -91,8 +90,8 @@ const Portfolio = () => {
               {
                 title: "Current Value",
                 value: portfolioValue,
-                color: "bg-purple-200",
-                text: "text-purple-700",
+                color: "bg-indigo-200",
+                text: "text-grey-700",
               },
               {
                 title: "Growth",
@@ -109,7 +108,9 @@ const Portfolio = () => {
             ].map((card, index) => (
               <Card key={index} className={`py-4 ${card.color} ${card.text}`}>
                 <Text>{card.title}</Text>
-                <Metric className="p-3">{card.value.toFixed(2)}</Metric>
+                <Metric className={`p-3 ${card.text}`}>
+                  {card.value.toFixed(2)}
+                </Metric>
               </Card>
             ))}
           </div>
@@ -117,7 +118,7 @@ const Portfolio = () => {
           {/* Assets Table */}
           <Card className="mb-8">
             <Text className="text-lg font-semibold">Assets</Text>
-            <table className="w-full mt-4">
+            <Table className="w-full mt-4">
               <TableHead>
                 <TableRow>
                   {[
@@ -160,7 +161,7 @@ const Portfolio = () => {
                   </TableRow>
                 ))}
               </TableBody>
-            </table>
+            </Table>
           </Card>
         </div>
       </div>

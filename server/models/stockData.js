@@ -17,7 +17,7 @@ const insertScrapedData = async (data) => {
       item[3].replace(/,/g, ""), // HIGH
       item[4].replace(/,/g, ""), // LOW
       item[5].replace(/,/g, ""), // CURRENT
-      item[6], // CHANGE
+      item[6].replace(/,/g, ""), // CHANGE
       item[7], // CHANGE (%)
       item[8].replace(/,/g, ""), // VOLUME
       item[9], // Timestamp
