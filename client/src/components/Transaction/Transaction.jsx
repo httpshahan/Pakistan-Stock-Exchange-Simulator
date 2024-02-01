@@ -10,8 +10,7 @@ import {
   TableHead,
   TableHeaderCell,
   TableRow,
-  Text,
-  Title,
+  Metric,
 } from "@tremor/react";
 
 const Transaction = () => {
@@ -33,16 +32,16 @@ const Transaction = () => {
   }, [userId]);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-stock-light">
       <SideNavbar />
       <div className="flex flex-col flex-1">
         <TopNavbar />
         <div className="flex-1 overflow-auto">
-          <div className="p-8">
+          <div className="p-8 ">
             <Card>
-              <div className="text-2xl font-semibold text-center">Transaction History</div>
-              <Table className="mt-6">
-                <TableHead>
+              <Metric className="text-center">Transaction History</Metric>
+              <Table className="mt-8 ">
+                <TableHead className="text-lg ">
                   <TableRow>
                     <TableHeaderCell>Date</TableHeaderCell>
                     <TableHeaderCell>Stock</TableHeaderCell>
@@ -52,7 +51,7 @@ const Transaction = () => {
                     <TableHeaderCell>Total Value</TableHeaderCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className="text-base">
                   {data.map((transaction) => (
                     <TableRow key={transaction.id}>
                       <TableCell>{new Date(transaction.transaction_date).toLocaleString()}</TableCell>

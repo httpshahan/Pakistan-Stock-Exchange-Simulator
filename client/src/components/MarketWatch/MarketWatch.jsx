@@ -9,7 +9,7 @@ const MarketWatch = () => {
       <SideNavbar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
-        <div className="flex-1 overflow-auto p-8">
+        <div className="flex-1 overflow-auto p-8 bg-stock-light">
           <DataTable />
         </div>
       </div>

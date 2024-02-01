@@ -103,17 +103,17 @@ const DataTable = () => {
           ))}
         </MultiSelect>
         <Table className="mt-6">
-          <TableHead>
-            <TableRow>
+          <TableHead className="text-base">
+            <TableRow >
               {columns.map((column) => (
-                <TableHeaderCell key={column.accessor}>
+                <TableHeaderCell className="border rounded-md" key={column.accessor}>
                   {column.Header}
                 </TableHeaderCell>
               ))}
             </TableRow>
           </TableHead>
 
-          <TableBody>
+          <TableBody className="text-base">
             {data
               .filter((item) => isStockSelected(item))
               .map((item) => (

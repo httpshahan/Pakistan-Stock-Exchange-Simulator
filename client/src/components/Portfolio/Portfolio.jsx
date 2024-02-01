@@ -117,9 +117,9 @@ const Portfolio = () => {
 
           {/* Assets Table */}
           <Card className="mb-8">
-            <Text className="text-lg font-semibold">Assets</Text>
+            <Metric className="text-center pb-6 font-semibold">Assets</Metric>
             <Table className="w-full mt-4">
-              <TableHead>
+              <TableHead className="text-lg">
                 <TableRow>
                   {[
                     "Asset",
@@ -133,7 +133,7 @@ const Portfolio = () => {
                   ))}
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody className="text-base">
                 {portfolio.map((stock) => (
                   <TableRow key={stock.stock_symbol}>
                     {[

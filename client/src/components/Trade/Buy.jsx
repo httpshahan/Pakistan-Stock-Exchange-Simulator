@@ -182,10 +182,10 @@ const BuyForm = () => {
                 {suggestions.map((suggestion) => (
                   <div
                     key={suggestion.stock_symbol}
-                    className="p-2 cursor-pointer hover:bg-gray-200"
+                    className="p-2 cursor-pointer hover:bg-hover-primary transition-all duration-300"
                     onClick={() => handleSuggestionClick(suggestion)}
                   >
-                    <p className="text-gray-900 font-medium">
+                    <p className="text-hover-tertiary font-medium">
                       {suggestion.stock_symbol}
                     </p>
                     <p className="text-gray-600">{suggestion.company_name}</p>
@@ -324,8 +324,8 @@ const BuyForm = () => {
         onClose={() => setShowDialog(false)}
         className="max-w-md"
       >
-        <DialogPanel>
-          <Title>Transaction Recipt</Title>
+        <DialogPanel className="bg-stock-light text-stock-primary">
+          <Title className="text-stock-primary">Transaction Receipt</Title>
           <List className="p-6">
             <ListItem>
               <span className="font-semibold">Symbol:</span>
@@ -345,11 +345,11 @@ const BuyForm = () => {
             </ListItem>
           </List>
           <p className="text-sm text-gray-500 mt-2">
-            Click ok for succesful transaction.
+            Click OK for successful transaction.
           </p>
           <div className="flex justify-end mt-4">
             <Button
-              className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
+              className="bg-stock-primary hover:bg-hover-primary text-white font-semibold p-2 w-full rounded-md"
               onClick={handleDone}
             >
               OK

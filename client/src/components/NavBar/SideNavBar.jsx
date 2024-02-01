@@ -1,25 +1,49 @@
 // SideNavbar.jsx
-import React from "react";
+import React, {useState} from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const SideNavbar = () => {
   const location = useLocation();
+  const [isSmall, setIsSmall] = useState(false);
+
+  const toggleNavbarSize = () => {
+    setIsSmall(!isSmall);
+  };
 
   const isActive = (path) => {
     return location.pathname === path;
   };
+  
 
   return (
-    <nav className="w-60 sticky flex-shrink-0  bg-stock-primary">
+    <nav className={`w-${isSmall ? "16" : "60"} sticky flex-shrink-0 bg-stock-primary shadow-md transition-all duration-300`}>
 
-      <div className="flex items-center p-8 h-16">
+      <div className={`flex items-center p-8 h-16 ${isSmall && "justify-center"}`}>
         <Link to="/dashboard">
-          <span className="text-2xl font-bold text-stock-secondary">PSX</span>
-          <span className="text-xl font-semibold text-stock-light">Trade</span>
+          <span className={`text-2xl font-bold text-stock-secondary ${isSmall && "hidden"}`}>PSX</span>
+          <span className={`text-xl font-semibold text-stock-light ${isSmall && "hidden"}`}>Trade</span>
         </Link>
+        <button className="ml-auto"
+        onClick={toggleNavbarSize}
+        >
+          <svg
+            className="w-6 h-6 text-stock-light hover:text-hover-light"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="m4 8h12m-12 4h12"
+            />
+          </svg>
+        </button>
       </div>
-
-      <div className="p-5 mt-8 text-stock-light">
+      <div className={`p-5 mt-8 text-stock-light ${isSmall && "hidden"}`}>
         <span className="text-xs">User Pannel</span>
         <ul className="m-2 text-stock-light">
           <li className="mb-2">
@@ -31,6 +55,7 @@ const SideNavbar = () => {
                 : "hover:bg-hover-primary hover:text-hover-primary"
               }`}
             >
+              
               Dashboard
             </Link>
           </li>
@@ -91,13 +116,14 @@ const SideNavbar = () => {
                 : "hover:bg-hover-secondary hover:text-hover-primary"
               }`}
             >
+              
               Market Watch
             </Link>
           </li>
         </ul>
       </div>
 
-      <div className="p-5">
+      <div className={`p-5 ${isSmall ? "hidden" : ""}`}>
         <button
           className="w-full p-2 rounded text-stock-light hover:bg-hover-secondary hover:text-hover-primary text-left"
           onClick={() => {
