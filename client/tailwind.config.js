@@ -6,10 +6,12 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
+  
   theme: {
     transparent: "transparent",
     current: "currentColor",
     extend: {
+      
       colors: {
         // light mode
         tremor: {

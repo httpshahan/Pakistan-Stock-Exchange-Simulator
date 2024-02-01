@@ -12,7 +12,7 @@
 @layer utilities {
   /* Light Theme */
   .bg-stock-primary {
-    background-color: #28a745;
+    background-color: #1a5e27;
   }
 
   .text-stock-primary {
@@ -58,86 +58,35 @@
   .border-stock-tertiary {
     border-color: #007bff;
   }
+  
 
   /* Hover States */
-  .hover\:bg-stock-primary:hover {
-    background-color: #1a5e27; /* Adjusted for higher contrast */
+  .bg-hover-primary {
+    background-color: #28a745; /* Adjusted for higher contrast */
   }
-
-  .hover\:text-stock-light:hover {
+  .text-hover-primary {
+    color: #155724; /* Darker text on hover */
+  }
+  .text-hover-light {
     color: #4aa84a; /* Adjusted for higher contrast */
   }
 
-  .hover\:border-stock-secondary:hover {
+  .border-hover-secondary {
     border-color: #cda200; /* Adjusted for higher contrast */
   }
 
-  .hover\:bg-stock-tertiary:hover {
+  .bg-hover-secondary {
+    background-color: #d6d8db; /* Lighter background on hover */
+  }
+
+  .bg-hover-tertiary {
     background-color: #004b8f; /* Adjusted for higher contrast */
   }
-
-  /* Dark Theme */
-  .dark .bg-stock-primary {
-    background-color: #204529; /* Dark green for dark theme */
+  .text-hover-tertiary {
+    color: #002855; /* Darker text on hover */
+  }
+  .border-hover-tertiary {
+    border-color: #002855; /* Darker border on hover */
   }
 
-  .dark .text-stock-primary {
-    color: #204529; /* Dark green text for dark theme */
-  }
-
-  .dark .border-stock-primary {
-    border-color: #204529; /* Dark green border for dark theme */
-  }
-
-  .dark .bg-stock-light {
-    background-color: #2d362f; /* Darker background for dark theme */
-  }
-
-  .dark .text-stock-light {
-    color: #c0c0c0; /* Light gray text for dark theme */
-  }
-
-  .dark .border-stock-light {
-    border-color: #2d362f; /* Darker border for dark theme */
-  }
-
-  .dark .bg-stock-secondary {
-    background-color: #c79100; /* Dark yellow for dark theme */
-  }
-
-  .dark .text-stock-secondary {
-    color: #c79100; /* Dark yellow text for dark theme */
-  }
-
-  .dark .border-stock-secondary {
-    border-color: #c79100; /* Dark yellow border for dark theme */
-  }
-
-  .dark .bg-stock-tertiary {
-    background-color: #003366; /* Dark blue for dark theme */
-  }
-
-  .dark .text-stock-tertiary {
-    color: #003366; /* Dark blue text for dark theme */
-  }
-
-  .dark .border-stock-tertiary {
-    border-color: #003366; /* Dark blue border for dark theme */
-  }
-  /* Dark Theme Hover States */
-  .dark .hover\:bg-stock-primary:hover {
-    background-color: #163a1f; /* Adjusted for higher contrast in dark theme */
-  }
-
-  .dark .hover\:text-stock-light:hover {
-    color: #98a7a4; /* Adjusted for higher contrast in dark theme */
-  }
-
-  .dark .hover\:border-stock-secondary:hover {
-    border-color: #946c00; /* Adjusted for higher contrast in dark theme */
-  }
-
-  .dark .hover\:bg-stock-tertiary:hover {
-    background-color: #002c56; /* Adjusted for higher contrast in dark theme */
-  }
 }

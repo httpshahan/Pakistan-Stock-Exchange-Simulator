@@ -10,25 +10,25 @@ const SideNavbar = () => {
   };
 
   return (
-    <nav className="w-60 sticky flex-shrink-0  bg-white">
+    <nav className="w-60 sticky flex-shrink-0  bg-stock-primary">
 
       <div className="flex items-center p-8 h-16">
         <Link to="/dashboard">
-          <span className="text-2xl font-bold text-[#6425FE]">PSX</span>
-          <span className="text-2xl font-bold text-[#7E7D82]">Trade</span>
+          <span className="text-2xl font-bold text-stock-secondary">PSX</span>
+          <span className="text-xl font-semibold text-stock-light">Trade</span>
         </Link>
       </div>
 
-      <div className="p-5 mt-8">
-        <span className="text-[#7E7D82] text-xs">User Pannel</span>
-        <ul className="m-2">
+      <div className="p-5 mt-8 text-stock-light">
+        <span className="text-xs">User Pannel</span>
+        <ul className="m-2 text-stock-light">
           <li className="mb-2">
             <Link
               to="/dashboard"
               className={`block p-2 rounded ${
                 isActive("/dashboard")
-                  ? "bg-[#EFE9FF] text-[#6425FE]"
-                  : "text-[#84828A] hover:bg-gray-200"
+                ? "bg-hover-primary text-stock-light font-semibold text-lg"
+                : "hover:bg-hover-primary hover:text-hover-primary"
               }`}
             >
               Dashboard
@@ -39,8 +39,8 @@ const SideNavbar = () => {
               to="/portfolio"
               className={`block p-2 rounded ${
                 isActive("/portfolio")
-                  ? "bg-[#EFE9FF] text-[#6425FE]"
-                  : "text-[#84828A] hover:bg-gray-200"
+                ? "bg-hover-primary text-stock-light font-semibold text-lg"
+                : "hover:bg-hover-secondary hover:text-hover-primary"
               }`}
             >
               Portfolio
@@ -51,8 +51,8 @@ const SideNavbar = () => {
               to="/transactions"
               className={`block p-2 rounded ${
                 isActive("/transactions")
-                  ? "bg-[#EFE9FF] text-[#6425FE]"
-                  : "text-[#84828A] hover:bg-gray-200"
+                ? "bg-hover-primary text-stock-light font-semibold text-lg"
+                : "hover:bg-hover-secondary hover:text-hover-primary"
               }`}
             >
               Transactions
@@ -63,8 +63,8 @@ const SideNavbar = () => {
               to="/trade"
               className={`block p-2 rounded ${
                 isActive("/trade")
-                  ? "bg-[#EFE9FF] text-[#6425FE]"
-                  : "text-[#84828A] hover:bg-gray-200"
+                ? "bg-hover-primary text-stock-light font-semibold text-lg"
+                : "hover:bg-hover-secondary hover:text-hover-primary"
               }`}
             >
               Trade
@@ -75,8 +75,8 @@ const SideNavbar = () => {
               to="/watchlist"
               className={`block p-2 rounded ${
                 isActive("/watchlist")
-                  ? "bg-[#EFE9FF] text-[#6425FE]"
-                  : "text-[#84828A] hover:bg-gray-200"
+                ? "bg-hover-primary text-stock-light font-semibold text-lg"
+                : "hover:bg-hover-secondary hover:text-hover-primary"
               }`}
             >
               Watchlist
@@ -87,8 +87,8 @@ const SideNavbar = () => {
               to="/market-watch"
               className={`block p-2 rounded ${
                 isActive("/market-watch")
-                  ? "bg-[#EFE9FF] text-[#6425FE]"
-                  : "text-[#84828A] hover:bg-gray-200"
+                ? "bg-hover-primary text-stock-light font-semibold text-lg"
+                : "hover:bg-hover-secondary hover:text-hover-primary"
               }`}
             >
               Market Watch
@@ -99,7 +99,7 @@ const SideNavbar = () => {
 
       <div className="p-5">
         <button
-          className="w-full p-2 rounded text-[#84828A] hover:bg-gray-200 text-left"
+          className="w-full p-2 rounded text-stock-light hover:bg-hover-secondary hover:text-hover-primary text-left"
           onClick={() => {
             sessionStorage.removeItem("token");
             sessionStorage.removeItem("userId");

@@ -49,29 +49,30 @@ const SearchDialog = ({ closeSearch }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50 backdrop-filter backdrop-blur-sm">
-      <div className="bg-white p-8 rounded-md w-3/5">
+    <div className="fixed inset-0 flex items-center shadow-md justify-center z-50 backdrop-filter backdrop-blur-sm">
+      {/* Main Content */}
+      <div className="bg-stock-light border border-stock-primary p-8 rounded-md w-3/5 relative">
         <input
           ref={inputRef}
           type="text"
           value={searchTerm}
           onChange={handleChange}
-          className="w-full h-10 px-4 text-sm text-gray-900 placeholder-gray-500 bg-[#F7F6F9] border border-transparent rounded-md mb-4"
+          className="w-full h-10 px-4 text-sm text-gray-900 placeholder-gray-500 bg-stock-light border border-stock-primary rounded-md mb-4"
           placeholder="Search for stocks..."
         />
 
         {suggestions.length > 0 && (
-          <ul ref={inputRef} className="mb-4 max-h-40 overflow-y-auto w-full divide-y divide-gray-200">
+          <ul className="mb-4 max-h-40 overflow-y-auto w-full">
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}
-                className="cursor-pointer py-2 px-4 text-blue-500 hover:bg-gray-100 hover:text-blue-700 transition-all duration-300 rounded-md"
+                className="cursor-pointer py-2 px-4 text-stock-tertiary hover:bg-hover-primary hover:text-hover-tertiary transition-all duration-300 rounded-md"
                 onClick={() => handleSuggestionClick(suggestion)}
               >
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="font-medium">{suggestion.company_name}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-hover-primary">
                       {suggestion.stock_symbol}
                     </p>
                   </div>
@@ -95,7 +96,7 @@ const SearchDialog = ({ closeSearch }) => {
 
         <button
           onClick={closeSearch}
-          className="text-blue-500 hover:text-blue-700 cursor-pointer"
+          className="text-stock-tertiary p-2 border rounded-md hover:text-hover-tertiary hover:bg-hover-primary cursor-pointer"
         >
           Close
         </button>

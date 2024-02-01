@@ -18,22 +18,24 @@ const Trade = () => {
       <div className="flex flex-col flex-1">
         <TopNavbar />
         <div className="flex-1 overflow-auto p-8">
-          <div className="max-w-md mx-auto bg-white rounded-md shadow-md p-6">
-            <h2 className="text-2xl font-semibold mb-4">Trade Form</h2>
+          <div className="max-w-md mx-auto bg-stock-light rounded-md shadow-md p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-stock-primary">
+              Trade Form
+            </h2>
             <div className="mb-4">
               <div className="flex">
                 <button
                   className={`flex-1 p-2 ${
-                    activeTab === "buy" ? "bg-blue-500 text-white" : "bg-gray-300"
-                  } rounded-tl-md`}
+                    activeTab === "buy" ? "bg-stock-primary text-white" : "bg-hover-primary"
+                  } rounded-tl-md hover:bg-stock-primary`}
                   onClick={() => setActiveTab("buy")}
                 >
                   Buy
                 </button>
                 <button
                   className={`flex-1 p-2 ${
-                    activeTab === "sell" ? "bg-red-500 text-white" : "bg-gray-300"
-                  } rounded-tr-md`}
+                    activeTab === "sell" ? "bg-stock-tertiary text-white" : "bg-stock-tertiary"
+                  } rounded-tr-md hover:bg-hover-tertiary`}
                   onClick={() => setActiveTab("sell")}
                 >
                   Sell
