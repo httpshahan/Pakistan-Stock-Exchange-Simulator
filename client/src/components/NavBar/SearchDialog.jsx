@@ -65,6 +65,7 @@ const SearchDialog = ({ closeSearch }) => {
           <ul className="mb-4 max-h-40 overflow-y-auto w-full">
             {suggestions.map((suggestion, index) => (
               <li
+                ref={inputRef}
                 key={index}
                 className="cursor-pointer py-2 px-4 text-stock-tertiary hover:bg-hover-primary hover:text-hover-tertiary transition-all duration-300 rounded-md"
                 onClick={() => handleSuggestionClick(suggestion)}
