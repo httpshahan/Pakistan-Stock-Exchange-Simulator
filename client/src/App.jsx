@@ -9,7 +9,9 @@ import StockDetail from "./components/Stock/StockDetail";
 import Portfolio from "./components/Portfolio/Portfolio";
 import Transaction from "./components/Transaction/Transaction";
 import Trade from "./components/Trade/Trade";
+import HeatMap from "./components/Indices/HeatMap";
 import Watchlist from "./components/Watchlist/Watchlist";
+import NotFound from "./components/NotFound/NotFound";
 
 
 function App() {
@@ -25,8 +27,9 @@ function App() {
         <Route path="/trade" element={<Trade />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/transactions" element={<Transaction />} />
+        <Route path="/indices" element={<HeatMap />} />
         <Route path="/watchlist" element={<Watchlist />} />
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

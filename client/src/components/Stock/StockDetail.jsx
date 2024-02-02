@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import apiService from "../../services/apiService";
 import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
+import CompanyData from "./CompanyData";
+import CompanyDetails from "./CompanyDetails";
 
 const StockDetails = () => {
   const { symbol } = useParams();
@@ -13,7 +15,7 @@ const StockDetails = () => {
       try {
         const response = await apiService.get(`/stocks/getStock/${symbol}`);
         setData(response.data.data);
-        
+        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -27,18 +29,25 @@ const StockDetails = () => {
       <SideNavbar />
       <div className="flex flex-col flex-1 overflow-hidden bg-gray-100">
         <TopNavbar />
-        <div className="p-10">
-          <h1 className="text-4xl font-bold mb-4">Stock Details</h1>
+        <div className="p-10 overflow-auto">
           <div className="bg-white p-6 rounded-md shadow-md">
-            <p className="text-gray-600 mb-2">Stock Symbol: {symbol}</p>
+            <CompanyData symbol={symbol} />
             {data && (
               <div>
-                <p className="text-xl font-bold mb-2">{data[0].company_name}</p>
-                <p className="text-gray-600 mb-2">Current Price: {data[0].current}</p>
+                <p className="text-gray-600 mb-2">
+                  Current Price: {data[0].current}
+                </p>
                 {/* Add more properties as needed */}
               </div>
             )}
           </div>
+          <div className="mt-4 shadow-md rounded-md">
+            <CompanyDetails symbol={symbol} type="symbolProfile"/>
+          </div>
+          <div className="mt-4 shadow-md rounded-md">
+            <CompanyDetails symbol={symbol} type="financials" />
+          </div>
+          
         </div>
       </div>
     </div>

@@ -52,10 +52,9 @@ const SideNavbar = () => {
               className={`block p-2 rounded ${
                 isActive("/dashboard")
                 ? "bg-hover-primary text-stock-light font-semibold text-lg"
-                : "hover:bg-hover-primary hover:text-hover-primary"
+                : "hover:bg-hover-secondary hover:text-hover-primary"
               }`}
             >
-              
               Dashboard
             </Link>
           </li>
@@ -109,14 +108,25 @@ const SideNavbar = () => {
           </li>
           <li className="mb-2">
             <Link
+              to="/indices"
+              className={`block p-2 rounded ${
+                isActive("/indices")
+                ? "bg-hover-primary text-stock-light font-semibold text-lg"
+                : "hover:bg-hover-secondary hover:text-hover-primary"
+              }`}
+            >
+              Indices
+            </Link>
+          </li>
+          <li className="mb-2">
+            <Link
               to="/market-watch"
               className={`block p-2 rounded ${
                 isActive("/market-watch")
                 ? "bg-hover-primary text-stock-light font-semibold text-lg"
                 : "hover:bg-hover-secondary hover:text-hover-primary"
               }`}
-            >
-              
+            > 
               Market Watch
             </Link>
           </li>
