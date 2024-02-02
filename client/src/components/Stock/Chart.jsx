@@ -9,7 +9,7 @@ const Chart = () => {
     const fetchData = async () => {
       try {
         const symbol = 'KSE100';
-        const response = await fetch('https://localhost:3000/proxy/KSE100');
+        const response = await fetch(`https://localhost:3000/proxy/${symbol}`);
         const data = await response.json();
         console.log(data);
         
