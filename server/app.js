@@ -23,13 +23,14 @@ app.use('/api/trade',verifyToken, tradeRoutes);
 
 //proxy server
 
-app.get('/proxy/:symbol', async (req, res) => {
+app.get('/api/proxy/:symbol', async (req, res) => {
   //const { symbol } = req.params;
   console.log("proxy server");
   
   try {
     // Modify the external API URL to include the symbol parameter
     const response = await axios.get(`https://dps.psx.com.pk/timeseries/eod/${req.params.symbol}`);
+
     res.status(200).json(response.data);
 
   } catch (error) {

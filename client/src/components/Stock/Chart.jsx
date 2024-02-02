@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiService from '../../services/apiService';
 import { Card, LineChart, Title } from "@tremor/react";
 
 const Chart = () => {
@@ -8,9 +8,9 @@ const Chart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const symbol = 'KSE100';
-        const response = await fetch(`https://localhost:3000/proxy/${symbol}`);
-        const data = await response.json();
+        const symbol = 'KSE100'
+        const response = await apiService.get(`/proxy/${symbol}`);
+        const data = response.data.data;
         console.log(data);
         
         // Assuming the API response has a structure similar to your previous example
@@ -53,12 +53,12 @@ const Chart = () => {
     <Card>
       <Title>Average BPM</Title>
       <LineChart
-        className="h-72 mt-4"
+        className="h-72 mt-4 p-6"
         data={chartData}
         index="date"
         categories={["price"]}
         colors={["blue"]}
-        yAxisWidth={30}
+        yAxisWidth={40}
         customTooltip={customTooltip}
       />
     </Card>
