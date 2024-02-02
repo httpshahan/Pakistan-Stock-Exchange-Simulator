@@ -5,6 +5,7 @@ import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import CompanyData from "./CompanyData";
 import CompanyDetails from "./CompanyDetails";
+import Chart from "./Chart";
 
 const StockDetails = () => {
   const { symbol } = useParams();
@@ -40,6 +41,9 @@ const StockDetails = () => {
                 {/* Add more properties as needed */}
               </div>
             )}
+          </div>
+          <div className="mt-4 shadow-md rounded-md">
+                <Chart />
           </div>
           <div className="mt-4 shadow-md rounded-md">
             <CompanyDetails symbol={symbol} type="symbolProfile"/>

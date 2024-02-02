@@ -9,15 +9,20 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [topAdvancers, setTopAdvancers] = useState([]);
   const [topDecliners, setTopDecliners] = useState([]);
-  const balence = sessionStorage.getItem("balance");
+  const [portfolio, setPortfolio] = useState([]);
+  const [balance, setBalance] = useState(
+    Number(sessionStorage.getItem("balance"))
+  );
+  const userId = sessionStorage.getItem("userId");
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Simulate a delay or wait for the scraping process to complete
-        const scrape = await apiService.get("/delay");
-        console.log(scrape.data);
-        console.log("Scraping Complete");
+        // const scrape = await apiService.get("/delay");
+        // console.log(scrape.data);
+        // console.log("Scraping Complete");
 
         // Fetch data for Top Advancers
         const topAdvancersResponse = await apiService.get("/stocks/topStocks");
@@ -29,6 +34,17 @@ const Dashboard = () => {
         );
         setTopDecliners(topDeclinersResponse.data.data);
 
+        try {
+          const response = await apiService.get(`/stocks/userAssets/${userId}`);
+          const sortedPortfolio = response.data.data.sort((a, b) =>
+            a.stock_symbol.localeCompare(b.stock_symbol)
+          );
+          setPortfolio(sortedPortfolio);
+          console.log(sortedPortfolio);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+
         // Set loading to false after scraping and fetching processes complete
         setLoading(false);
       } catch (error) {
@@ -37,7 +53,20 @@ const Dashboard = () => {
     };
 
     fetchData();
-  }, []); // Empty dependency array ensures that the effect runs only once on component mount
+  }, [userId]); // Empty dependency array ensures that the effect runs only once on component mount
+
+  const portfolioValue = portfolio.reduce(
+    (total, stock) => total + stock.current * stock.quantity,
+    0
+  );
+  const investedAmount = portfolio.reduce(
+    (total, stock) => total + stock.purchase_price * stock.quantity,
+    0
+  );
+  const growth = portfolioValue - investedAmount;
+  const growthPercentage =
+    ((portfolioValue - investedAmount) / investedAmount) * 100;
+  const accountValue = balance + portfolioValue;
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -61,19 +90,19 @@ const Dashboard = () => {
               <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
                 <Card>
                   <Text>Portfolio Value</Text>
-                  <Metric>0000000</Metric>
+                  <Metric>{portfolioValue.toFixed(2)}</Metric>
                 </Card>
                 <Card>
                   <Text>Invested Amount</Text>
-                  <Metric>0000000</Metric>
+                  <Metric>{investedAmount}</Metric>
                 </Card>
                 <Card>
                   <Text>Growth</Text>
-                  <Metric>0000000</Metric>
+                  <Metric>{growth.toFixed(2)}</Metric>
                 </Card>
                 <Card>
                   <Text>Cash</Text>
-                  <Metric>{balence}</Metric>
+                  <Metric>{balance}</Metric>
                 </Card>
               </Grid>
 
