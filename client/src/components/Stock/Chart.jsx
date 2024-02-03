@@ -71,11 +71,11 @@ const Chart = ({ symbol }) => {
       case '1D':
         return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleTimeString() }));
       case '1M':
-        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { day: 'numeric' }) }));
+        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { month:'short', day: 'numeric' }) }));
       case '1Y':
-        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { month: 'short' }) }));
+        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { month: 'short', year: 'numeric' }) }));
       default:
-        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { month: 'short' }) }));
+        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { month: 'short', year: 'numeric' }) }));
     }
   };
 
@@ -123,6 +123,8 @@ const Chart = ({ symbol }) => {
             categories={["price"]}
             colors={["blue"]}
             yAxisWidth={40}
+            showLegend={false}
+            showXAxis={true}
             customTooltip={customTooltip}
           />
         );
@@ -135,6 +137,8 @@ const Chart = ({ symbol }) => {
             categories={["price"]}
             colors={["blue"]}
             yAxisWidth={40}
+            showLegend={false}
+            showXAxis={true}
             customTooltip={customTooltip}
           />
         );
