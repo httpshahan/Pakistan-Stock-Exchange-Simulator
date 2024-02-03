@@ -94,7 +94,7 @@ const Dashboard = () => {
                 </Card>
                 <Card>
                   <Text>Invested Amount</Text>
-                  <Metric>{investedAmount}</Metric>
+                  <Metric>{investedAmount.toFixed(2)}</Metric>
                 </Card>
                 <Card>
                   <Text>Growth</Text>
