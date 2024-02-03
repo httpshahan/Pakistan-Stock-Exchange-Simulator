@@ -29,8 +29,7 @@ app.get('/api/proxy/:symbol', async (req, res) => {
   
   try {
     // Modify the external API URL to include the symbol parameter
-    const response = await axios.get(`https://dps.psx.com.pk/timeseries/eod/${req.params.symbol}`);
-
+    const response = await axios.get(`https://dps.psx.com.pk/timeseries/int/${req.params.symbol}`);
     res.status(200).json(response.data);
 
   } catch (error) {

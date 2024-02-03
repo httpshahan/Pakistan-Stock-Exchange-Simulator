@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import apiService from '../../services/apiService';
-import { Card, LineChart, Title } from "@tremor/react";
+import React, { useState, useEffect } from "react";
+import apiService from "../../services/apiService";
+import { Card, AreaChart, Title } from "@tremor/react";
 
 const Chart = ({ symbol }) => {
   const [originalData, setOriginalData] = useState([]);
   const [dataByDay, setDataByDay] = useState([]);
   const [dataByMonth, setDataByMonth] = useState([]);
   const [dataByYear, setDataByYear] = useState([]);
-  const [timeInterval, setTimeInterval] = useState('all'); // Default to all data
+  const [timeInterval, setTimeInterval] = useState("all"); // Default to all data
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,96 +15,54 @@ const Chart = ({ symbol }) => {
         const response = await apiService.get(`/proxy/${symbol}`);
         const data = response.data.data;
 
-        const formattedData = data.map(item => ({
-          date: new Date(item[0] * 1000),
-          timestamp: new Date(item[0] * 1000).toLocaleString(),
+        const formattedData = data.map((item) => ({
+          timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }),
           price: item[1],
           volume: item[2],
+          date: new Date(item[0] * 1000).toLocaleString("en-US", {
+            weekday: "short", // Short weekday name (e.g., Fri)
+            month: "short", // Short month name (e.g., Feb)
+            day: "numeric", // Numeric day of the month (e.g., 2)
+            year: "numeric", // Full year (e.g., 2024)
+            hour: "numeric", // Hour in 12-hour clock (e.g., 5)
+            minute: "numeric", // Minutes (e.g., 04)
+            hour12: true,
+          }),
         }));
 
-        setOriginalData(formattedData);
+        const sortedData = formattedData.sort((a, b) => {
+          const timeA = new Date("1970-01-01 " + a.timestamp);
+          const timeB = new Date("1970-01-01 " + b.timestamp);
+          return timeA - timeB;
+        });
+
+        setOriginalData(sortedData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, [symbol]);
 
-  useEffect(() => {
-    // Filter data for each time interval
-    const dataByDay = filterDataByTimeInterval(originalData, '1D');
-    const dataByMonth = filterDataByTimeInterval(originalData, '1M');
-    const dataByYear = filterDataByTimeInterval(originalData, '1Y');
-
-    setDataByDay(dataByDay);
-    setDataByMonth(dataByMonth);
-    setDataByYear(dataByYear);
-  }, [originalData]);
-
-  const filterDataByTimeInterval = (data, interval) => {
-    const currentDate = new Date();
-  
-    switch (interval) {
-      case '1D':
-        // Find the latest date in the dataset
-        const latestDate = new Date(Math.max.apply(null, data.map(item => item.date.getTime())));
-        const startOfDay = new Date(latestDate.getFullYear(), latestDate.getMonth(), latestDate.getDate());
-        return data.filter(item => item.date >= startOfDay);
-
-      case '1M':
-        const oneMonthAgo = currentDate.setMonth(currentDate.getMonth() - 1);
-        return data.filter(item => item.date > oneMonthAgo);
-
-      case '1Y':
-        const oneYearAgo = currentDate.setFullYear(currentDate.getFullYear() - 1);
-        return data.filter(item => item.date > oneYearAgo);
-
-      case 'all':
-      default:
-        return data;
-    }
-  };
-
-  const preprocessDataForXAxis = (data, interval) => {
-    switch (interval) {
-      case '1D':
-        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleTimeString() }));
-      case '1M':
-        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { month:'short', day: 'numeric' }) }));
-      case '1Y':
-        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { month: 'short', year: 'numeric' }) }));
-      default:
-        return data.map(item => ({ ...item, xAxisLabel: item.date.toLocaleDateString("en-US", { month: 'short', year: 'numeric' }) }));
-    }
-  };
-
-  const formatXAxisLabel = (value) => {
-    return value.xAxisLabel;
-  };
-
-  const intervalOptions = ['1D', '1M', '1Y', 'all'];
-
-  const renderIntervalButtons = () => {
-    return intervalOptions.map(option => (
-      <button key={option} onClick={() => setTimeInterval(option)} className={timeInterval === option ? 'active' : ''}>
-        {option}
-      </button>
-    ));
-  };
-
   const customTooltip = ({ payload, active }) => {
     if (!active || !payload) return null;
     return (
-      <div className="w-56 rounded-tremor-default text-tremor-default bg-tremor-background p-2 shadow-tremor-dropdown border border-tremor-border">
+      <div className="w-56 bg-stock-light rounded p-2 shadow border">
         {payload.map((data, idx) => (
           <div key={idx} className="flex flex-1 space-x-2.5">
-            <div className={`w-1 flex flex-col bg-${data.color}-500 rounded`} />
             <div className="space-y-1">
-              <p className="text-tremor-content">Date: {data.payload.date.toLocaleString()}</p>
-              <p className="text-tremor-content">Timestamp: {data.payload.timestamp}</p>
-              <p className="text-tremor-content">Price: {data.payload.price}</p>
-              <p className="text-tremor-content">Volume: {data.payload.volume}</p>
+              <p className="text-sm font-semibold">
+                Timestamp: {data.payload.timestamp}
+              </p>
+              <p className="text-sm">Price: {data.payload.price}</p>
+              <p className="text-sm">
+                Volume: {data.payload.volume.toLocaleString()}
+              </p>
             </div>
           </div>
         ))}
@@ -112,71 +70,107 @@ const Chart = ({ symbol }) => {
     );
   };
 
-  const renderChart = () => {
-    switch (timeInterval) {
-      case '1D':
-        return (
-          <LineChart
-            className="h-72 mt-4 p-6"
-            data={preprocessDataForXAxis(dataByDay, '1D')}
-            index="xAxisLabel"
-            categories={["price"]}
-            colors={["blue"]}
-            yAxisWidth={40}
-            showLegend={false}
-            showXAxis={true}
-            customTooltip={customTooltip}
-          />
-        );
-      case '1M':
-        return (
-          <LineChart
-            className="h-72 mt-4 p-6"
-            data={preprocessDataForXAxis(dataByMonth, '1M')}
-            index="xAxisLabel"
-            categories={["price"]}
-            colors={["blue"]}
-            yAxisWidth={40}
-            showLegend={false}
-            showXAxis={true}
-            customTooltip={customTooltip}
-          />
-        );
-      case '1Y':
-        return (
-          <LineChart
-            className="h-72 mt-4 p-6"
-            data={preprocessDataForXAxis(dataByYear, '1Y')}
-            index="xAxisLabel"
-            categories={["price"]}
-            colors={["blue"]}
-            yAxisWidth={40}
-            customTooltip={customTooltip}
-          />
-        );
-      case 'all':
-      default:
-        return (
-          <LineChart
-            className="h-72 mt-4 p-6"
-            data={preprocessDataForXAxis(originalData, 'all')}
-            index="xAxisLabel"
-            categories={["price"]}
-            colors={["blue"]}
-            yAxisWidth={40}
-            customTooltip={customTooltip}
-          />
-        );
-    }
-  };
-
   return (
-    <Card>
-      <Title>{symbol}</Title>
-      <div className="flex space-x-4 mt-4">
-        {renderIntervalButtons()}
+    <Card className="rounded-lg overflow-hidden shadow-lg bg-white">
+      <div className="p-6">
+        <Title className="text-xl font-bold text-gray-800 mb-4">{symbol}</Title>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col space-y-2">
+            <p className="text-gray-600">
+              Low: {Math.min(...originalData.map((min) => min.price))}
+            </p>
+            <p className="text-gray-600">
+              High: {Math.max(...originalData.map((max) => max.price))}
+            </p>
+          </div>
+          <div className="flex flex-col space-y-2">
+            <p className="text-gray-600">Open: {originalData[0]?.price}</p>
+            <p className="text-gray-600">
+              Close: {originalData[originalData.length - 1]?.price}
+            </p>
+          </div>
+        </div>
+        <p className="text-gray-600 mt-4">
+          Volume:{" "}
+          {originalData
+            .reduce((acc, cur) => acc + cur.volume, 0)
+            .toLocaleString()}
+        </p>
       </div>
-      {renderChart()}
+      <div className="flex justify-between p-6">
+      <p className="text-gray-600 text-center">
+        Current Price: {originalData[originalData.length - 1]?.price}
+      </p>
+      <h1 className="text-gray-600 text-center">
+        As of {originalData[originalData.length - 1]?.date}
+      </h1>
+      </div>
+      <div className="border-t border-gray-200"></div>
+      <div className="flex justify-center space-x-4 p-4">
+        <button
+          className={`${
+            timeInterval === "all"
+              ? "bg-gray-800 text-white"
+              : "bg-gray-200 text-gray-800"
+          } px-4 py-2 rounded`}
+          onClick={() => setTimeInterval("all")}
+        >
+          All
+        </button>
+        <button
+          className={`${
+            timeInterval === "day"
+              ? "bg-gray-800 text-white"
+              : "bg-gray-200 text-gray-800"
+          } px-4 py-2 rounded`}
+          onClick={() => setTimeInterval("day")}
+        >
+          Day
+        </button>
+        <button
+          className={`${
+            timeInterval === "month"
+              ? "bg-gray-800 text-white"
+              : "bg-gray-200 text-gray-800"
+          } px-4 py-2 rounded`}
+          onClick={() => setTimeInterval("month")}
+        >
+          Month
+        </button>
+        <button
+          className={`${
+            timeInterval === "year"
+              ? "bg-gray-800 text-white"
+              : "bg-gray-200 text-gray-800"
+          } px-4 py-2 rounded`}
+          onClick={() => setTimeInterval("year")}
+        >
+          Year
+        </button>
+      </div>
+      <div className="border-t border-gray-200"></div>
+      <div className="p-6">
+        <AreaChart
+          className="h-72"
+          data={
+            timeInterval === "day"
+              ? originalData.slice(-24)
+              : timeInterval === "month"
+              ? originalData.slice(-30)
+              : timeInterval === "year"
+              ? originalData.slice(-365)
+              : originalData
+          }
+          index="timestamp"
+          categories={["price"]}
+          colors={["yellow-500"]}
+          showAnimation={true}
+          yAxisWidth={50}
+          customTooltip={customTooltip}
+          autoMinValue={true}
+          showLegend={false}
+        />
+      </div>
     </Card>
   );
 };
