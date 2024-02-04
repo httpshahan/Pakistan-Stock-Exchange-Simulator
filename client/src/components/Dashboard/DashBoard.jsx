@@ -101,7 +101,7 @@ const Dashboard = () => {
                   <Metric>{growth.toFixed(2)}</Metric>
                 </Card>
                 <Card>
-                  <Text>Cash</Text>
+                  <Text>Buying Power</Text>
                   <Metric>{balance}</Metric>
                 </Card>
               </Grid>

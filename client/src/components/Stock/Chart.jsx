@@ -145,7 +145,7 @@ const Chart = ({ symbol }) => {
         </div>
         <p className="text-gray-600 mt-4">
           Volume:{" "}
-          {originalData
+          {dataByDay
             .reduce((acc, cur) => acc + cur.volume, 0)
             .toLocaleString()}
         </p>

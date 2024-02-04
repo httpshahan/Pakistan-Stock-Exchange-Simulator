@@ -16,7 +16,7 @@ const SideNavbar = () => {
   
 
   return (
-    <nav className={`w-${isSmall ? "16" : "60"} sticky flex-shrink-0 bg-stock-primary shadow-md transition-all duration-300`}>
+    <nav className={`w-${isSmall ? "16" : "64"} sticky flex-shrink-0 bg-stock-primary shadow-md transition-all duration-300`}>
 
       <div className={`flex items-center p-8 h-16 ${isSmall && "justify-center"}`}>
         <Link to="/dashboard">
