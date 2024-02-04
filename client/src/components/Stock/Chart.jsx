@@ -12,7 +12,7 @@ const Chart = ({ symbol }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiService.get(`/proxy/${symbol}`);
+        const response = await apiService.get(`/proxy/int/${symbol}`);
         const data = response.data.data;
 
         const formattedData = data.map((item) => ({
