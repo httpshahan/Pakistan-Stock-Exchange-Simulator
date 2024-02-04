@@ -77,16 +77,16 @@ const Chart = ({ symbol }) => {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col space-y-2">
             <p className="text-gray-600">
-              Low: {Math.min(...originalData.map((min) => min.price))}
+              Low: {(Math.min(...originalData.map((min) => min.price)))?.toFixed(2)}
             </p>
             <p className="text-gray-600">
-              High: {Math.max(...originalData.map((max) => max.price))}
+              High: {(Math.max(...originalData.map((max) => max.price)))?.toFixed(2)}
             </p>
           </div>
           <div className="flex flex-col space-y-2">
-            <p className="text-gray-600">Open: {originalData[0]?.price}</p>
+            <p className="text-gray-600">Open: {(originalData[0]?.price)?.toFixed(2)}</p>
             <p className="text-gray-600">
-              Close: {originalData[originalData.length - 1]?.price}
+              Close: {(originalData[originalData.length - 1]?.price)?.toFixed(2)}
             </p>
           </div>
         </div>
