@@ -7,47 +7,100 @@ const Chart = ({ symbol }) => {
   const [dataByDay, setDataByDay] = useState([]);
   const [dataByMonth, setDataByMonth] = useState([]);
   const [dataByYear, setDataByYear] = useState([]);
-  const [timeInterval, setTimeInterval] = useState("all"); // Default to all data
+  const [timeInterval, setTimeInterval] = useState("day"); // Default to all data
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiService.get(`/proxy/int/${symbol}`);
-        const data = response.data.data;
+        if (timeInterval === "day") {
+          const response = await apiService.get(`/proxy/int/${symbol}`);
+          const data = response.data.data;
+          const sortedData = data.sort((a, b) => a[0] - b[0]);
+          const formattedData = sortedData.map((item) => ({
+            timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            }),
+            price: item[1],
+            volume: item[2],
+            date: new Date(item[0] * 1000).toLocaleString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            }),
+          }));
+          setDataByDay(formattedData);
+        } else {
+          const response = await apiService.get(`/proxy/eod/${symbol}`);
+          const data = response.data.data;
 
-        const formattedData = data.map((item) => ({
-          timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-            hour: "numeric",
-            minute: "numeric",
-            hour12: true,
-          }),
-          price: item[1],
-          volume: item[2],
-          date: new Date(item[0] * 1000).toLocaleString("en-US", {
-            weekday: "short", // Short weekday name (e.g., Fri)
-            month: "short", // Short month name (e.g., Feb)
-            day: "numeric", // Numeric day of the month (e.g., 2)
-            year: "numeric", // Full year (e.g., 2024)
-            hour: "numeric", // Hour in 12-hour clock (e.g., 5)
-            minute: "numeric", // Minutes (e.g., 04)
-            hour12: true,
-          }),
-        }));
+          // Sort the data by the timestamp in ascending order
+          const sortedData = data.sort((a, b) => a[0] - b[0]);
 
-        const sortedData = formattedData.sort((a, b) => {
-          const timeA = new Date("1970-01-01 " + a.timestamp);
-          const timeB = new Date("1970-01-01 " + b.timestamp);
-          return timeA - timeB;
-        });
-
-        setOriginalData(sortedData);
+          if (timeInterval === "month") {
+            const formattedData = sortedData.map((item) => ({
+              timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }),
+              price: item[1],
+              volume: item[2],
+              date: new Date(item[0] * 1000).toLocaleString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }),
+            }));
+            setDataByMonth(formattedData);
+          } else if (timeInterval === "year") {
+            const formattedData = sortedData.map((item) => ({
+              timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+                month: "short",
+                year: "numeric",
+              }),
+              price: item[1],
+              volume: item[2],
+              date: new Date(item[0] * 1000).toLocaleString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }),
+            }));
+            setDataByYear(formattedData);
+          } else {
+            // For "all" interval, set the original data
+            const formattedData = sortedData.map((item) => ({
+              timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+                month: "short",
+                year: "numeric",
+              }),
+              price: item[1],
+              volume: item[2],
+              date: new Date(item[0] * 1000).toLocaleString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              }),
+            }));
+            setOriginalData(formattedData);
+          }
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [symbol]);
+  }, [symbol, timeInterval]);
 
   const customTooltip = ({ payload, active }) => {
     if (!active || !payload) return null;
@@ -56,9 +109,7 @@ const Chart = ({ symbol }) => {
         {payload.map((data, idx) => (
           <div key={idx} className="flex flex-1 space-x-2.5">
             <div className="space-y-1">
-              <p className="text-sm font-semibold">
-                Timestamp: {data.payload.timestamp}
-              </p>
+              <p className="text-sm font-semibold">{data.payload.date}</p>
               <p className="text-sm">Price: {data.payload.price}</p>
               <p className="text-sm">
                 Volume: {data.payload.volume.toLocaleString()}
@@ -77,16 +128,18 @@ const Chart = ({ symbol }) => {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col space-y-2">
             <p className="text-gray-600">
-              Low: {(Math.min(...originalData.map((min) => min.price)))?.toFixed(2)}
+              Low: {Math.min(...dataByDay.map((min) => min.price))?.toFixed(2)}
             </p>
             <p className="text-gray-600">
-              High: {(Math.max(...originalData.map((max) => max.price)))?.toFixed(2)}
+              High: {Math.max(...dataByDay.map((max) => max.price))?.toFixed(2)}
             </p>
           </div>
           <div className="flex flex-col space-y-2">
-            <p className="text-gray-600">Open: {(originalData[0]?.price)?.toFixed(2)}</p>
             <p className="text-gray-600">
-              Close: {(originalData[originalData.length - 1]?.price)?.toFixed(2)}
+              Open: {dataByDay[0]?.price?.toFixed(2)}
+            </p>
+            <p className="text-gray-600">
+              Close: {dataByDay[dataByDay.length - 1]?.price?.toFixed(2)}
             </p>
           </div>
         </div>
@@ -98,25 +151,15 @@ const Chart = ({ symbol }) => {
         </p>
       </div>
       <div className="flex justify-between p-6">
-      <p className="text-gray-600 text-center">
-        Current Price: {originalData[originalData.length - 1]?.price}
-      </p>
-      <h1 className="text-gray-600 text-center">
-        As of {originalData[originalData.length - 1]?.date}
-      </h1>
+        <p className="text-gray-600 text-center">
+          Current Price: {dataByDay[dataByDay.length - 1]?.price}
+        </p>
+        <h1 className="text-gray-600 text-center">
+          As of {dataByDay[dataByDay.length - 1]?.date}
+        </h1>
       </div>
       <div className="border-t border-gray-200"></div>
       <div className="flex justify-center space-x-4 p-4">
-        <button
-          className={`${
-            timeInterval === "all"
-              ? "bg-gray-800 text-white"
-              : "bg-gray-200 text-gray-800"
-          } px-4 py-2 rounded`}
-          onClick={() => setTimeInterval("all")}
-        >
-          All
-        </button>
         <button
           className={`${
             timeInterval === "day"
@@ -147,6 +190,16 @@ const Chart = ({ symbol }) => {
         >
           Year
         </button>
+        <button
+          className={`${
+            timeInterval === "all"
+              ? "bg-gray-800 text-white"
+              : "bg-gray-200 text-gray-800"
+          } px-4 py-2 rounded`}
+          onClick={() => setTimeInterval("all")}
+        >
+          All
+        </button>
       </div>
       <div className="border-t border-gray-200"></div>
       <div className="p-6">
@@ -154,11 +207,11 @@ const Chart = ({ symbol }) => {
           className="h-72"
           data={
             timeInterval === "day"
-              ? originalData.slice(-24)
+              ? dataByDay
               : timeInterval === "month"
-              ? originalData.slice(-30)
+              ? dataByMonth.slice(-30)
               : timeInterval === "year"
-              ? originalData.slice(-365)
+              ? dataByYear.slice(-261)
               : originalData
           }
           index="timestamp"
