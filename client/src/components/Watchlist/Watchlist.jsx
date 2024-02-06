@@ -6,7 +6,7 @@ const Watchlist = () => {
   return (
     <div className="flex h-screen overflow-hidden">
       <SideNavbar />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
         <div className="flex-1 overflow-auto">
             <div className="p-8">

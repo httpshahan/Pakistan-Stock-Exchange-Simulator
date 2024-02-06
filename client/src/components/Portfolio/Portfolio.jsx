@@ -57,9 +57,9 @@ const Portfolio = () => {
   const accountValue = balance + portfolioValue;
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
+    <div className="flex lg:flex-row h-screen bg-gray-100 overflow-hidden">
       <SideNavbar />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
         <div className="flex-1 overflow-auto p-6">
           <Metric className="mb-6 text-3xl font-semibold">

@@ -34,10 +34,10 @@ const Transaction = () => {
   return (
     <div className="flex h-screen bg-gray-100 overflow-hidden">
       <SideNavbar />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
         <div className="flex-1 overflow-auto">
-          <div className="p-8 ">
+          <div className="p-8">
             <Card>
               <Metric className="text-center">Transaction History</Metric>
               <Table className="mt-8">
