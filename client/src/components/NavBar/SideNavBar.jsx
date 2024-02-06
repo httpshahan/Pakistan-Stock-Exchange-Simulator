@@ -35,7 +35,7 @@ const SideNavbar = () => {
   return (
     <>
       <nav
-        className={`md:flex md:flex-col md:min-h-screen md:w-64 md:sticky md:top-0 bg-stock-primary shadow-md transition-all duration-300 ${
+        className={`md:flex md:flex-col md:min-h-screen md:w-56 md:sticky md:top-0 bg-stock-primary shadow-md transition-all duration-300 ${
           isMobileView ? "hidden" : "block"
         }`}
       >
@@ -69,7 +69,7 @@ const SideNavbar = () => {
             </svg>
           </button>
         </div>
-        <div className={`p-5 mt-8 text-stock-light md:block`}>
+        <div className={`p-5 mt-4 text-stock-light md:block`}>
           <span className="text-xs">User Pannel</span>
           <ul className="m-2 text-stock-light">
             <li className="mb-2">
