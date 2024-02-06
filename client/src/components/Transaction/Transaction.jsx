@@ -32,7 +32,7 @@ const Transaction = () => {
   }, [userId]);
 
   return (
-    <div className="flex h-screen bg-stock-light overflow-hidden">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
       <SideNavbar />
       <div className="flex flex-col flex-1">
         <TopNavbar />
@@ -40,7 +40,7 @@ const Transaction = () => {
           <div className="p-8 ">
             <Card>
               <Metric className="text-center">Transaction History</Metric>
-              <Table className="mt-8 ">
+              <Table className="mt-8">
                 <TableHead className="text-lg ">
                   <TableRow>
                     <TableHeaderCell>Date</TableHeaderCell>
