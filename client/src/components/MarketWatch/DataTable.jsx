@@ -104,13 +104,15 @@ const DataTable = () => {
         </MultiSelect>
         <Table className="mt-6">
           <TableHead className="text-base">
+            
             <TableRow >
+            <TableHeaderCell className="border rounded-md">Actions</TableHeaderCell>
               {columns.map((column) => (
                 <TableHeaderCell className="border rounded-md" key={column.accessor}>
                   {column.Header}
                 </TableHeaderCell>
               ))}
-              <TableHeaderCell className="border rounded-md">Actions</TableHeaderCell>
+              
             </TableRow>
           </TableHead>
 
@@ -119,6 +121,11 @@ const DataTable = () => {
               .filter((item) => isStockSelected(item))
               .map((item) => (
                 <TableRow key={item.id}>
+                  <TableCell>
+                    <button className="px-2 text-sm py-1 text-stock-tertiary border border-stock-secondary rounded-md hover:bg-stock-secondary">
+                      Add to Watchlist
+                    </button>
+                  </TableCell>
                   {columns.map((column) => (
                     <TableCell key={column.accessor}>
                       {column.accessor === "stock_symbol" ? (
@@ -156,11 +163,7 @@ const DataTable = () => {
                       )}
                     </TableCell>
                   ))}
-                  <TableCell>
-                    <button className="px-2 py-1 text-stock-tertiary border border-stock-secondary rounded-md hover:bg-stock-secondary">
-                      Add to Watchlist
-                    </button>
-                  </TableCell>
+                  
                 </TableRow>
               ))}
           </TableBody>
