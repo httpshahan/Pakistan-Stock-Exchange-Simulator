@@ -1,6 +1,8 @@
 // SideNavbar.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { MdDashboard, MdLogout } from "react-icons/md";
+import {FaBriefcase , FaExchangeAlt,FaMoneyCheckAlt, FaChartLine, FaChartBar, FaEye } from 'react-icons/fa';
 
 const SideNavbar = () => {
   const location = useLocation();
@@ -71,86 +73,94 @@ const SideNavbar = () => {
           <span className="text-xs">User Pannel</span>
           <ul className="m-2 text-stock-light">
             <li className="mb-2">
+              
               <Link
                 to="/dashboard"
-                className={`block p-2 rounded ${
+                className={`block p-2 rounded flex items-center gap-2 ${
                   isActive("/dashboard")
                     ? "bg-hover-primary text-stock-light font-semibold text-lg"
                     : "hover:bg-hover-secondary hover:text-hover-primary"
                 }`}
               >
+                <MdDashboard className="text-lg" />
                 Dashboard
               </Link>
             </li>
             <li className="mb-2">
               <Link
                 to="/portfolio"
-                className={`block p-2 rounded ${
+                className={`block p-2 rounded flex items-center gap-2 ${
                   isActive("/portfolio")
                     ? "bg-hover-primary text-stock-light font-semibold text-lg"
                     : "hover:bg-hover-secondary hover:text-hover-primary"
                 }`}
               >
-                Portfolio
+                <FaBriefcase />
+                <span>Portfolio</span>
               </Link>
             </li>
             <li className="mb-2">
               <Link
                 to="/transactions"
-                className={`block p-2 rounded ${
+                className={`block p-2 rounded flex items-center gap-2 ${
                   isActive("/transactions")
                     ? "bg-hover-primary text-stock-light font-semibold text-lg"
                     : "hover:bg-hover-secondary hover:text-hover-primary"
                 }`}
               >
-                Transactions
+                <FaMoneyCheckAlt className="text-lg" />
+                <span> Transactions </span>
               </Link>
             </li>
             <li className="mb-2">
               <Link
                 to="/trade"
-                className={`block p-2 rounded ${
+                className={`block p-2 rounded flex items-center gap-2 ${
                   isActive("/trade")
                     ? "bg-hover-primary text-stock-light font-semibold text-lg"
                     : "hover:bg-hover-secondary hover:text-hover-primary"
                 }`}
               >
+                <FaExchangeAlt />
                 Trade
               </Link>
             </li>
             <li className="mb-2">
               <Link
                 to="/watchlist"
-                className={`block p-2 rounded ${
+                className={`block p-2 rounded flex items-center gap-2 ${
                   isActive("/watchlist")
                     ? "bg-hover-primary text-stock-light font-semibold text-lg"
                     : "hover:bg-hover-secondary hover:text-hover-primary"
                 }`}
               >
+                <FaEye />
                 Watchlist
               </Link>
             </li>
             <li className="mb-2">
               <Link
                 to="/indices"
-                className={`block p-2 rounded ${
+                className={`block p-2 rounded flex items-center gap-2 ${
                   isActive("/indices")
                     ? "bg-hover-primary text-stock-light font-semibold text-lg"
                     : "hover:bg-hover-secondary hover:text-hover-primary"
                 }`}
               >
+                <FaChartLine />
                 Indices
               </Link>
             </li>
             <li className="mb-2">
               <Link
                 to="/market-watch"
-                className={`block p-2 rounded ${
+                className={`block p-2 rounded flex items-center gap-2 ${
                   isActive("/market-watch")
                     ? "bg-hover-primary text-stock-light font-semibold text-lg"
                     : "hover:bg-hover-secondary hover:text-hover-primary"
                 }`}
               >
+                <FaChartBar />
                 Market Watch
               </Link>
             </li>
@@ -159,7 +169,7 @@ const SideNavbar = () => {
 
         <div className={`p-5  md:block`}>
           <button
-            className="w-full p-2 rounded text-stock-light hover:bg-hover-secondary hover:text-hover-primary text-left"
+            className="w-full p-2 flex items-center gap-2 rounded text-stock-light hover:bg-hover-secondary hover:text-hover-primary text-left"
             onClick={() => {
               sessionStorage.removeItem("token");
               sessionStorage.removeItem("userId");
@@ -167,7 +177,8 @@ const SideNavbar = () => {
               window.location.href = "/";
             }}
           >
-            Logout
+            <span><MdLogout className="text-lg" /></span>
+            <span>Logout</span>
           </button>
         </div>
       </nav>
