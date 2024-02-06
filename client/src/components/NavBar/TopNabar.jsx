@@ -1,4 +1,3 @@
-// TopNavbar.js
 import React, { useState } from "react";
 import SearchDialog from "./SearchDialog";
 
@@ -17,23 +16,45 @@ function TopNavbar() {
   return (
     <div className="flex items-center bg-stock-primary h-20 p-8 shadow-md">
       <div className="w-full">
-        <p className="text-stock-light text-xl font-medium">Hello, {userName}</p>
+        <p className="text-stock-light text-xl font-medium">
+          Hello, {userName}
+        </p>
       </div>
       <div className="flex items-center justify-between gap-5">
-        <div
-          className="cursor-pointer bg-stock-light hover:bg-hover-primary transition-all"
-          onClick={openSearch}
-        >
-          {/* Your existing search bar */}
-          <div className="relative bg-stock-primary">
+        {/* Conditionally render search input based on screen size */}
+        <div className="relative">
+          <div className="md:block hidden">
             <input
               type="text"
               className="w-64 h-10 px-4 pr-16 text-sm text-gray-900 placeholder-gray-500 bg-stock-light border border-stock-primary rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-stock-primary focus:border-transparent"
               placeholder="Stocks....."
             />
-            <div className="absolute w-5 h-5 text-stock-primary top-3 right-3">
+            <div
+              className="absolute w-5 h-5 text-stock-primary top-3 right-3"
+              onClick={openSearch}
+            >
               <svg
-                className="w-4 h-4 text-stock-primary"
+                className="w-4 h-4 text-stock-primary cursor-pointer"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div className="md:hidden block">
+            <div className="flex justify-between items-center gap-16 mr-4 bg-stock-light p-2 rounded  text-stock-primary cursor-text" onClick={openSearch}>
+              <span>Search</span>
+              <svg
+                className="w-4 h-4 text-stock-primary cursor-pointer"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
