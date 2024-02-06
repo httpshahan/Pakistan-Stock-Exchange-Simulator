@@ -69,7 +69,7 @@ const Dashboard = () => {
   const accountValue = balance + portfolioValue;
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
       <SideNavbar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />

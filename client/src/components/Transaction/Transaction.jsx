@@ -32,7 +32,7 @@ const Transaction = () => {
   }, [userId]);
 
   return (
-    <div className="flex h-screen bg-stock-light">
+    <div className="flex h-screen bg-stock-light overflow-hidden">
       <SideNavbar />
       <div className="flex flex-col flex-1">
         <TopNavbar />

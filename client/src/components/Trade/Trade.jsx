@@ -13,7 +13,7 @@ const Trade = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <SideNavbar />
       <div className="flex flex-col flex-1">
         <TopNavbar />
