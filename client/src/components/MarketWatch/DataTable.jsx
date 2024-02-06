@@ -44,7 +44,7 @@ const DataTable = () => {
   const stockSymbols = data.map((stock) => stock.stock_symbol);
 
   const columns = [
-    { Header: "ID", accessor: "id" },
+    // { Header: "ID", accessor: "id" },
     { Header: "Stock Symbol", accessor: "stock_symbol" },
     { Header: "Open", accessor: "open" },
     { Header: "High", accessor: "high" },
@@ -110,6 +110,7 @@ const DataTable = () => {
                   {column.Header}
                 </TableHeaderCell>
               ))}
+              <TableHeaderCell className="border rounded-md">Actions</TableHeaderCell>
             </TableRow>
           </TableHead>
 
@@ -155,6 +156,11 @@ const DataTable = () => {
                       )}
                     </TableCell>
                   ))}
+                  <TableCell>
+                    <button className="px-2 py-1 text-stock-tertiary border border-stock-secondary rounded-md hover:bg-stock-secondary">
+                      Add to Watchlist
+                    </button>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
