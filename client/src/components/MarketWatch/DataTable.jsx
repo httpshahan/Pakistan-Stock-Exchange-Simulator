@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import apiService from "../../services/apiService";
+import { FaBookmark } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -60,7 +61,9 @@ const DataTable = () => {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full border-t-4 border-green-500 border-solid h-12 w-12"></div>
-        <div className="ml-3 text-xl font-semibold text-green-500">Loading...</div>
+        <div className="ml-3 text-xl font-semibold text-green-500">
+          Loading...
+        </div>
       </div>
     );
   }
@@ -87,7 +90,15 @@ const DataTable = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Market Watch</h1>
         <Badge className="bg-[#F7F7F7] text-[#84828A]">
-          As of {new Date(timestamp).toLocaleString('en-US', {  month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })}
+          As of{" "}
+          {new Date(timestamp).toLocaleString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          })}
         </Badge>
       </div>
       <div className="overflow-x-auto mt-6 border p-6 bg-white rounded-md shadow-md">
@@ -104,15 +115,18 @@ const DataTable = () => {
         </MultiSelect>
         <Table className="mt-6">
           <TableHead className="text-base">
-            
-            <TableRow >
-            <TableHeaderCell className="border rounded-md">Actions</TableHeaderCell>
+            <TableRow>
+              <TableHeaderCell className="border rounded-md">
+                Actions
+              </TableHeaderCell>
               {columns.map((column) => (
-                <TableHeaderCell className="border rounded-md" key={column.accessor}>
+                <TableHeaderCell
+                  className="border rounded-md"
+                  key={column.accessor}
+                >
                   {column.Header}
                 </TableHeaderCell>
               ))}
-              
             </TableRow>
           </TableHead>
 
@@ -122,8 +136,8 @@ const DataTable = () => {
               .map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>
-                    <button className="px-2 text-sm py-1 text-stock-tertiary border border-stock-secondary rounded-md hover:bg-stock-secondary">
-                      Add to Watchlist
+                    <button className="px-2 py-1 text-stock-tertiary ">
+                      <FaBookmark className="hover:text-stock-primary active:text-stock-secondary" />
                     </button>
                   </TableCell>
                   {columns.map((column) => (
@@ -163,7 +177,6 @@ const DataTable = () => {
                       )}
                     </TableCell>
                   ))}
-                  
                 </TableRow>
               ))}
           </TableBody>
