@@ -9,9 +9,14 @@
   --font-family: "Poppins", sans-serif;
 }
 
-@media (max-width: 786px) {
-  .navbar {
+@media (max-width: 770px) {
+  .mbView.hide {
     display: none;
+  }
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

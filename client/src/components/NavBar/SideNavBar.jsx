@@ -2,40 +2,34 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MdDashboard, MdLogout } from "react-icons/md";
-import {FaBriefcase , FaExchangeAlt,FaMoneyCheckAlt, FaChartLine, FaChartBar, FaEye } from 'react-icons/fa';
+import {
+  FaBriefcase,
+  FaExchangeAlt,
+  FaMoneyCheckAlt,
+  FaChartLine,
+  FaChartBar,
+  FaEye,
+} from "react-icons/fa";
 
 const SideNavbar = () => {
   const location = useLocation();
-  const [isMobileView, setIsMobileView] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleNav = () => {
+    console.log("toggleNav" + isOpen);
     setIsOpen(!isOpen);
-    setIsMobileView(!isMobileView);
+    console.log("after toggleNav" + isOpen);
   };
-
   const isActive = (path) => {
     return location.pathname === path;
   };
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setIsMobileView(window.innerWidth <= 768); // Change breakpoint if needed
-  //   };
-
-  //   window.addEventListener("resize", handleResize);
-
-  //   // Initial call to handleResize to set the initial state
-  //   handleResize();
-
-  //   // Cleanup
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, []);
-
   return (
     <>
       <nav
-        className={`navbar md:flex md:flex-col md:min-h-screen md:w-56 md:sticky md:top-0 bg-stock-primary shadow-md transition-all duration-300 `}
+        className={`mbView flex flex-col min-h-screen w-56 sticky md:top-0 bg-stock-primary shadow-md transition-all duration-300 ease-in-out ${
+          isOpen ? "hide" : "flex"
+        }`}
       >
         <div className={`flex items-center p-8 h-20`}>
           <Link to="/dashboard">
@@ -46,7 +40,7 @@ const SideNavbar = () => {
               Trade
             </span>
           </Link>
-          <button
+          {/* <button
             className="ml-6  md:hidden"
             onClick={toggleNav}
             aria-label="Toggle Nav"
@@ -62,16 +56,15 @@ const SideNavbar = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d = "M6 18L18 6M6 6l12 12"
+                d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          </button>
+          </button> */}
         </div>
         <div className={`p-5 mt-4 text-stock-light md:block`}>
           <span className="text-xs">User Pannel</span>
           <ul className="m-2 text-stock-light">
             <li className="mb-2">
-              
               <Link
                 to="/dashboard"
                 className={`block p-2 rounded flex items-center gap-2 ${
@@ -175,12 +168,16 @@ const SideNavbar = () => {
               window.location.href = "/";
             }}
           >
-            <span><MdLogout className="text-lg" /></span>
+            <span>
+              <MdLogout className="text-lg" />
+            </span>
             <span>Logout</span>
           </button>
         </div>
       </nav>
-      <div className= {`md:hidden bg-stock-primary h-20 w-12 items-center justify-center  ${isOpen ? "flex" : "hidden" } `}>
+      <div
+        className={`md:hidden bg-stock-primary h-20 w-12 btn `} 
+      >
         <button onClick={toggleNav} aria-label="Toggle Nav">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +190,7 @@ const SideNavbar = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d={"M4 6h16M4 12h16M4 18h16"}
+              d={ isOpen ? "M4 6h16M4 12h16M4 18h16" : "M6 18L18 6M6 6l12 12"}
             />
           </svg>
         </button>
