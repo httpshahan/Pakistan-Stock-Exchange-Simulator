@@ -9,6 +9,12 @@
   --font-family: "Poppins", sans-serif;
 }
 
+@media (max-width: 786px) {
+  .navbar {
+    display: none;
+  }
+}
+
 @layer utilities {
   /* Light Theme */
   .bg-stock-primary {

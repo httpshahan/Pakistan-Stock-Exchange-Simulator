@@ -18,26 +18,24 @@ const SideNavbar = () => {
     return location.pathname === path;
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 768); // Change breakpoint if needed
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setIsMobileView(window.innerWidth <= 768); // Change breakpoint if needed
+  //   };
 
-    window.addEventListener("resize", handleResize);
+  //   window.addEventListener("resize", handleResize);
 
-    // Initial call to handleResize to set the initial state
-    handleResize();
+  //   // Initial call to handleResize to set the initial state
+  //   handleResize();
 
-    // Cleanup
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  //   // Cleanup
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
 
   return (
     <>
       <nav
-        className={`md:flex md:flex-col md:min-h-screen md:w-56 md:sticky md:top-0 bg-stock-primary shadow-md transition-all duration-300 ${
-          isMobileView ? "hidden" : "block"
-        }`}
+        className={`navbar md:flex md:flex-col md:min-h-screen md:w-56 md:sticky md:top-0 bg-stock-primary shadow-md transition-all duration-300 `}
       >
         <div className={`flex items-center p-8 h-20`}>
           <Link to="/dashboard">
