@@ -176,7 +176,7 @@ const SideNavbar = () => {
         </div>
       </nav>
       <div
-        className={`md:hidden bg-stock-primary h-20 w-12 btn `} 
+        className={`md:hidden bg-stock-primary h-20 w-12 btn ${!isOpen ? "open" : ""}`} 
       >
         <button onClick={toggleNav} aria-label="Toggle Nav">
           <svg

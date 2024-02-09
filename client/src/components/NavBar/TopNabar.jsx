@@ -16,14 +16,16 @@ function TopNavbar() {
   return (
     <div className="flex items-center bg-stock-primary h-20 p-8 shadow-md">
       <div className="w-full">
-        <p className="text-stock-light text-xl font-medium">
+        <p className="text-stock-light pl-6 text-xl font-medium">
           Hello, {userName}
         </p>
       </div>
       <div className="flex items-center justify-between gap-5">
         {/* Conditionally render search input based on screen size */}
         <div className="relative">
-          <div className="md:block hidden">
+          <div className="md:block hidden"
+            onClick={openSearch}
+          >
             <input
               type="text"
               className="w-64 h-10 px-4 pr-16 text-sm text-gray-900 placeholder-gray-500 bg-stock-light border border-stock-primary rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-stock-primary focus:border-transparent"
@@ -31,7 +33,6 @@ function TopNavbar() {
             />
             <div
               className="absolute w-5 h-5 text-stock-primary top-3 right-3"
-              onClick={openSearch}
             >
               <svg
                 className="w-4 h-4 text-stock-primary cursor-pointer"

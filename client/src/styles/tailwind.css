@@ -15,8 +15,12 @@
   }
   .btn {
     display: flex;
+    position: absolute;
     justify-content: center;
     align-items: center;
+  }
+  .open {
+    left: 14rem;
   }
 }
 
