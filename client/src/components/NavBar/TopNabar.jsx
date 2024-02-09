@@ -13,6 +13,10 @@ function TopNavbar() {
     setIsSearchOpen(false);
   };
 
+  const openProfile = () => {
+    window.location.href = '/profile';
+  }
+
   return (
     <div className="flex items-center bg-stock-primary h-20 p-8 shadow-md">
       <div className="w-full">
@@ -73,7 +77,8 @@ function TopNavbar() {
           </div>
         </div>
         <div className="flex items-center">
-          <div className="relative w-auto text-stock-secondary hover:text-hover-secondary">
+          <div className="relative w-auto text-stock-secondary hover:text-hover-secondary cursor-pointer"
+          onClick={openProfile}>
             Profile
           </div>
         </div>
