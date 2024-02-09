@@ -12,6 +12,7 @@ import Trade from "./components/Trade/Trade";
 import HeatMap from "./components/Indices/HeatMap";
 import Watchlist from "./components/Watchlist/Watchlist";
 import NotFound from "./components/NotFound/NotFound";
+import UserProfile from "./components/userProfile/userProfile";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/transactions" element={<Transaction />} />
         <Route path="/indices" element={<HeatMap />} />
         <Route path="/watchlist" element={<Watchlist />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
