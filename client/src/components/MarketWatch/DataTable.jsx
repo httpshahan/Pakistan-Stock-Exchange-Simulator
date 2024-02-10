@@ -21,8 +21,7 @@ const DataTable = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timestamp, setTimestamp] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15; // Number of items to display per page
+
 
   const [selectedStocks, setSelectedStocks] = useState([]);
 
@@ -72,15 +71,7 @@ const DataTable = () => {
     return <p>{error}</p>;
   }
 
-  // Calculate the indexes of the items to be displayed on the current page
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
-
-  // Function to handle page changes
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+ 
 
   const isStockSelected = (stock) =>
     selectedStocks.length === 0 || selectedStocks.includes(stock.stock_symbol);
