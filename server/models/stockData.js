@@ -233,6 +233,19 @@ const getWatchlist = async (userId) => {
   }
 };
 
+const removeWatchlistItem = async (userId, symbol) => {
+  try {
+    const result = await pool.query(
+      `DELETE FROM watchlist WHERE user_id = $1 AND stock_symbol = $2 RETURNING *`,
+      [userId, symbol]
+    );
+    return result.rows;
+  } catch (err) {
+    console.error("Error removing from watchlist:", err);
+    throw err;
+  }
+};
+
 
 module.exports = {
   insertScrapedData,
@@ -246,4 +259,5 @@ module.exports = {
   addWatchlist,
   compareWatchlist,
   getWatchlist,
+  removeWatchlistItem,
 };

@@ -10,6 +10,7 @@ const {
   addWatchlist,
   compareWatchlist,
   getWatchlist,
+  removeWatchlistItem,
 } = require("../models/stockData");
 const { getTransactions } = require("../models/tradeModel");
 
@@ -159,7 +160,7 @@ const getWatchlistItems = async (req, res) => {
   try {
     const userId = req.params.userId;
     const watchlistItems = await getWatchlist(userId);
-    if (!watchlistItems) {
+    if (watchlistItems.length === 0) {
       return res.status(404).json({ error: "Watchlist items not found" });
     }
     return res.status(200).json(watchlistItems);
@@ -168,6 +169,22 @@ const getWatchlistItems = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+const removeFromWatchlist = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const symbol = req.params.symbol;
+    const result = await removeWatchlistItem(userId, symbol);
+    if (!result) {
+      return res.status(404).json({ error: "Watchlist item not found" });
+    }
+    return res.status(200).json({ message: "Successfully removed from watchlist", data: result });
+  } catch (error) {
+    console.error("Error removing from watchlist:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 
 module.exports = {
@@ -181,4 +198,5 @@ module.exports = {
   getAllTransactions,
   addToWatchlist,
   getWatchlistItems,
+  removeFromWatchlist,
 };

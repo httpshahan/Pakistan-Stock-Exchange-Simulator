@@ -15,5 +15,6 @@ router.get("/userAssets/:userId", stockController.getUserStocks);
 router.get("/transactions", stockController.getAllTransactions);
 router.post("/addToWatchlist/:userId/:symbol", stockController.addToWatchlist);
 router.get("/getWatchlist/:userId", stockController.getWatchlistItems);
+router.delete("/removeFromWatchlist/:userId/:symbol", stockController.removeFromWatchlist);
 
 module.exports = router;
