@@ -29,11 +29,10 @@ const AdminLogin = () => {
       console.log(data);
       console.log("Login Success");
       alert("Login Success");
-      navigate("/dashboard");
+      navigate("/admin-dashboard");
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
-          setPasswordError("Invalid password");
           setPassword("");
           setInvalidPassword(true);
         } else if (error.response.status === 404) {
