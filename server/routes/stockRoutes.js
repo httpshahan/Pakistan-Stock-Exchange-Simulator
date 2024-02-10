@@ -13,5 +13,6 @@ router.get("/activeStocks/", stockController.activeStocks);
 router.get("/searchStocks", stockController.searchStock);
 router.get("/userAssets/:userId", stockController.getUserStocks);
 router.get("/transactions", stockController.getAllTransactions);
+router.post("/addToWatchlist/:userId/:symbol", stockController.addToWatchlist);
 
 module.exports = router;

@@ -7,6 +7,7 @@ const {
   getActiveStocks,
   searchStocks,
   getUserAssets,
+  addWatchlist,
 } = require("../models/stockData");
 const { getTransactions } = require("../models/tradeModel");
 
@@ -128,6 +129,21 @@ const getAllTransactions = async (req, res) => {
   }
 };
 
+const addToWatchlist = async (req, res) => {
+  try {
+    const result = await addWatchlist(req.params.userId, req.params.symbol);
+    if (!result) {
+      return res.status(404).json({ error: "Stock not found" });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Succesfully Added to Watchlist", data: result });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   getStocks,
   getStock,
@@ -137,4 +153,5 @@ module.exports = {
   searchStock,
   getUserStocks,
   getAllTransactions,
+  addToWatchlist,
 };

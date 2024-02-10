@@ -189,6 +189,20 @@ const getActiveStocks = async () => {
   }
 };
 
+const addWatchlist = async ( userId, symbol) => {
+  try {
+    const result = await pool.query(
+      `INSERT INTO watchlist (user_id, stock_symbol) VALUES ($1, $2) RETURNING *`,
+      [userId, symbol]
+    );
+    return result.rows;
+  } catch (err) {
+    console.error("Error adding to watchlist:", err);
+    throw err;
+  }
+};
+
+
 module.exports = {
   insertScrapedData,
   getAllStocks,
@@ -198,4 +212,5 @@ module.exports = {
   getActiveStocks,
   searchStocks,
   getUserAssets,
+  addWatchlist,
 };
