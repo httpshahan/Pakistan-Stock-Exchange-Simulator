@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import UserManagement from "./UserManag";
 import TransactionHistory from "./Transaction";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
@@ -13,14 +14,13 @@ const AdminDash = () => {
             Logout
           </button>
         </header>
-
-        <main className="flex-1 p-6 justify-center">
+        <main className="flex-1 p-6 justify-center overflow-hidden">
           <TabGroup>
             <TabList>
               <Tab>Users</Tab>
               <Tab>Transactions</Tab>
             </TabList>
-            <TabPanels>
+            <TabPanels className="overflow-x-auto">
               <TabPanel>
                 <UserManagement />
               </TabPanel>
@@ -30,6 +30,7 @@ const AdminDash = () => {
             </TabPanels>
           </TabGroup>
         </main>
+
         <footer className="bg-white py-4 px-6 border-t">
           <p className="text-sm text-gray-600">
             © 2024 Stock Exchange Simulator

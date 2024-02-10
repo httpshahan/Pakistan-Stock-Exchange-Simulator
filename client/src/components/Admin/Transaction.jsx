@@ -14,7 +14,7 @@ const TransactionHistory = () => {
   }, []);
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white h-screen rounded-lg shadow-md p-6">
       <h3 className="text-xl font-semibold mb-4 text-gray-800">Trading Data</h3>
       <div className="overflow-x-auto">
         <table className="table-auto w-full">
