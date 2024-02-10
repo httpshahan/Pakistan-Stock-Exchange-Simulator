@@ -85,6 +85,10 @@ const DataTable = () => {
   const isStockSelected = (stock) =>
     selectedStocks.length === 0 || selectedStocks.includes(stock.stock_symbol);
 
+  const addToWatchlist = (stock) => {
+    console.log("Adding to watchlist:", stock.stock_symbol);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -136,7 +140,8 @@ const DataTable = () => {
               .map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>
-                    <button className="px-2 py-1 text-stock-tertiary ">
+                    <button className="px-2 py-1 text-stock-tertiary"
+                    onClick={() => addToWatchlist(item)}>
                       <FaBookmark className="hover:text-stock-primary active:text-stock-secondary" />
                     </button>
                   </TableCell>
