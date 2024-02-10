@@ -159,7 +159,7 @@ const Register = () => {
       </div>
       <div className="w-1/2 flex justify-center items-center">
         <div className="flex flex-col items-center">
-          <h2 className="text-4xl font-bold mb-4">Pakistan Stock Exchange</h2>
+          <h2 className="text-4xl font-bold mb-4 text-hover-secondary">Pakistan Stock Exchange</h2>
           <p className="text-lg mb-4">"Invest in your future."</p>
           <Link to="/" className="text-lg underline focus:outline-none hover:text-yellow-100 transition-colors duration-300">Login now</Link>
         </div>

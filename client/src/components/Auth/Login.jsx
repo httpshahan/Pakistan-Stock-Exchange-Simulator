@@ -9,8 +9,16 @@ const Login = () => {
   const [invalid, setInvalid] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent form submission if any validation fails
+
     try {
+      // Form validation
+      if (!email || !password) {
+        alert("Email and password are required.");
+        return;
+      }
+
       const data = await authService.login(email, password);
 
       setInvalid(false);
@@ -45,7 +53,7 @@ const Login = () => {
     <div className="flex justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600 text-gray-800">
       <div className="w-1/2 flex justify-center items-center">
         <div className="flex flex-col items-center">
-          <h2 className="text-4xl font-bold mb-4">Pakistan Stock Exchange</h2>
+          <h2 className="text-4xl text-hover-secondary font-bold mb-4">Pakistan Stock Exchange</h2>
           <p className="text-lg mb-4">"Invest in your future."</p>
           <button
             onClick={handleRegisterClick}
@@ -57,14 +65,14 @@ const Login = () => {
       </div>
       <div className="flex justify-center items-center w-1/2">
         <div className="bg-white p-8 rounded shadow-md w-96">
-          <h2 className="text-3xl font-semibold mb-4 text-green-500">Login</h2>
+          <h2 className="text-3xl font-semibold mb-4 text-stock-primary">Login</h2>
           <div
             className="text-red-500 mb-4"
             style={{ display: invalid ? "block" : "none" }}
           >
             <p className="text-sm font-sans">Invalid Credentials</p>
           </div>
-          <form>
+          <form onSubmit={handleLogin}> {/* Use onSubmit to trigger handleLogin */}
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -79,6 +87,7 @@ const Login = () => {
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
                 className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${
                   invalid ? "border-red-500" : ""
                 }`}
@@ -97,6 +106,7 @@ const Login = () => {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
                 className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${
                   invalidPassword ? "border-red-500" : ""
                 }`}
@@ -109,8 +119,7 @@ const Login = () => {
               </div>
             </div>
             <button
-              type="button"
-              onClick={handleLogin}
+              type="submit" 
               className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
             >
               Login
