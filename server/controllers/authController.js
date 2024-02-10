@@ -103,7 +103,7 @@ const admin = async (req, res) => {
     // Check if the user exists
     const admin = await getAdminByEmail(email);
     if (!admin) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(404).json({ error: 'Invalid email' });
     }
 
     // Compare passwords

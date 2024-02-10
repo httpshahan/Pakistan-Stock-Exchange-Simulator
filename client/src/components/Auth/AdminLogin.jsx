@@ -2,19 +2,29 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
 
-const Login = () => {
+const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const [invalid, setInvalid] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [invalidPassword, setInvalidPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      setEmailError(email ? "" : "Email is required");
+      setPasswordError(password ? "" : "Password is required");
+      return;
+    }
+
     try {
       const data = await authService.adminLogin(email, password);
 
-      setInvalid(false);
+      setEmailError("");
+      setPasswordError("");
       setInvalidPassword(false);
+      setEmail("");
+      setPassword("");
 
       console.log(data);
       console.log("Login Success");
@@ -23,27 +33,24 @@ const Login = () => {
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
+          setPasswordError("Invalid password");
+          setPassword("");
           setInvalidPassword(true);
         } else if (error.response.status === 404) {
-          setInvalid(true);
+          setEmailError("Invalid email");
+          setEmail("");
+          setPassword("");
         }
       } else {
         console.error("Error during login:", error);
       }
-      alert("Invalid Credentials");
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="bg-gray-100 p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-semibold mb-4">Login</h2>
-        <div
-          className="text-red-500 mb-4"
-          style={{ display: invalid ? "block" : "none" }}
-        >
-          <p className="text-sm font-sans"> Invalid Credentials</p>
-        </div>
+    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600">
+      <div className="bg-white p-8 rounded shadow-md w-96">
+        <h2 className="text-2xl font-semibold mb-5 text-stock-primary">Admin Login</h2>
         <form>
           <div className="mb-4">
             <label
@@ -58,11 +65,15 @@ const Login = () => {
               placeholder="abc@example.com"
               name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError("");
+              }}
               className={`mt-1 p-2 w-full border rounded-md ${
-                invalid ? "border-red-500" : ""
+                emailError ? "border-red-500" : ""
               }`}
             />
+            {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
           </div>
           <div className="mb-4">
             <label
@@ -76,22 +87,25 @@ const Login = () => {
               id="password"
               name="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordError("");
+              }}
               className={`mt-1 p-2 w-full border rounded-md ${
-                invalidPassword ? "border-red-500" : ""
+                invalidPassword || passwordError ? "border-red-500" : ""
               }`}
             />
-            <div
-              className="text-red-500 mt-2"
-              style={{ display: invalidPassword ? "block" : "none" }}
-            >
-              <p className="text-sm font-sans"> Invalid Password</p>
-            </div>
+            {passwordError && (
+              <p className="text-red-500 text-sm">{passwordError}</p>
+            )}
+            {invalidPassword && (
+              <p className="text-red-500 text-sm">Invalid password</p>
+            )}
           </div>
           <button
             type="button"
             onClick={handleLogin}
-            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+            className="w-full bg-green-500 mt-4 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
           >
             Login
           </button>
@@ -101,4 +115,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;
