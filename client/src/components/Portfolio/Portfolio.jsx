@@ -62,10 +62,7 @@ const Portfolio = () => {
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
         <div className="flex-1 overflow-auto p-6">
-          <Metric className="mb-6 text-3xl font-semibold">
-            Portfolio
-          </Metric>
-
+          <Metric className="mb-6 text-3xl font-semibold">Portfolio</Metric>
           {/* Cards Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {[
