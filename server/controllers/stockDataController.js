@@ -8,6 +8,7 @@ const {
   searchStocks,
   getUserAssets,
 } = require("../models/stockData");
+const { getTransactions } = require("../models/tradeModel");
 
 const getStocks = async (req, res) => {
   try {
@@ -111,6 +112,22 @@ const activeStocks = async (req, res) => {
   }
 };
 
+const getAllTransactions = async (req, res) => {
+  try {
+    const result = await getTransactions();
+    if (!result) {
+      return res.status(404).json({ error: "Transaction not found" });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Succesfully Get all the Transactions", data: result });
+    }
+  }
+  catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   getStocks,
   getStock,
@@ -119,4 +136,5 @@ module.exports = {
   activeStocks,
   searchStock,
   getUserStocks,
+  getAllTransactions,
 };

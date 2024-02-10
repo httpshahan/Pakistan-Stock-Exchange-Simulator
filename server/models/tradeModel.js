@@ -1,7 +1,13 @@
 const pool = require("../db/pool");
 
 const transactionsModel = {
-  async buyStock(userId, stockSymbol, quantity, transactionPrice, transactionValue) {
+  async buyStock(
+    userId,
+    stockSymbol,
+    quantity,
+    transactionPrice,
+    transactionValue
+  ) {
     try {
       const quantityInt = parseInt(quantity);
       const totalTransactionCost = parseFloat(transactionValue);
@@ -12,7 +18,6 @@ const transactionsModel = {
         [userId, stockSymbol]
       );
 
-      
       // Check if the user has enough balance to make the purchase
       const userBalanceResult = await pool.query(
         "SELECT balance FROM users WHERE id = $1",
@@ -30,8 +35,7 @@ const transactionsModel = {
         const existingQuantity = parseInt(existingStockResult.rows[0].quantity);
         const newTotalQuantity = existingQuantity + quantityInt;
         const price = parseFloat(existingStockResult.rows[0].purchase_price);
-        const newPrice = (price + transactionPriceFloat)/2;
-
+        const newPrice = (price + transactionPriceFloat) / 2;
 
         await pool.query(
           `
@@ -67,30 +71,41 @@ const transactionsModel = {
         [totalTransactionCost, userId]
       );
 
-      return { message: "Stock purchased successfully."};
+      return { message: "Stock purchased successfully." };
     } catch (error) {
       throw error;
     }
   },
 
-  async sellStock(userId, stockSymbol, quantity, transactionPrice, transactionValue) {
+  async sellStock(
+    userId,
+    stockSymbol,
+    quantity,
+    transactionPrice,
+    transactionValue
+  ) {
     try {
       const quantityInt = parseInt(quantity);
-      const totalTransactionValue = parseFloat(transactionValue)
+      const totalTransactionValue = parseFloat(transactionValue);
       // Check if the user owns enough quantity of the specified stock
       const userStockResult = await pool.query(
         "SELECT * FROM user_assets WHERE user_id = $1 AND stock_symbol = $2",
         [userId, stockSymbol]
       );
-  
-      if (userStockResult.rows.length === 0 || userStockResult.rows[0].quantity < quantityInt) {
-        throw new Error("Insufficient quantity of the specified stock for the sell transaction.");
+
+      if (
+        userStockResult.rows.length === 0 ||
+        userStockResult.rows[0].quantity < quantityInt
+      ) {
+        throw new Error(
+          "Insufficient quantity of the specified stock for the sell transaction."
+        );
       }
-  
+
       // Update user_assets to deduct the sold quantity
       const existingQuantity = userStockResult.rows[0].quantity;
       const newQuantity = existingQuantity - quantityInt;
-  
+
       if (newQuantity === 0) {
         // If selling all stocks, delete the record from user_assets
         await pool.query(
@@ -104,25 +119,24 @@ const transactionsModel = {
           [newQuantity, userId, stockSymbol]
         );
       }
-  
+
       // Insert transaction record for selling
       await pool.query(
         "INSERT INTO user_transactions (user_id, stock_symbol, transaction_type, quantity, transaction_price) VALUES ($1, $2, 'S', $3, $4)",
         [userId, stockSymbol, quantity, transactionPrice]
       );
-  
+
       // Update user balance
       await pool.query(
         "UPDATE users SET balance = balance + $1 WHERE id = $2",
         [totalTransactionValue, userId]
       );
-  
+
       return { message: "Stock sold successfully." };
     } catch (error) {
       throw error;
     }
-  }
-  ,
+  },
   async getTransactions(userId) {
     try {
       const result = await pool.query(
@@ -134,6 +148,16 @@ const transactionsModel = {
       throw error;
     }
   },
+  async getTransactions(){
+    try {
+      const result = await pool.query(
+        "SELECT * FROM user_transactions ORDER BY transaction_date DESC"
+      );
+      return result.rows;
+    } catch (error) {
+      throw error;
+    }
+  }
 };
 
 module.exports = transactionsModel;
