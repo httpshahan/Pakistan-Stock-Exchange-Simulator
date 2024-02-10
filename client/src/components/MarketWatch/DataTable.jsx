@@ -21,6 +21,7 @@ const DataTable = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timestamp, setTimestamp] = useState("");
+  const userId = sessionStorage.getItem("userId");
 
 
   const [selectedStocks, setSelectedStocks] = useState([]);
@@ -78,6 +79,13 @@ const DataTable = () => {
 
   const addToWatchlist = (stock) => {
     console.log("Adding to watchlist:", stock.stock_symbol);
+    try {
+      const response = apiService.post(`/stocks/addToWatchlist/${userId}/${stock.stock_symbol}`);
+      console.log("Added to watchlist:", response);
+    }
+    catch (error) {
+      console.error("Error adding to watchlist:", error);
+    }
   };
 
   return (
