@@ -25,10 +25,10 @@ const AdminLogin = () => {
       setInvalidPassword(false);
       setEmail("");
       setPassword("");
-
-      console.log(data);
+      sessionStorage.setItem("token", data.token);
       console.log("Login Success");
       alert("Login Success");
+
       navigate("/admin-dashboard");
     } catch (error) {
       if (error.response) {

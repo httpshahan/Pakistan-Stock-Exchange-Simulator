@@ -1,25 +1,9 @@
 import React, { useState } from "react";
-import TopNavBar from "./TopNav";
 import UserManagement from "./UserManag";
 import TransactionHistory from "./Transaction";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
 
 const AdminDash = () => {
-  // Example data for user accounts and invested money
-
-  // Example data for trading data
-
-  // Notification state
-  const [notification, setNotification] = useState("");
-
-  // Function to handle adding notifications
-  const handleAddNotification = () => {
-    // Logic to add notification (you can implement as needed)
-    console.log("Notification added:", notification);
-    // Clear the input field after adding the notification
-    setNotification("");
-  };
-
   return (
     <div className="flex h-screen bg-gray-100">
       <div className="flex-1 flex flex-col">
