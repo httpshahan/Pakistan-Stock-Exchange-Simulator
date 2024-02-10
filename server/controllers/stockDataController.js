@@ -9,6 +9,7 @@ const {
   getUserAssets,
   addWatchlist,
   compareWatchlist,
+  getWatchlist,
 } = require("../models/stockData");
 const { getTransactions } = require("../models/tradeModel");
 
@@ -154,6 +155,20 @@ const addToWatchlist = async (req, res) => {
   }
 };
 
+const getWatchlistItems = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const watchlistItems = await getWatchlist(userId);
+    if (!watchlistItems) {
+      return res.status(404).json({ error: "Watchlist items not found" });
+    }
+    return res.status(200).json(watchlistItems);
+  } catch (error) {
+    console.error("Error getting watchlist items:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 module.exports = {
   getStocks,
@@ -165,4 +180,5 @@ module.exports = {
   getUserStocks,
   getAllTransactions,
   addToWatchlist,
+  getWatchlistItems,
 };

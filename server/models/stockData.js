@@ -218,7 +218,12 @@ const compareWatchlist = async (userId, symbol) => {
 const getWatchlist = async (userId) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM watchlist WHERE user_id = $1`,
+      `SELECT w.*, s.*, sd.*
+      FROM watchlist w
+      JOIN stock s ON w.stock_symbol = s.symbol
+      JOIN stock_data sd ON s.symbol = sd.stock_symbol
+      WHERE w.user_id = $1;
+      `,
       [userId]
     );
     return result.rows;
@@ -240,4 +245,5 @@ module.exports = {
   getUserAssets,
   addWatchlist,
   compareWatchlist,
+  getWatchlist,
 };
