@@ -3,6 +3,7 @@ import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import apiService from "../../services/apiService";
 import { Metric } from "@tremor/react";
+import { toast } from 'react-toastify';
 
 const Watchlist = () => {
   const userId = sessionStorage.getItem("userId");
@@ -39,6 +40,7 @@ const Watchlist = () => {
       await apiService.delete(`/stocks/removeFromWatchlist/${userId}/${symbol}`);
       // After successful removal, fetch updated watchlist data
       const response = await apiService.get(`/stocks/getWatchlist/${userId}`);
+      toast.success('Stock removed from watchlist');
       setWatchlist(response.data);
       if (response.data.length === 0) {
         setNoData(true);
