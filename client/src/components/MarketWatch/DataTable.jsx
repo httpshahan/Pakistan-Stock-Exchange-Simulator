@@ -23,7 +23,6 @@ const DataTable = () => {
   const [timestamp, setTimestamp] = useState("");
   const userId = sessionStorage.getItem("userId");
 
-
   const [selectedStocks, setSelectedStocks] = useState([]);
 
   useEffect(() => {
@@ -72,19 +71,33 @@ const DataTable = () => {
     return <p>{error}</p>;
   }
 
- 
-
   const isStockSelected = (stock) =>
     selectedStocks.length === 0 || selectedStocks.includes(stock.stock_symbol);
 
-  const addToWatchlist = (stock) => {
-    console.log("Adding to watchlist:", stock.stock_symbol);
+  const addToWatchlist = async (stock) => {
     try {
-      const response = apiService.post(`/stocks/addToWatchlist/${userId}/${stock.stock_symbol}`);
-      console.log("Added to watchlist:", response);
-    }
-    catch (error) {
+      const response = await apiService.post(
+        `/stocks/addToWatchlist/${userId}/${stock.stock_symbol}`
+      );
+
+      console.log("Response:", response);
+
+      // Handle success response
+      if (response.status === 200) {
+        // Display a success message to the user
+        alert("Stock successfully added to watchlist!");
+      }
+    } catch (error) {
+      // Handle other errors
       console.error("Error adding to watchlist:", error);
+      // Check if the error is due to the stock already existing in the watchlist
+      if (error.response && error.response.status === 409) {
+        // Display an alert to the user indicating that the stock already exists in the watchlist
+        alert("Stock already exists in watchlist!");
+      } else {
+        // Display a generic error message to the user for other errors
+        alert("Error adding stock to watchlist. Please try again later.");
+      }
     }
   };
 
@@ -139,8 +152,10 @@ const DataTable = () => {
               .map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>
-                    <button className="px-2 py-1 text-stock-tertiary"
-                    onClick={() => addToWatchlist(item)}>
+                    <button
+                      className="px-2 py-1 text-stock-tertiary"
+                      onClick={() => addToWatchlist(item)}
+                    >
                       <FaBookmark className="hover:text-stock-primary active:text-stock-secondary" />
                     </button>
                   </TableCell>

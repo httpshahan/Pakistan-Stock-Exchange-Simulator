@@ -202,6 +202,32 @@ const addWatchlist = async ( userId, symbol) => {
   }
 };
 
+const compareWatchlist = async (userId, symbol) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM watchlist WHERE user_id = $1 AND stock_symbol = $2`,
+      [userId, symbol]
+    );
+    return result.rows;
+  } catch (err) {
+    console.error("Error comparing watchlist:", err);
+    throw err;
+  }
+};
+
+const getWatchlist = async (userId) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM watchlist WHERE user_id = $1`,
+      [userId]
+    );
+    return result.rows;
+  } catch (err) {
+    console.error("Error getting watchlist:", err);
+    throw err;
+  }
+};
+
 
 module.exports = {
   insertScrapedData,
@@ -213,4 +239,5 @@ module.exports = {
   searchStocks,
   getUserAssets,
   addWatchlist,
+  compareWatchlist,
 };

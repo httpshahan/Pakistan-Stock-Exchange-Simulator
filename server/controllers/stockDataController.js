@@ -8,6 +8,7 @@ const {
   searchStocks,
   getUserAssets,
   addWatchlist,
+  compareWatchlist,
 } = require("../models/stockData");
 const { getTransactions } = require("../models/tradeModel");
 
@@ -131,18 +132,28 @@ const getAllTransactions = async (req, res) => {
 
 const addToWatchlist = async (req, res) => {
   try {
-    const result = await addWatchlist(req.params.userId, req.params.symbol);
+    const userId = req.params.userId;
+    const symbol = req.params.symbol;
+
+    // Check if the watchlist item already exists for the user and symbol
+    const existingWatchlist = await compareWatchlist(userId, symbol);
+    if (existingWatchlist.length > 0) {
+      return res.status(409).json({ error: "Watchlist item already exists" });
+    }
+
+    // Add the watchlist item if it doesn't already exist
+    const result = await addWatchlist(userId, symbol);
     if (!result) {
       return res.status(404).json({ error: "Stock not found" });
     } else {
-      res
-        .status(200)
-        .json({ message: "Succesfully Added to Watchlist", data: result });
+      return res.status(200).json({ message: "Successfully added to watchlist", data: result });
     }
   } catch (error) {
+    console.error("Error adding to watchlist:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 module.exports = {
   getStocks,
