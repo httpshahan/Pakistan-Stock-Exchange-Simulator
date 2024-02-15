@@ -3,6 +3,7 @@ import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import apiService from "../../services/apiService";
 import StockTable from "./StockTable";
+import Watchlist from "./Watchlist";
 import { Card, Grid, Metric, Text } from "@tremor/react";
 
 const Dashboard = () => {
@@ -10,11 +11,11 @@ const Dashboard = () => {
   const [topAdvancers, setTopAdvancers] = useState([]);
   const [topDecliners, setTopDecliners] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
+  const [watchlist, setWatchlist] = useState([]);
   const [balance, setBalance] = useState(
     Number(sessionStorage.getItem("balance"))
   );
   const userId = sessionStorage.getItem("userId");
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +35,7 @@ const Dashboard = () => {
         );
         setTopDecliners(topDeclinersResponse.data.data);
 
+        // Fetch user's portfolio data
         try {
           const response = await apiService.get(`/stocks/userAssets/${userId}`);
           const sortedPortfolio = response.data.data.sort((a, b) =>
@@ -45,6 +47,16 @@ const Dashboard = () => {
           console.error("Error fetching data:", error);
         }
 
+        // Fetch user's watchlist data
+        try {
+          const response = await apiService.get(
+            `/stocks/getWatchlist/${userId}`
+          );
+          setWatchlist(response.data);
+          console.log(response.data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
         // Set loading to false after scraping and fetching processes complete
         setLoading(false);
       } catch (error) {
@@ -106,11 +118,16 @@ const Dashboard = () => {
                 </Card>
               </Grid>
 
-              
-
-              <div className="flex gap-4 mt-8">
-                <StockTable title="Top Advancers" data={topAdvancers} />
-                <StockTable title="Top Decliners" data={topDecliners} />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                <div className="border rounded-lg shadow-md">
+                  <StockTable title="Top Advancers" data={topAdvancers} />
+                </div>
+                <div className="border rounded-lg shadow-md ">
+                  <StockTable title="Top Decliners" data={topDecliners} />
+                </div>
+                <div className="border rounded-lg shadow-md">
+                  <StockTable title="Watchlist" data={watchlist} />
+                </div>
               </div>
             </div>
           )}

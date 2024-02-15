@@ -2,11 +2,11 @@ import React from "react";
 
 const StockTable = ({ title, data }) => {
   return (
-    <div className="w-auto h-full p-4 bg-white rounded-lg shadow-md flex flex-col justify-start items-start gap-4">
+    <div className=" h-full p-4 bg-white rounded-lg shadow-md flex flex-col justify-start items-start gap-4">
       <div className="text-center text-zinc-800 font-semibold mb-4">
         {title}
       </div>
-      <div className="w-98 grid gap-3">
+      <div className="w-full grid gap-3">
         {data.map((item, index) => (
           <div
             key={index}
