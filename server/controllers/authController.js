@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { createUser, getUserByEmail, createAdmin, getAdminByEmail } = require('../models/User');
+const { createUser, getUserByEmail, createAdmin, getAdminByEmail, getAllUsers } = require('../models/User');
 const pool = require('../db/pool');
 
 // User registration
@@ -123,4 +123,20 @@ const admin = async (req, res) => {
   }
 };
 
-module.exports = { register, login, registerAdmin, admin };
+// get all users
+const getAllUsersData = async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    //response should onle user name and balance
+    const usersData = users.map(user => {
+      return { username: user.username, balance: user.balance, email: user.email, id: user.id};
+    });
+    res.json(usersData);
+  } catch (error) {
+    console.error('Get all users error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+module.exports = { register, login, registerAdmin, admin, getAllUsersData };

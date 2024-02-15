@@ -17,10 +17,15 @@ const AdminDash = () => {
     setShowTransactions(true);
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem("token");
+    window.location.href = "/admin";
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       <div className="flex-1 flex flex-col">
-        <header className="flex justify-between">
+        <header className="flex justify-between bg-white">
           <h1 className="text-3xl font-bold p-6">Admin Dashboard</h1>
           <nav className="flex">
             <button className="px-4 py-2 rounded-lg m-6">Dashboard</button>
@@ -37,7 +42,10 @@ const AdminDash = () => {
               Transactions
             </button>
           </nav>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg m-6">
+          <button 
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg m-6"
+            onClick={handleLogout}
+            >
             Logout
           </button>
         </header>

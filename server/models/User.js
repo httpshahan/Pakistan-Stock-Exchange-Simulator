@@ -27,4 +27,9 @@ const getAdminByEmail = async (email) => {
   return result.rows[0];
 };
 
-module.exports = { createUser, getUserByEmail, createAdmin ,getAdminByEmail };
+const getAllUsers = async () => {
+  const result = await pool.query('SELECT * FROM users');
+  return result.rows;
+};
+
+module.exports = { createUser, getUserByEmail, createAdmin ,getAdminByEmail, getAllUsers };
