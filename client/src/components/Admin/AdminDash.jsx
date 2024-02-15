@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import UserManagement from "./UserManag";
+import Transactions from "./Transactions";
 
 
 const AdminDash = () => {
@@ -23,7 +24,7 @@ const AdminDash = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex bg-gray-100 h-screen">
       <div className="flex-1 flex flex-col">
         <header className="flex justify-between bg-white">
           <h1 className="text-3xl font-bold p-6">Admin Dashboard</h1>
@@ -49,22 +50,22 @@ const AdminDash = () => {
             Logout
           </button>
         </header>
-        <main className="flex-1 p-6 justify-center overflow-hidden">
-          <div className="overflow-x-auto mb-8">
+        <main className="flex-1 p-6 justify-center overflow-x-auto">
+          <div className="mb-8">
             {showUsers && <UserManagement />}
             {showTransactions && (
-              <div className="overflow-x-auto p-8">
-                
+              <div className="p-8">
+                <Transactions />
               </div>
             )}
           </div>
         </main>
 
-        {/* <footer className="bg-white py-4 px-6 border-t">
+        <footer className="bg-white py-4 px-6 border-t">
           <p className="text-sm text-gray-600">
             © 2024 Stock Exchange Simulator
           </p>
-        </footer> */}
+        </footer>
       </div>
     </div>
   );
