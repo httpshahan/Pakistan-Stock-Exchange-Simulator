@@ -51,12 +51,15 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600 text-gray-800">
-      <div className="flex flex-col items-center w-1/2">
-        <h2 className="text-4xl font-bold mb-4">Pakistan Stock Exchange</h2>
+    <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600 text-gray-800">
+      <div className="flex flex-col p-6 items-center justify-center w-full md:w-1/2">
+        <h2 className="text-3xl font-bold">Pakistan Stock</h2>
+        <h2 className="text-3xl font-bold mb-6">Exchange</h2>
         <p className="text-lg mb-8">"Invest in your future."</p>
         <div className="flex items-center mb-8">
-          <em className="mr-2 text-sm text-hover-secondary">Don't have an account?</em>
+          <em className="mr-2 text-sm text-hover-secondary">
+            Don't have an account?
+          </em>
           <button
             onClick={handleRegisterClick}
             className="text-lg underline focus:outline-none hover:text-yellow-100 transition-colors duration-300"
@@ -66,11 +69,16 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center w-1/2">
-        <div className="bg-white p-8 rounded shadow-md w-96">
-          <h2 className="text-3xl font-semibold mb-4 text-stock-primary">Login</h2>
+      <div className="flex justify-center items-center w-full md:w-1/2">
+        <div className="bg-white p-8 rounded shadow-md md:w-96">
+          <h2 className="text-3xl font-semibold mb-4 text-stock-primary">
+            Login
+          </h2>
           <div className="text-red-500 mb-4">
-            <p className="text-sm font-sans" style={{ display: invalid ? "block" : "none" }}>
+            <p
+              className="text-sm font-sans"
+              style={{ display: invalid ? "block" : "none" }}
+            >
               Invalid Credentials
             </p>
           </div>
@@ -87,7 +95,9 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${invalid ? "border-red-500" : ""}`}
+                className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${
+                  invalid ? "border-red-500" : ""
+                }`}
               />
             </div>
             <div className="mt-8">
@@ -101,10 +111,15 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${invalidPassword ? "border-red-500" : ""}`}
+                className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${
+                  invalidPassword ? "border-red-500" : ""
+                }`}
               />
-              
-              <div className="text-red-500 mt-2" style={{ display: invalidPassword ? "block" : "none" }}>
+
+              <div
+                className="text-red-500 mt-2"
+                style={{ display: invalidPassword ? "block" : "none" }}
+              >
                 <p className="text-sm font-sans">Invalid Password</p>
               </div>
             </div>
