@@ -53,8 +53,8 @@ const Login = () => {
   return (
     <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600 text-gray-800">
       <div className="flex flex-col p-6 items-center justify-center w-full md:w-1/2">
-        <h2 className="text-3xl font-bold">Pakistan Stock</h2>
-        <h2 className="text-3xl font-bold mb-6">Exchange</h2>
+        <h2 className="text-4xl font-bold">Pakistan Stock</h2>
+        <h2 className="text-4xl font-bold mb-6">Exchange</h2>
         <p className="text-lg mb-8">"Invest in your future."</p>
         <div className="flex items-center mb-8">
           <em className="mr-2 text-sm text-hover-secondary">
