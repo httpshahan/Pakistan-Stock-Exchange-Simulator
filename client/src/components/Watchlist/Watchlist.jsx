@@ -33,23 +33,20 @@ const Watchlist = () => {
       }
     };
     fetchData();
-  }, []);
-
+  }, [userId, watchlist]); // Include watchlist and userId in the dependency array
+  
   const removeFromWatchlist = async (symbol) => {
     try {
       await apiService.delete(`/stocks/removeFromWatchlist/${userId}/${symbol}`);
       // After successful removal, fetch updated watchlist data
-      const response = await apiService.get(`/stocks/getWatchlist/${userId}`);
       toast.success('Stock removed from watchlist');
-      setWatchlist(response.data);
-      if (response.data.length === 0) {
-        setNoData(true);
-      }
+      
     } catch (error) {
       console.error("Error removing item from watchlist:", error);
       setError("Error removing item from watchlist. Please try again later.");
     }
   };
+  
 
   return (
     <div className="flex h-screen overflow-hidden">
