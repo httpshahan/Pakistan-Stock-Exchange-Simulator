@@ -29,7 +29,9 @@ const StockDetails = () => {
     <div className="flex h-screen">
       <SideNavbar />
       <div className="flex flex-col flex-1 overflow-hidden bg-gray-100">
-        <TopNavbar />
+        <div>
+          <TopNavbar />
+        </div>
         <div className="p-10 overflow-auto">
           <div className="bg-white p-6 rounded-md shadow-md">
             <CompanyData symbol={symbol} />
@@ -43,15 +45,14 @@ const StockDetails = () => {
             )}
           </div>
           <div className="mt-4 shadow-md rounded-md">
-                <Chart symbol={symbol}/>
+            <Chart symbol={symbol} />
           </div>
           <div className="mt-4 shadow-md rounded-md">
-            <CompanyDetails symbol={symbol} type="symbolProfile"/>
+            <CompanyDetails symbol={symbol} type="symbolProfile" />
           </div>
           <div className="mt-4 shadow-md rounded-md">
             <CompanyDetails symbol={symbol} type="financials" />
           </div>
-          
         </div>
       </div>
     </div>
