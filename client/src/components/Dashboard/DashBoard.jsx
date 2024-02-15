@@ -3,7 +3,6 @@ import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import apiService from "../../services/apiService";
 import StockTable from "./StockTable";
-import Watchlist from "./Watchlist";
 import { Card, Grid, Metric, Text } from "@tremor/react";
 
 const Dashboard = () => {
