@@ -22,7 +22,6 @@ const UserManagement = () => {
         <table className="table-auto w-full">
           <thead>
             <tr>
-              <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Balance</th>
@@ -32,7 +31,6 @@ const UserManagement = () => {
           <tbody>
             {userData.map((user) => (
               <tr key={user.id}>
-                <td className="border px-4 py-2">{user.id}</td>
                 <td className="border px-4 py-2">{user.username}</td>
                 <td className="border px-4 py-2">{user.email}</td>
                 <td className="border px-4 py-2">{user.balance}</td>
