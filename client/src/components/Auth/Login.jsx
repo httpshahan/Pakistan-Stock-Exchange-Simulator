@@ -28,6 +28,7 @@ const Login = () => {
       sessionStorage.setItem("userId", data.userId);
       sessionStorage.setItem("username", data.username);
       sessionStorage.setItem("balance", data.balance);
+      sessionStorage.setItem("email", data.email);
 
       alert("Login Success");
       navigate("/dashboard");

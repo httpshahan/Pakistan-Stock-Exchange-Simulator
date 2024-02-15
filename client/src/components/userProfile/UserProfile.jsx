@@ -3,6 +3,8 @@ import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 
 const UserProfile = () => {
+  const userName = sessionStorage.getItem("username");
+  const userEmail = sessionStorage.getItem("email");
   return (
     <div className="flex h-screen overflow-hidden">
       <SideNavbar />
@@ -18,13 +20,13 @@ const UserProfile = () => {
                 <p className="text-lg font-semibold mb-2 text-stock-tertiary">
                   Name:
                 </p>
-                <p className="text-gray-800">John Doe</p>
+                <p className="text-gray-800">{userName}</p>
               </div>
               <div className="border-t border-stock-secondary pt-4">
                 <p className="text-lg font-semibold mb-2 text-stock-tertiary">
                   Email:
                 </p>
-                <p className="text-gray-800">john@example.com</p>
+                <p className="text-gray-800"> {userEmail} </p>
               </div>
             </div>
           </div>
