@@ -59,10 +59,12 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600 ">
-      <div className="flex justify-center items-center w-1/2">
-        <div className="bg-white p-8 rounded shadow-md w-96">
-          <h2 className="text-3xl font-semibold mb-4 text-green-500">Register</h2>
+    <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600">
+      <div className="flex justify-center items-center w-full md:w-1/2">
+        <div className="bg-white p-8 rounded shadow-md w-96 m-8">
+          <h2 className="text-3xl font-semibold mb-4 text-green-500">
+            Register
+          </h2>
           {error && (
             <div className="text-red-500 mb-4">
               <p className="text-sm font-sans">{error}</p>
@@ -117,7 +119,11 @@ const Register = () => {
                 value={password}
                 onChange={handlePasswordChange}
                 className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${
-                  confirmation ? (passwordMatch ? "border-green-500" : "border-red-500") : ""
+                  confirmation
+                    ? passwordMatch
+                      ? "border-green-500"
+                      : "border-red-500"
+                    : ""
                 }`}
                 required
               />
@@ -136,13 +142,23 @@ const Register = () => {
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
                 className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${
-                  confirmation ? (passwordMatch ? "border-green-500" : "border-red-500") : ""
+                  confirmation
+                    ? passwordMatch
+                      ? "border-green-500"
+                      : "border-red-500"
+                    : ""
                 }`}
                 required
               />
               {confirmation && (
-                <span className={`${passwordMatch ? "text-green-500" : "text-red-500"} ml-2`}>
-                  {passwordMatch ? "✓ Passwords match" : "✗ Passwords do not match"}
+                <span
+                  className={`${
+                    passwordMatch ? "text-green-500" : "text-red-500"
+                  } ml-2`}
+                >
+                  {passwordMatch
+                    ? "✓ Passwords match"
+                    : "✗ Passwords do not match"}
                 </span>
               )}
             </div>
@@ -150,18 +166,27 @@ const Register = () => {
               type="button"
               onClick={handleRegister}
               disabled={!passwordMatch}
-              className={`w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 ${!passwordMatch && "cursor-not-allowed opacity-50"}`}
+              className={`w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 ${
+                !passwordMatch && "cursor-not-allowed opacity-50"
+              }`}
             >
               Register
             </button>
           </form>
         </div>
       </div>
-      <div className="w-1/2 flex justify-center items-center">
+      <div className="md:w-1/2 md:flex md:justify-center md:items-center mt-4 md:mt-0 hidden">
         <div className="flex flex-col items-center">
-          <h2 className="text-4xl font-bold mb-4 text-hover-secondary">Pakistan Stock Exchange</h2>
+          <h2 className="text-4xl font-bold mb-4 text-hover-secondary">
+            Pakistan Stock Exchange
+          </h2>
           <p className="text-lg mb-4">"Invest in your future."</p>
-          <Link to="/" className="text-lg underline focus:outline-none hover:text-yellow-100 transition-colors duration-300">Login now</Link>
+          <Link
+            to="/"
+            className="text-lg underline focus:outline-none hover:text-yellow-100 transition-colors duration-300"
+          >
+            Login now
+          </Link>
         </div>
       </div>
     </div>
