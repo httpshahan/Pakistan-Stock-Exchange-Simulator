@@ -21,6 +21,8 @@ const DataTable = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timestamp, setTimestamp] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Number of items per page
   const userId = sessionStorage.getItem("userId");
 
   const [selectedStocks, setSelectedStocks] = useState([]);
@@ -44,7 +46,6 @@ const DataTable = () => {
   const stockSymbols = data.map((stock) => stock.stock_symbol);
 
   const columns = [
-    // { Header: "ID", accessor: "id" },
     { Header: "Stock Symbol", accessor: "stock_symbol" },
     { Header: "Open", accessor: "open" },
     { Header: "High", accessor: "high" },
@@ -101,6 +102,23 @@ const DataTable = () => {
     }
   };
 
+  const totalPages = Math.ceil(data.filter((item) => isStockSelected(item)).length / itemsPerPage);
+
+
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.filter((item) => isStockSelected(item)).slice(indexOfFirstItem, indexOfLastItem);
+
+
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -147,59 +165,64 @@ const DataTable = () => {
           </TableHead>
 
           <TableBody className="text-base">
-            {data
-              .filter((item) => isStockSelected(item))
-              .map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <button
-                      className="px-2 py-1 text-stock-tertiary"
-                      onClick={() => addToWatchlist(item)}
-                    >
-                      <FaBookmark className="hover:text-stock-primary active:text-stock-secondary" />
-                    </button>
-                  </TableCell>
-                  {columns.map((column) => (
-                    <TableCell key={column.accessor}>
-                      {column.accessor === "stock_symbol" ? (
-                        <Link to={`/stock/${item[column.accessor]}`}>
-                          {item[column.accessor]}
-                        </Link>
-                      ) : column.accessor === "change" ? (
-                        item[column.accessor] > 0 ? (
-                          <BadgeDelta deltaType="increase">
-                            {" "}
-                            {item[column.accessor]}{" "}
-                          </BadgeDelta>
-                        ) : (
-                          <BadgeDelta deltaType="decrease">
-                            {" "}
-                            {item[column.accessor]}{" "}
-                          </BadgeDelta>
-                        )
-                      ) : column.accessor === "change_percent" ? (
-                        parseFloat(item[column.accessor]) > 0 ? (
-                          <BadgeDelta deltaType="increase">
-                            {" "}
-                            {item[column.accessor]}{" "}
-                          </BadgeDelta>
-                        ) : (
-                          <BadgeDelta deltaType="decrease">
-                            {" "}
-                            {item[column.accessor]}{" "}
-                          </BadgeDelta>
-                        )
-                      ) : column.accessor === "volume" ? (
-                        item[column.accessor].toLocaleString()
+            {currentItems.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>
+                  <button
+                    className="px-2 py-1 text-stock-tertiary"
+                    onClick={() => addToWatchlist(item)}
+                  >
+                    <FaBookmark className="hover:text-stock-primary active:text-stock-secondary" />
+                  </button>
+                </TableCell>
+                {columns.map((column) => (
+                  <TableCell key={column.accessor}>
+                    {column.accessor === "stock_symbol" ? (
+                      <Link to={`/stock/${item[column.accessor]}`}>
+                        {item[column.accessor]}
+                      </Link>
+                    ) : column.accessor === "change" ? (
+                      item[column.accessor] > 0 ? (
+                        <BadgeDelta deltaType="increase">
+                          {" "}
+                          {item[column.accessor]}{" "}
+                        </BadgeDelta>
                       ) : (
-                        item[column.accessor]
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
+                        <BadgeDelta deltaType="decrease">
+                          {" "}
+                          {item[column.accessor]}{" "}
+                        </BadgeDelta>
+                      )
+                    ) : column.accessor === "change_percent" ? (
+                      parseFloat(item[column.accessor]) > 0 ? (
+                        <BadgeDelta deltaType="increase">
+                          {" "}
+                          {item[column.accessor]}{" "}
+                        </BadgeDelta>
+                      ) : (
+                        <BadgeDelta deltaType="decrease">
+                          {" "}
+                          {item[column.accessor]}{" "}
+                        </BadgeDelta>
+                      )
+                    ) : column.accessor === "volume" ? (
+                      item[column.accessor].toLocaleString()
+                    ) : (
+                      item[column.accessor]
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
+        {totalPages > 1 && (
+          <div className="mt-4 flex justify-between items-center">
+            <button onClick={handlePrevPage} disabled={currentPage === 1} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Prev</button>
+            <span className="text-gray-600">Page {currentPage} of {totalPages}</span>
+            <button onClick={handleNextPage} disabled={currentPage === totalPages} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Next</button>
+          </div>
+        )}
       </div>
     </div>
   );
