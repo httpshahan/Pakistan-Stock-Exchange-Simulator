@@ -3,6 +3,9 @@ import apiService from "../../services/apiService";
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [transactionsPerPage] = useState(10); // Number of transactions per page
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await apiService.get("/stocks/transactions");
@@ -10,6 +13,24 @@ const Transactions = () => {
     };
     fetchData();
   }, []);
+
+  // Pagination Logic
+  const indexOfLastTransaction = currentPage * transactionsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const currentTransactions = transactions.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
+  );
+  const totalPages = Math.ceil(transactions.length / transactionsPerPage);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-xl font-semibold mb-4 text-gray-800">Transactions</h3>
@@ -26,7 +47,7 @@ const Transactions = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
+            {currentTransactions.map((transaction) => (
               <tr key={transaction.id}>
                 <td className="border px-4 py-2">
                   {new Date(transaction.transaction_date).toLocaleString()}
@@ -44,6 +65,25 @@ const Transactions = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="mt-4 flex justify-between items-center">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Prev
+        </button>
+        <span className="text-gray-600">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
