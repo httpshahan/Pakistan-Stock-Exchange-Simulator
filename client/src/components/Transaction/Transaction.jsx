@@ -16,6 +16,8 @@ import {
 const Transaction = () => {
   const userId = sessionStorage.getItem("userId");
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [transactionsPerPage] = useState(10); // Number of transactions per page
 
   useEffect(() => {
     const getHistory = async () => {
@@ -30,6 +32,23 @@ const Transaction = () => {
 
     getHistory();
   }, [userId]);
+
+  // Pagination Logic
+  const indexOfLastTransaction = currentPage * transactionsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+  const currentTransactions = data.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
+  );
+  const totalPages = Math.ceil(data.length / transactionsPerPage);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
 
   return (
     <div className="flex h-screen bg-gray-100 overflow-hidden">
@@ -52,20 +71,46 @@ const Transaction = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="text-base">
-                  {data.map((transaction) => (
+                  {currentTransactions.map((transaction) => (
                     <TableRow key={transaction.id}>
-                      <TableCell>{new Date(transaction.transaction_date).toLocaleString()}</TableCell>
-                      <TableCell >{transaction.stock_symbol}</TableCell>
+                      <TableCell>
+                        {new Date(
+                          transaction.transaction_date
+                        ).toLocaleString()}
+                      </TableCell>
+                      <TableCell>{transaction.stock_symbol}</TableCell>
                       <TableCell>{transaction.quantity}</TableCell>
-                      <TableCell>{transaction.transaction_type == "B" ? "Buy" : "Sell"}</TableCell>
+                      <TableCell>
+                        {transaction.transaction_type == "B" ? "Buy" : "Sell"}
+                      </TableCell>
                       <TableCell>{transaction.transaction_price}</TableCell>
-                      <TableCell>{transaction.quantity * transaction.transaction_price}</TableCell>
+                      <TableCell>
+                        {transaction.quantity * transaction.transaction_price}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </Card>
-            
+            <div className="mt-4 flex justify-between items-center">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Prev
+              </button>
+              <span className="text-gray-600">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
