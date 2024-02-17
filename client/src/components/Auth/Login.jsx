@@ -35,9 +35,8 @@ const Login = () => {
       sessionStorage.setItem("username", data.username);
       sessionStorage.setItem("balance", data.balance);
       sessionStorage.setItem("email", data.email);
-
-      alert("Login Success");
       navigate("/dashboard");
+
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
@@ -48,7 +47,6 @@ const Login = () => {
       } else {
         console.error("Error during login:", error);
       }
-      alert("Invalid Credentials");
     }
   };
 
