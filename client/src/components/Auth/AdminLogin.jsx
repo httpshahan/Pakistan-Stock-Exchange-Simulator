@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +10,11 @@ const AdminLogin = () => {
   const [passwordError, setPasswordError] = useState("");
   const [invalidPassword, setInvalidPassword] = useState(false);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -26,9 +32,6 @@ const AdminLogin = () => {
       setEmail("");
       setPassword("");
       sessionStorage.setItem("token", data.token);
-      console.log("Login Success");
-      alert("Login Success");
-
       navigate("/admin-dashboard");
     } catch (error) {
       if (error.response) {
@@ -49,7 +52,9 @@ const AdminLogin = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600">
       <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-semibold mb-5 text-stock-primary">Admin Login</h2>
+        <h2 className="text-2xl font-semibold mb-5 text-stock-primary">
+          Admin Login
+        </h2>
         <form>
           <div className="mb-4">
             <label
@@ -74,7 +79,7 @@ const AdminLogin = () => {
             />
             {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
           </div>
-          <div className="mb-4">
+          <div className="relative mb-4">
             <label
               htmlFor="password"
               className="block text-gray-700 text-sm font-medium"
@@ -82,7 +87,7 @@ const AdminLogin = () => {
               Password:
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               value={password}
@@ -94,6 +99,13 @@ const AdminLogin = () => {
                 invalidPassword || passwordError ? "border-red-500" : ""
               }`}
             />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 pt-6 flex items-center text-sm font-medium cursor-pointer"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+            </button>
             {passwordError && (
               <p className="text-red-500 text-sm">{passwordError}</p>
             )}
@@ -101,6 +113,7 @@ const AdminLogin = () => {
               <p className="text-red-500 text-sm">Invalid password</p>
             )}
           </div>
+
           <button
             type="button"
             onClick={handleLogin}
