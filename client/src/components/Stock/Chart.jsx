@@ -8,17 +8,17 @@ const Chart = ({ symbol }) => {
   const [dataByMonth, setDataByMonth] = useState([]);
   const [dataByYear, setDataByYear] = useState([]);
   const [timeInterval, setTimeInterval] = useState("day"); // Default to all data
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [dataLoad, setDataLoad] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (timeInterval === "day") {
+        // if (timeInterval === "day") {
           const response = await apiService.get(`/proxy/int/${symbol}`);
-          const data = response.data.data;
-          const sortedData = data.sort((a, b) => a[0] - b[0]);
-          const formattedData = sortedData.map((item) => ({
+          const Ddata = response.data.data;
+          const DsortedData = Ddata.sort((a, b) => a[0] - b[0]);
+          const formattedData = DsortedData.map((item) => ({
             timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
               hour: "numeric",
               minute: "numeric",
@@ -37,75 +37,126 @@ const Chart = ({ symbol }) => {
             }),
           }));
           setDataByDay(formattedData);
-        } else {
-          const response = await apiService.get(`/proxy/eod/${symbol}`);
-          const data = response.data.data;
+        // } else {
+          const res = await apiService.get(`/proxy/eod/${symbol}`);
+          const data = res.data.data;
 
           // Sort the data by the timestamp in ascending order
           const sortedData = data.sort((a, b) => a[0] - b[0]);
+          const monthData = sortedData.map((item) => ({
+            timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+            price: item[1],
+            volume: item[2],
+            date: new Date(item[0] * 1000).toLocaleString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+          }));
+          setDataByMonth(monthData);
 
-          if (timeInterval === "month") {
-            const formattedData = sortedData.map((item) => ({
-              timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }),
-              price: item[1],
-              volume: item[2],
-              date: new Date(item[0] * 1000).toLocaleString("en-US", {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }),
-            }));
-            setDataByMonth(formattedData);
-          } else if (timeInterval === "year") {
-            const formattedData = sortedData.map((item) => ({
-              timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-                month: "short",
-                year: "numeric",
-              }),
-              price: item[1],
-              volume: item[2],
-              date: new Date(item[0] * 1000).toLocaleString("en-US", {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }),
-            }));
-            setDataByYear(formattedData);
-          } else {
-            // For "all" interval, set the original data
-            const formattedData = sortedData.map((item) => ({
-              timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-                month: "short",
-                year: "numeric",
-              }),
-              price: item[1],
-              volume: item[2],
-              date: new Date(item[0] * 1000).toLocaleString("en-US", {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }),
-            }));
-            setOriginalData(formattedData);
-            setDataLoad(false);
-          }
-        }
+          const yearData = sortedData.map((item) => ({
+            timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+              month: "short",
+              year: "numeric",
+            }),
+            price: item[1],
+            volume: item[2],
+            date: new Date(item[0] * 1000).toLocaleString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+          }));
+          setDataByYear(yearData);
+
+          const allData = sortedData.map((item) => ({
+            timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+              month: "short",
+              year: "numeric",
+            }),
+            price: item[1],
+            volume: item[2],
+            date: new Date(item[0] * 1000).toLocaleString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+          }));
+          setOriginalData(allData);
+
+
+
+          // if (timeInterval === "month") {
+          //   const formattedData = sortedData.map((item) => ({
+          //     timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+          //       month: "short",
+          //       day: "numeric",
+          //       year: "numeric",
+          //     }),
+          //     price: item[1],
+          //     volume: item[2],
+          //     date: new Date(item[0] * 1000).toLocaleString("en-US", {
+          //       weekday: "short",
+          //       month: "short",
+          //       day: "numeric",
+          //       year: "numeric",
+          //     }),
+          //   }));
+          //   setDataByMonth(formattedData);
+          // } 
+          //  if (timeInterval === "year") {
+          //   const formattedData = sortedData.map((item) => ({
+          //     timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+          //       month: "short",
+          //       year: "numeric",
+          //     }),
+          //     price: item[1],
+          //     volume: item[2],
+          //     date: new Date(item[0] * 1000).toLocaleString("en-US", {
+          //       weekday: "short",
+          //       month: "short",
+          //       day: "numeric",
+          //       year: "numeric",
+          //     }),
+          //   }));
+          //   setDataByYear(formattedData);
+          // } else {
+          //   // For "all" interval, set the original data
+          //   const formattedData = sortedData.map((item) => ({
+          //     timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+          //       month: "short",
+          //       year: "numeric",
+          //     }),
+          //     price: item[1],
+          //     volume: item[2],
+          //     date: new Date(item[0] * 1000).toLocaleString("en-US", {
+          //       weekday: "short",
+          //       month: "short",
+          //       day: "numeric",
+          //       year: "numeric",
+          //     }),
+          //   }));
+          //   setOriginalData(formattedData);
+          //   setDataLoad(false);
+          // }
+        //}
         setDataLoad(false);
-        setLoading(false);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [symbol, timeInterval]);
+  }, [symbol]);
 
   const customTooltip = ({ payload, active }) => {
     if (!active || !payload) return null;
