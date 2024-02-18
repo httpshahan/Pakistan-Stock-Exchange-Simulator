@@ -167,7 +167,6 @@ const verifyReset = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("Email", email);
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await updatePassword(email, hashedPassword);
     res.status(200).json({ message: result });
