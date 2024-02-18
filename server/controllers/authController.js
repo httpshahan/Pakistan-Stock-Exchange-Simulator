@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const { createUser, getUserByEmail, createAdmin, getAdminByEmail, getAllUsers } = require('../models/User');
 const pool = require('../db/pool');
 
+const resetService = require('../services/resetService');
+
 // User registration
 const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -138,5 +140,28 @@ const getAllUsersData = async (req, res) => {
   }
 };
 
+const initiateReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log("Email", email);
+    const result = await resetService.initiateReset(email);
+    res.status(200).json({ message: result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-module.exports = { register, login, registerAdmin, admin, getAllUsersData };
+const verifyReset = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    console.log("Email", email);
+    console.log("OTP", otp);
+    const result = await resetService.verifyReset(email, otp);
+    res.status(200).json({ message: result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports = { register, login, registerAdmin, admin, getAllUsersData, initiateReset, verifyReset};

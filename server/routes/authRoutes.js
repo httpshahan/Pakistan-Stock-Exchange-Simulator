@@ -8,5 +8,9 @@ router.post('/login', authController.login);
 router.post('/adminRegister', authController.registerAdmin);
 router.post('/admin', authController.admin);
 
+// forget password
+router.post('/initiateReset', authController.initiateReset);
+router.post('/verifyReset', authController.verifyReset);
+
 router.get('/users', authController.getAllUsersData);
 module.exports = router;
