@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import authService from "../../services/auth.service";
+import authService from "../../services/authService";
 
 const PasswordReset = () => {
   const [email, setEmail] = useState("");

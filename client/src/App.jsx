@@ -14,7 +14,7 @@ import Watchlist from "./components/Watchlist/Watchlist";
 import NotFound from "./components/NotFound/NotFound";
 import UserProfile from "./components/userProfile/userProfile";
 import AdminDash from "./components/Admin/AdminDash";
-import ForgotPassword from "./components/Auth/reset/ForgotPassword";
+import ForgotPassword from "./components/Auth/ForgotPassword";
 
 
 function App() {
