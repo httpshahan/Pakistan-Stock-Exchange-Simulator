@@ -129,6 +129,15 @@ const Login = () => {
                 </button>
               </div>
 
+              <div className="mt-4">
+                <a
+                  href="/forgot-password"
+                  className="text-sm font-medium text-stock-primary hover:underline"
+                >
+                  Forget Password?
+                </a>
+              </div>
+
               <div
                 className="text-red-500 mt-2"
                 style={{ display: invalidPassword ? "block" : "none" }}

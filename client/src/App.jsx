@@ -14,6 +14,7 @@ import Watchlist from "./components/Watchlist/Watchlist";
 import NotFound from "./components/NotFound/NotFound";
 import UserProfile from "./components/userProfile/userProfile";
 import AdminDash from "./components/Admin/AdminDash";
+import ForgotPassword from "./components/Auth/reset/ForgotPassword";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/watchlist" element={<Watchlist />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/admin-dashboard" element={<AdminDash />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

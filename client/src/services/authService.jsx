@@ -42,6 +42,44 @@ const authService = {
     }
   },
 
+  checkEmail: async (email) => {
+    try {
+      const response = await axios.post("http://localhost:3000/api/auth/initiateReset", {
+        email,
+      });
+
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  verifyOtp: async (email, otp) => {
+    try {
+      const response = await axios.post("http://localhost:3000/api/auth/verifyReset", {
+        email,
+        otp,
+      });
+
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  restPassword: async (email, password) => {
+    try {
+      const response = await axios.post("http://localhost:3000/api/auth/update-password", {
+        email,
+        password,
+      });
+
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   // You can add more authentication-related functions here
 };
 
