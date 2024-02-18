@@ -59,6 +59,21 @@ class Reset {
       client.release();
     }
   }
+
+  static async resetPassword(email, password) {
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const queryText = "UPDATE users SET password = $1 WHERE email = $2";
+      await client.query(queryText, [password, email]);
+      await client.query("COMMIT");
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = Reset;

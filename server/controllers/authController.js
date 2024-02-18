@@ -164,4 +164,16 @@ const verifyReset = async (req, res) => {
 };
 
 
-module.exports = { register, login, registerAdmin, admin, getAllUsersData, initiateReset, verifyReset};
+const resetPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const result = await resetService.resetPassword(email, hashedPassword);
+    res.status(200).json({ message: result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports = { register, login, registerAdmin, admin, getAllUsersData, initiateReset, verifyReset, resetPassword};
