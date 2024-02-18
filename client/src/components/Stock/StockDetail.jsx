@@ -44,7 +44,7 @@ const StockDetails = () => {
               </div>
             )}
           </div>
-          <div className="mt-4 shadow-md rounded-md">
+          <div className="mt-4 bg-white shadow-md rounded-md">
             <Chart symbol={symbol} />
           </div>
           <div className="mt-4 shadow-md rounded-md">

@@ -3,6 +3,7 @@ import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import apiService from "../../services/apiService";
 import StockTable from "./StockTable";
+import Indexes from "./Indexes";
 import { Card, Grid, Metric, Text } from "@tremor/react";
 
 const Dashboard = () => {
@@ -116,6 +117,10 @@ const Dashboard = () => {
                   <Metric>{balance}</Metric>
                 </Card>
               </Grid>
+
+              <div>
+                <Indexes />
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                 <div className="border rounded-lg shadow-md">
