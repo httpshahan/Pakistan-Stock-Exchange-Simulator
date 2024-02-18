@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { createUser, getUserByEmail, createAdmin, getAdminByEmail, getAllUsers } = require('../models/User');
+const { createUser, getUserByEmail, createAdmin, getAdminByEmail, getAllUsers, updatePassword } = require('../models/User');
 const pool = require('../db/pool');
 
 const resetService = require('../services/resetService');
@@ -167,8 +167,9 @@ const verifyReset = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("Email", email);
     const hashedPassword = await bcrypt.hash(password, 10);
-    const result = await resetService.resetPassword(email, hashedPassword);
+    const result = await updatePassword(email, hashedPassword);
     res.status(200).json({ message: result });
   } catch (error) {
     res.status(500).json({ error: error.message });

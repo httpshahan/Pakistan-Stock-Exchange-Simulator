@@ -21,4 +21,5 @@ function generateOTP() {
   return OTP;
 }
 
+
 module.exports = { initiateReset, verifyReset };
