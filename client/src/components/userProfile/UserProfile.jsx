@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
-import { IoIosArrowForward } from "react-icons/io";
+import { FaEdit } from "react-icons/fa";
 
 const UserProfile = () => {
 
   const [username, setUsername] = useState(sessionStorage.getItem("username"));
-  const [email, setEmail] = useState(sessionStorage.getItem("email"));
   const [nameEditMode, setNameEditMode] = useState(false);
   const [name, setName] = useState(sessionStorage.getItem("username"));
   const [password, setPassword] = useState("");
-  const [addMoneyAmount, setAddMoneyAmount] = useState("");
+
+  const email = sessionStorage.getItem("email");
 
   const handleNameEdit = () => {
     setNameEditMode(true);
@@ -18,6 +18,7 @@ const UserProfile = () => {
 
   const handleSaveName = () => {
     // Save name logic here
+    setUsername(name);
     setNameEditMode(false);
   };
 
@@ -62,7 +63,7 @@ const UserProfile = () => {
                       onClick={handleNameEdit}
                       className="text-blue-500 hover:text-blue-700"
                     >
-                      <IoIosArrowForward />
+                      <FaEdit />
                     </button>
                   </div>
                 )}
