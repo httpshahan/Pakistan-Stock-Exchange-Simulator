@@ -123,13 +123,22 @@ const UserProfile = () => {
                     required
                   />
                   <input
-                    className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="mb-2 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="password"
                     placeholder="Confirm New Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                   />
+                  <div className="flex items-center justify-between">
+                    <label className="block text-gray-500 my-4">
+                      <input
+                        type="checkbox"
+                        className="mr-2 leading-tight"
+                      />
+                      <span className="text-sm">Show Password</span>
+                    </label>
+                  </div>
                   {error && <p className="text-red-500 mb-2">{error}</p>}
                   <button
                     type="submit"
