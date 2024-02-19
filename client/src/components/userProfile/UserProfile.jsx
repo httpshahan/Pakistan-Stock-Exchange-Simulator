@@ -7,11 +7,11 @@ const UserProfile = () => {
   const [username, setUsername] = useState(sessionStorage.getItem("username"));
   const [nameEditMode, setNameEditMode] = useState(false);
   const [name, setName] = useState(sessionStorage.getItem("username"));
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const email = sessionStorage.getItem("email");
 
@@ -25,21 +25,23 @@ const UserProfile = () => {
     setNameEditMode(false);
   };
 
-  const handlePasswordUpdate = () => {
+  const handlePasswordUpdate = (e) => {
+    e.preventDefault(); // Prevent default form submission
+
     // Password update logic here
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     // Your password update logic here
     // Check old password validity and update the password
 
-    setMessage('Password updated successfully!');
-    setOldPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
-    setError('');
+    setMessage("Password updated successfully!");
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setError("");
   };
 
   return (
@@ -103,36 +105,40 @@ const UserProfile = () => {
               </h4>
               <div className="my-1 border-t-2 border-gray-200"></div>
               <div className="p-4">
-                <input
-                  className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  type="password"
-                  placeholder="Old Password"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                />
-                <input
-                  className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  type="password"
-                  placeholder="New Password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <input
-                  className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  type="password"
-                  placeholder="Confirm New Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                {error && <p className="text-red-500 mb-2">{error}</p>}
-                <button
-                  onClick={handlePasswordUpdate}
-                  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  type="button"
-                >
-                  Update Password
-                </button>
-                {message && <p className="text-green-500 mt-2">{message}</p>}
+                <form onSubmit={handlePasswordUpdate}>
+                  <input
+                    className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="password"
+                    placeholder="Old Password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    required
+                  />
+                  <input
+                    className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="password"
+                    placeholder="New Password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                  <input
+                    className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="password"
+                    placeholder="Confirm New Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                  {error && <p className="text-red-500 mb-2">{error}</p>}
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Update Password
+                  </button>
+                  {message && <p className="text-green-500 mt-2">{message}</p>}
+                </form>
               </div>
             </div>
           </div>
