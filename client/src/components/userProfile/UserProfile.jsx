@@ -11,22 +11,44 @@ const UserProfile = () => {
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
         <div className="flex-1 overflow-auto">
-          <div className="p-8">
-            <div className="max-w-md mx-auto my-10 p-6 rounded-lg shadow-lg bg-stock-light">
-              <h2 className="text-3xl font-bold mb-4 text-stock-primary">
-                Profile
-              </h2>
-              <div className="border-t border-stock-secondary pt-4">
-                <p className="text-lg font-semibold mb-2 text-stock-tertiary">
-                  Name:
-                </p>
-                <p className="text-gray-800">{userName}</p>
-              </div>
-              <div className="border-t border-stock-secondary pt-4">
-                <p className="text-lg font-semibold mb-2 text-stock-tertiary">
-                  Email:
-                </p>
-                <p className="text-gray-800"> {userEmail} </p>
+          <div className="container mx-auto px-6 py-8">
+            <h3 className="text-gray-700 text-3xl font-medium">Account</h3>
+            <p className="mt-1 text-gray-500">
+              {" "}
+              Manage your account settings.{" "}
+            </p>
+          </div>
+          <div className="flex items-center p-6">
+            <div className="w-full">
+              <h4 className="text-xl font-medium text-gray-700">Profile</h4>
+              <div className="my-1 border-t-2 border-gray-200"></div>
+              <div className="flex flex-col mt-4">
+                <div>
+                  <div className="flex flex-col w-64">
+                    <div className="w-full">
+                      <label className="text-sm font-medium text-gray-700">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        value={userName}
+                        className="w-full text-sm border-2 border-gray-200 rounded px-3 py-2 mt-1"
+                        disabled
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label className="text-sm font-medium text-gray-700">
+                        Email
+                      </label>
+                      <input
+                        type="text"
+                        value={userEmail}
+                        className="w-full text-sm border-2 border-gray-200 rounded px-3 py-2 mt-1"
+                        disabled
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
