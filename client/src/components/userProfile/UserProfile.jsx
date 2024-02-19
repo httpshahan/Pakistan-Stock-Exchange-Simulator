@@ -4,7 +4,6 @@ import TopNavbar from "../NavBar/TopNabar";
 import { FaEdit } from "react-icons/fa";
 
 const UserProfile = () => {
-
   const [username, setUsername] = useState(sessionStorage.getItem("username"));
   const [nameEditMode, setNameEditMode] = useState(false);
   const [name, setName] = useState(sessionStorage.getItem("username"));
@@ -69,7 +68,9 @@ const UserProfile = () => {
                 )}
               </div>
               <div className="w-full mt-6">
-                <h4 className="text-xl font-medium text-gray-700">Email Address</h4>
+                <h4 className="text-xl font-medium text-gray-700">
+                  Email Address
+                </h4>
                 <div className="my-1 border-t-2 border-gray-200"></div>
                 <div className="p-4">
                   <p className="text-gray-600">{email}</p>
@@ -77,7 +78,9 @@ const UserProfile = () => {
               </div>
             </div>
             <div className="w-1/2 p-6 bg-white rounded shadow-md">
-              <h4 className="text-xl font-medium text-gray-700">Password Reset</h4>
+              <h4 className="text-xl font-medium text-gray-700">
+                Password Reset
+              </h4>
               <div className="my-1 border-t-2 border-gray-200"></div>
               <div className="p-4">
                 <form className="w-full max-w-sm flex flex-col gap-4">
