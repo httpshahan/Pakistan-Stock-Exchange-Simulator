@@ -64,7 +64,7 @@ const UserProfile = () => {
                   <div className="p-4 flex justify-between items-center">
                     <input
                       type="text"
-                      className="border-b border-gray-400 focus:outline-none"
+                      className="border-b border-gray-400 rounded focus:outline-none"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
