@@ -8,6 +8,7 @@ const {
   getAllUsers,
   updatePassword,
   updateName,
+  oldPassword,
 } = require("../models/User");
 const pool = require("../db/pool");
 
@@ -185,6 +186,31 @@ const verifyReset = async (req, res) => {
   }
 };
 
+const verifyAndUpdatePassword = async (req, res) => {
+  const { email, password, newPass } = req.body;
+  try {
+    console.log("Email", email);
+    console.log("Password", password);
+    console.log("New Password", newPass);
+    const user = await getUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ error: "Invalid email" });
+    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      console.log(passwordMatch);
+      return res.status(403).json({ error: "Invalid old password"});
+    }
+    const hashedPassword = await bcrypt.hash(newPass, 10);
+    console.log("Hashed Password", hashedPassword);
+    //const result = await updatePassword(email, hashedPassword);
+    res.status(200).json({ message: "pass updated" });
+  }
+  catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const resetPassword = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -216,4 +242,5 @@ module.exports = {
   verifyReset,
   resetPassword,
   updateUserName,
+  verifyAndUpdatePassword,
 };

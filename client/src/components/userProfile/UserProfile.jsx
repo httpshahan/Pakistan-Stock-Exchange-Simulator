@@ -3,7 +3,7 @@ import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import { FaEdit } from "react-icons/fa";
 import apiService from "../../services/apiService";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const UserProfile = () => {
   const [username, setUsername] = useState(sessionStorage.getItem("username"));
@@ -14,8 +14,13 @@ const UserProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const email = sessionStorage.getItem("email");
+
+  const handleCheck = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleNameEdit = () => {
     setNameEditMode(true);
@@ -28,13 +33,13 @@ const UserProfile = () => {
       email,
       username: name,
     });
-    toast.success('Username updated successfully');
+    toast.success("Username updated successfully");
     console.log(res);
     sessionStorage.setItem("username", name);
     setNameEditMode(false);
   };
 
-  const handlePasswordUpdate = (e) => {
+  const handlePasswordUpdate = async (e) => {
     e.preventDefault(); // Prevent default form submission
 
     // Password update logic here
@@ -42,15 +47,39 @@ const UserProfile = () => {
       setError("Passwords do not match");
       return;
     }
+    try {
+      const res = await apiService.post("/auth/update-old-password", {
+        email,
+        password: oldPassword,
+        newPass: newPassword,
+      });
 
-    // Your password update logic here
-    // Check old password validity and update the password
+      console.log(res);
 
-    setMessage("Password updated successfully!");
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-    setError("");
+      if (res.status === 200) {
+        setMessage("Password updated successfully");
+        toast.success("Password updated successfully");
+        setError("");
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        setError("Internal server error");
+        toast.error("Internal server error");
+      }
+    } catch (error) {
+      if (error.response.status === 403) {
+        setError("Invalid old password");
+        toast.error("Invalid old password");
+        return;
+      } else if (res.status === 404) {
+        setError("Invalid email");
+        toast.error("Invalid email");
+      }
+      console.log(error);
+      setError("Internal server error");
+      toast.error("Internal server error");
+    }
   };
 
   return (
@@ -58,13 +87,13 @@ const UserProfile = () => {
       <SideNavbar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopNavbar />
-        <div className="flex-1 overflow-hidden bg-gray-100 p-8">
+        <div className="flex-1 overflow-auto bg-gray-100 p-8">
           <div className="container mx-auto">
             <h3 className="text-gray-700 text-3xl font-medium">Account</h3>
             <p className="mt-1 text-gray-500">Manage your account settings.</p>
           </div>
-          <div className="flex gap-3 py-8">
-            <div className="flex flex-col items-center p-6 w-1/2 bg-white rounded shadow-md">
+          <div className="flex flex-col md:flex-row gap-3 py-8">
+            <div className="flex flex-col items-center p-6 md:w-1/2 bg-white rounded shadow-md">
               {/* Name section */}
               <div className="w-full">
                 <h4 className="text-xl font-medium text-gray-700">Full Name</h4>
@@ -108,7 +137,7 @@ const UserProfile = () => {
               </div>
             </div>
             {/* Password reset section */}
-            <div className="w-1/2 p-6 bg-white rounded shadow-md">
+            <div className="md:w-1/2 p-6 bg-white rounded shadow-md">
               <h4 className="text-xl font-medium text-gray-700">
                 Password Reset
               </h4>
@@ -117,7 +146,7 @@ const UserProfile = () => {
                 <form onSubmit={handlePasswordUpdate}>
                   <input
                     className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Old Password"
                     value={oldPassword}
                     onChange={(e) => setOldPassword(e.target.value)}
@@ -125,7 +154,7 @@ const UserProfile = () => {
                   />
                   <input
                     className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="New Password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -133,7 +162,7 @@ const UserProfile = () => {
                   />
                   <input
                     className="mb-2 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Confirm New Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -144,6 +173,7 @@ const UserProfile = () => {
                       <input
                         type="checkbox"
                         className="mr-2 leading-tight"
+                        onChange={handleCheck}
                       />
                       <span className="text-sm">Show Password</span>
                     </label>

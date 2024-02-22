@@ -13,6 +13,7 @@ router.post('/admin', authController.admin);
 router.post('/initiateReset', authController.initiateReset);
 router.post('/verifyReset', authController.verifyReset);
 router.post('/update-password', authController.resetPassword);
+router.post('/update-old-password', authController.verifyAndUpdatePassword);
 
 // update username
 router.post('/update-username', authController.updateUserName);
