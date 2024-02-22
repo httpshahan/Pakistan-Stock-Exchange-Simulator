@@ -41,4 +41,12 @@ const updatePassword = async (email, password) => {
   return result.rows[0];
 };
 
-module.exports = { createUser, getUserByEmail, createAdmin ,getAdminByEmail, getAllUsers, updatePassword };
+const updateName = async (email, name) => {
+  const result = await pool.query(
+    'UPDATE users SET username = $1 WHERE email = $2 RETURNING *',
+    [name, email]
+  );
+  return result.rows[0];
+};
+
+module.exports = { createUser, getUserByEmail, createAdmin ,getAdminByEmail, getAllUsers, updatePassword, updateName };

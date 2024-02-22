@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import SideNavbar from "../NavBar/SideNavBar";
 import TopNavbar from "../NavBar/TopNabar";
 import { FaEdit } from "react-icons/fa";
+import apiService from "../../services/apiService";
+import { toast } from 'react-toastify';
 
 const UserProfile = () => {
   const [username, setUsername] = useState(sessionStorage.getItem("username"));
@@ -19,9 +21,16 @@ const UserProfile = () => {
     setNameEditMode(true);
   };
 
-  const handleSaveName = () => {
+  const handleSaveName = async () => {
     // Save name logic here
     setUsername(name);
+    const res = await apiService.post("/auth/update-username", {
+      email,
+      username: name,
+    });
+    toast.success('Username updated successfully');
+    console.log(res);
+    sessionStorage.setItem("username", name);
     setNameEditMode(false);
   };
 

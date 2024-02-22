@@ -7,6 +7,7 @@ const {
   getAdminByEmail,
   getAllUsers,
   updatePassword,
+  updateName,
 } = require("../models/User");
 const pool = require("../db/pool");
 
@@ -195,6 +196,16 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const updateUserName = async (req, res) => {
+  try {
+    const { email, username } = req.body;
+    const result = await updateName(email, username);
+    res.status(200).json({ message: result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -204,4 +215,5 @@ module.exports = {
   initiateReset,
   verifyReset,
   resetPassword,
+  updateUserName,
 };
