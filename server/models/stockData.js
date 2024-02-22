@@ -1,34 +1,39 @@
 const pool = require("../db/pool");
 
 const insertScrapedData = async (data) => {
+  const client = await pool.connect();
   try {
-    await pool.query("TRUNCATE stock_data RESTART IDENTITY");
+    await client.query("BEGIN"); // Start a transaction
 
-    // Assuming main_table is the name of your main table
-    const mainTableSymbolsQuery = await pool.query("SELECT symbol FROM stock");
+    // Truncate the table and restart identity
+    await client.query("TRUNCATE stock_data RESTART IDENTITY");
+
+    // Fetch symbols from the main table
+    const mainTableSymbolsQuery = await client.query(
+      "SELECT symbol FROM stock"
+    );
     const mainTableSymbols = mainTableSymbolsQuery.rows.map(
       (row) => row.symbol
     );
 
-    const values = data.map((item) => [
-      item[0], // symbol
-      item[1].replace(/,/g, ""), // LDCP
-      item[2].replace(/,/g, ""), // OPEN
-      item[3].replace(/,/g, ""), // HIGH
-      item[4].replace(/,/g, ""), // LOW
-      item[5].replace(/,/g, ""), // CURRENT
-      item[6].replace(/,/g, ""), // CHANGE
-      item[7], // CHANGE (%)
-      item[8].replace(/,/g, ""), // VOLUME
-      item[9], // Timestamp
-    ]);
-
-    // Filter values to include only those with stock_symbol present in the main table
-    const validValues = values.filter((item) =>
-      mainTableSymbols.includes(item[0])
-    );
+    // Prepare data for insertion, filtering out invalid symbols
+    const validValues = data
+      .map((item) => [
+        item[0], // symbol
+        item[1].replace(/,/g, ""), // LDCP
+        item[2].replace(/,/g, ""), // OPEN
+        item[3].replace(/,/g, ""), // HIGH
+        item[4].replace(/,/g, ""), // LOW
+        item[5].replace(/,/g, ""), // CURRENT
+        item[6].replace(/,/g, ""), // CHANGE
+        item[7], // CHANGE (%)
+        item[8].replace(/,/g, ""), // VOLUME
+        item[9], // Timestamp
+      ])
+      .filter((item) => mainTableSymbols.includes(item[0]));
 
     if (validValues.length > 0) {
+      // Construct the SQL query for bulk insertion
       const placeholders = validValues
         .map(
           (_, index) =>
@@ -41,19 +46,27 @@ const insertScrapedData = async (data) => {
         .join(",");
 
       const params = validValues.flat();
-      const stockData = await pool.query(
-        `INSERT INTO stock_data (stock_symbol, ldcp, open, high, low, current, change, change_percent, volume, timestamp) 
-           VALUES ${placeholders} Returning *`,
+
+      // Execute the insertion query
+      const stockData = await client.query(
+        `
+        INSERT INTO stock_data (stock_symbol, ldcp, open, high, low, current, change, change_percent, volume, timestamp)
+        VALUES ${placeholders} RETURNING *
+      `,
         params
       );
 
-      // Process the successful insertion here, if needed
+      await client.query("COMMIT"); // Commit the transaction
+
+      // Process successful insertion here, if needed
     } else {
       console.log("No valid data to insert.");
     }
   } catch (error) {
-    // Handle errors
+    await client.query("ROLLBACK"); // Rollback the transaction in case of error
     console.error("Error during insertion:", error.message);
+  } finally {
+    client.release(); // Release the client back to the pool
   }
 };
 
@@ -92,11 +105,9 @@ const searchStocks = async (query) => {
 
 const getUserAssets = async (userId) => {
   try {
-
-    const user = await pool.query(
-      `SELECT * FROM users WHERE id = $1`,
-      [userId]
-    );
+    const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [
+      userId,
+    ]);
     if (user.rows.length === 0) {
       return null;
     }
@@ -189,7 +200,7 @@ const getActiveStocks = async () => {
   }
 };
 
-const addWatchlist = async ( userId, symbol) => {
+const addWatchlist = async (userId, symbol) => {
   try {
     const result = await pool.query(
       `INSERT INTO watchlist (user_id, stock_symbol) VALUES ($1, $2) RETURNING *`,
@@ -245,7 +256,6 @@ const removeWatchlistItem = async (userId, symbol) => {
     throw err;
   }
 };
-
 
 module.exports = {
   insertScrapedData,
