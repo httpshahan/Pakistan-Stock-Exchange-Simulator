@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import apiService from "../../services/apiService";
 import { FaBookmark } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   Card,
   Table,
@@ -86,7 +87,7 @@ const DataTable = () => {
       // Handle success response
       if (response.status === 200) {
         // Display a success message to the user
-        alert("Stock successfully added to watchlist!");
+        toast.success("Stock successfully added to watchlist!");
       }
     } catch (error) {
       // Handle other errors
@@ -94,17 +95,18 @@ const DataTable = () => {
       // Check if the error is due to the stock already existing in the watchlist
       if (error.response && error.response.status === 409) {
         // Display an alert to the user indicating that the stock already exists in the watchlist
-        alert("Stock already exists in watchlist!");
+        toast.info("Stock already exists in watchlist!");
+        
       } else {
         // Display a generic error message to the user for other errors
-        alert("Error adding stock to watchlist. Please try again later.");
+        toast.error("Error adding stock to watchlist. Please try again later.");
       }
     }
   };
 
-  const totalPages = Math.ceil(data.filter((item) => isStockSelected(item)).length / itemsPerPage);
-
-
+  const totalPages = Math.ceil(
+    data.filter((item) => isStockSelected(item)).length / itemsPerPage
+  );
 
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -116,8 +118,9 @@ const DataTable = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.filter((item) => isStockSelected(item)).slice(indexOfFirstItem, indexOfLastItem);
-
+  const currentItems = data
+    .filter((item) => isStockSelected(item))
+    .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div>
@@ -218,9 +221,23 @@ const DataTable = () => {
         </Table>
         {totalPages > 1 && (
           <div className="mt-4 flex justify-between items-center">
-            <button onClick={handlePrevPage} disabled={currentPage === 1} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Prev</button>
-            <span className="text-gray-600">Page {currentPage} of {totalPages}</span>
-            <button onClick={handleNextPage} disabled={currentPage === totalPages} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Next</button>
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Prev
+            </button>
+            <span className="text-gray-600">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>
