@@ -9,6 +9,8 @@ import {
   ListItem,
 } from "@tremor/react";
 
+import {toast} from 'react-toastify';
+
 const BuyForm = () => {
   const [symbol, setSymbol] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -131,6 +133,7 @@ const BuyForm = () => {
         console.log(response);
         sessionStorage.setItem("balance", newBalance);
         setShowDialog(false);
+        toast.success("Transaction Successful");
         setPrice("");
         setTotalCost(0);
         setTotalPrice(0);
@@ -138,6 +141,7 @@ const BuyForm = () => {
         setTotalBrokerageFee(0);
         setSymbol("");
       } catch (error) {
+        toast.error("Transaction Failed");
         console.error("Error fetching suggestions:", error);
       }
     }

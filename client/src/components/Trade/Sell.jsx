@@ -8,6 +8,7 @@ import {
   ListItem,
 } from "@tremor/react";
 import apiService from "../../services/apiService";
+import {toast} from "react-toastify";
 
 const Sell = () => {
   const [quantity, setQuantity] = useState("");
@@ -164,6 +165,7 @@ const Sell = () => {
       console.log(response.data);
 
       sessionStorage.setItem("balance", newbalence);
+      toast.success("Stock sold successfully");
 
       // Reset form values on successful transaction
       setSymbol("");
@@ -174,6 +176,7 @@ const Sell = () => {
       setError(null);
       setShowDialog(false);
     } catch (error) {
+      toast.error("Error selling stock");
       console.error("Error selling stock:", error);
     }
   };
