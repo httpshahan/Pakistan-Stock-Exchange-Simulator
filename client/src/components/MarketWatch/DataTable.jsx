@@ -81,9 +81,6 @@ const DataTable = () => {
       const response = await apiService.post(
         `/stocks/addToWatchlist/${userId}/${stock.stock_symbol}`
       );
-
-      console.log("Response:", response);
-
       // Handle success response
       if (response.status === 200) {
         // Display a success message to the user
