@@ -10,7 +10,6 @@ const authService = {
       });
       try {
         const scrape = await axios.get("http://localhost:3000/api/scraper/scrape");
-        console.log(scrape);
       } catch (error) {
         console.error("Error during scraping:", error);
       }
