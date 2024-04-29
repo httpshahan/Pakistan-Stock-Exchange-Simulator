@@ -4,7 +4,6 @@ const path = require('path');
 
 const runScraper = async (req, res) => {
   try {
-
     const scrappedTime = await stockDataModel.getScrappedTime();
     const timeScrapped = new Date(scrappedTime[0].timestamp).getTime();
     console.log('Scrapped Time:', timeScrapped);
@@ -20,8 +19,6 @@ const runScraper = async (req, res) => {
     }
 
     const pythonScriptPath = path.join(__dirname, '..', 'scraper', 'scraper.py');
-
-    //console.log(`Running scraper script: ${pythonScriptPath}`);
 
     // Run the Python scraper script as a child process
     exec(`python "${pythonScriptPath}"`, async (error, stdout, stderr) => {
@@ -47,15 +44,12 @@ const runScraper = async (req, res) => {
       // Insert scraped data into the database using the model
       const stockData = await stockDataModel.insertScrapedData(scrapedData.data);
 
-      res.json({ message: 'Scraper executed successfully', data: stockData});
+      res.json({ message: 'Scraper executed successfully'});
     });
-    res.json({ message: 'Scraper executed successfully' });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-
 
 module.exports = { runScraper };

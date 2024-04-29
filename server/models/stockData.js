@@ -51,7 +51,7 @@ const insertScrapedData = async (data) => {
       const stockData = await client.query(
         `
         INSERT INTO stock_data (stock_symbol, ldcp, open, high, low, current, change, change_percent, volume, timestamp)
-        VALUES ${placeholders} RETURNING *
+        VALUES ${placeholders}
       `,
         params
       );
