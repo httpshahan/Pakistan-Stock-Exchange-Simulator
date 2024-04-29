@@ -257,6 +257,17 @@ const removeWatchlistItem = async (userId, symbol) => {
   }
 };
 
+//select the 1st row of the stock_data table
+const getScrappedTime = async () => {
+  try {
+    const result = await pool.query(`SELECT timestamp FROM stock_data LIMIT 1`);
+    return result.rows;
+  } catch (err) {
+    console.error("Error getting first stock:", err);
+    throw err;
+  }
+};
+
 module.exports = {
   insertScrapedData,
   getAllStocks,
@@ -270,4 +281,5 @@ module.exports = {
   compareWatchlist,
   getWatchlist,
   removeWatchlistItem,
+  getScrappedTime,
 };

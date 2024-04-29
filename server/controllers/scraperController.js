@@ -4,6 +4,21 @@ const path = require('path');
 
 const runScraper = async (req, res) => {
   try {
+
+    const scrappedTime = await stockDataModel.getScrappedTime();
+    const timeScrapped = new Date(scrappedTime[0].timestamp).getTime();
+    console.log('Scrapped Time:', timeScrapped);
+
+    const currentTime = new Date().getTime();
+    console.log('Current Time:', currentTime);
+
+    const twentyMinutesInMillis = 20 * 60 * 1000;
+    console.log('20 minutes in millis:', twentyMinutesInMillis);
+
+    if (currentTime - timeScrapped < twentyMinutesInMillis) {
+      return res.json({ message: 'Scraper already executed in the last 20 minutes' });
+    }
+
     const pythonScriptPath = path.join(__dirname, '..', 'scraper', 'scraper.py');
 
     //console.log(`Running scraper script: ${pythonScriptPath}`);
@@ -34,10 +49,13 @@ const runScraper = async (req, res) => {
 
       res.json({ message: 'Scraper executed successfully', data: stockData});
     });
+    res.json({ message: 'Scraper executed successfully' });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
 
 module.exports = { runScraper };
