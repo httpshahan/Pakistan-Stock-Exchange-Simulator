@@ -12,13 +12,13 @@ const SearchDialog = ({ closeSearch }) => {
     inputRef.current.focus();
   }, []);
 
-  const handleClickOutside = (event) => {
-    if (inputRef.current && !inputRef.current.contains(event.target)) {
-      closeSearch();
-    }
-  };
+  // const handleClickOutside = (event) => {
+  //   if (inputRef.current && !inputRef.current.contains(event.target)) {
+  //     closeSearch();
+  //   }
+  // };
 
-  document.addEventListener("mousedown", handleClickOutside);
+  // document.addEventListener("mousedown", handleClickOutside);
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -65,7 +65,7 @@ const SearchDialog = ({ closeSearch }) => {
           <ul className="mb-4 max-h-40 overflow-y-auto w-full">
             {suggestions.map((suggestion, index) => (
               <li
-                ref={inputRef}
+                // ref={inputRef}
                 key={index}
                 className="cursor-pointer py-2 px-4 text-stock-tertiary hover:bg-hover-primary hover:text-hover-tertiary transition-all duration-300 rounded-md"
                 onClick={() => handleSuggestionClick(suggestion)}
