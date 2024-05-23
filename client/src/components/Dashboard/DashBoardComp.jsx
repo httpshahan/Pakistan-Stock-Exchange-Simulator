@@ -6,7 +6,7 @@ import StockTable from "./StockTable";
 import Indexes from "./Indexes";
 import { Card, Grid, Metric, Text } from "@tremor/react";
 
-const Dashboard = () => {
+const DashboardComp = () => {
   const [loading, setLoading] = useState(true);
   const [topAdvancers, setTopAdvancers] = useState([]);
   const [topDecliners, setTopDecliners] = useState([]);
@@ -81,10 +81,6 @@ const Dashboard = () => {
   const accountValue = balance + portfolioValue;
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
-      <SideNavbar />
-      <div className="flex flex-col flex-1 overflow-hidden">
-        <TopNavbar />
         <div className="flex-1 overflow-auto p-8">
           {loading ? (
             <div className="flex justify-center items-center h-screen">
@@ -136,9 +132,7 @@ const Dashboard = () => {
             </div>
           )}
         </div>
-      </div>
-    </div>
   );
 };
 
-export default Dashboard;
+export default DashboardComp;

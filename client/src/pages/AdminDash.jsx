@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import UserManagement from "./UserManag";
-import Transactions from "./Transactions";
+import UserManagement from "../components/Admin/UserManag";
+import Transactions from "../components/Admin/Transactions";
 
 
 const AdminDash = () => {

@@ -3,17 +3,17 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AdminLogin from "./components/Auth/AdminLogin";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
-import MarketWatch from "./components/MarketWatch/MarketWatch";
-import Dashboard from "./components/Dashboard/DashBoard";
-import StockDetail from "./components/Stock/StockDetail";
-import Portfolio from "./components/Portfolio/Portfolio";
-import Transaction from "./components/Transaction/Transaction";
-import Trade from "./components/Trade/Trade";
-import HeatMap from "./components/Indices/HeatMap";
-import Watchlist from "./components/Watchlist/Watchlist";
-import NotFound from "./components/NotFound/NotFound";
-import UserProfile from "./components/userProfile/userProfile";
-import AdminDash from "./components/Admin/AdminDash";
+import MarketWatch from "./pages/MarketWatch";
+import Dashboard from "./components/Dashboard/DashBoardComp";
+import StockDetail from "./pages/StockDetail";
+import Portfolio from "./pages/Portfolio";
+import Transaction from "./pages/Transaction";
+import Trade from "./pages/Trade";
+import HeatMap from "./pages/HeatMap";
+import Watchlist from "./pages/Watchlist";
+import NotFound from "./pages/NotFound";
+import UserProfile from "./pages/UserProfile";
+import AdminDash from "./pages/AdminDash";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 
 
@@ -24,6 +24,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<AdminLogin />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/market-watch" element={<MarketWatch />} />
         <Route path="/stock/:symbol" element={<StockDetail />} />
@@ -35,6 +36,7 @@ function App() {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/admin-dashboard" element={<AdminDash />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

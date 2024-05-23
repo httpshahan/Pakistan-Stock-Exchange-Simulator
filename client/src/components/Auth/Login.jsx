@@ -10,6 +10,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -26,6 +27,7 @@ const Login = () => {
       }
 
       const data = await authService.login(email, password);
+      setLoading(true);
 
       setInvalid(false);
       setInvalidPassword(false);
@@ -35,6 +37,7 @@ const Login = () => {
       sessionStorage.setItem("username", data.username);
       sessionStorage.setItem("balance", data.balance);
       sessionStorage.setItem("email", data.email);
+      setLoading(false);
       navigate("/dashboard");
 
     } catch (error) {
@@ -55,6 +58,17 @@ const Login = () => {
   };
 
   return (
+    loading ? (
+    //loding screen
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md">
+        <h2 className="text-3xl font-semibold mb-6 text-stock-primary">
+          Loading...
+        </h2>
+      </div>
+    </div> ) :
+    
+
     <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600 text-gray-800">
       <div className="flex flex-col p-6 items-center justify-center w-full md:w-1/2">
         <h2 className="text-4xl font-bold">Pakistan Stock</h2>
