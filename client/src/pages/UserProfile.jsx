@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import SideNavbar from "../components/NavBar/SideNavBar";
-import TopNavbar from "../components/NavBar/TopNabar";
 import { FaEdit } from "react-icons/fa";
 import apiService from "../services/apiService";
 import { toast } from "react-toastify";

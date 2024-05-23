@@ -1,6 +1,4 @@
 import React from "react";
-import SideNavbar from "../components/NavBar/SideNavBar";
-import TopNavbar from "../components/NavBar/TopNabar";
 import DataTable from "../components/MarketWatch/DataTable";
 
 const MarketWatch = () => {

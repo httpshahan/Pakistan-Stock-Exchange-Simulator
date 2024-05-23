@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import SideNavbar from "../NavBar/SideNavBar";
-import TopNavbar from "../NavBar/TopNabar";
 import apiService from "../../services/apiService";
 import StockTable from "./StockTable";
 import Indexes from "./Indexes";

@@ -1,6 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import SideNavbar from "../components/NavBar/SideNavBar";
-import TopNavbar from "../components/NavBar/TopNabar";
 
 const HeatMap = () => {
   if (!sessionStorage.getItem("token")) {

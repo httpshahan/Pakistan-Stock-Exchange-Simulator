@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import SideNavbar from "../components/NavBar/SideNavBar";
-import TopNavbar from "../components/NavBar/TopNabar";
 import apiService from "../services/apiService";
 import { Metric } from "@tremor/react";
 import { toast } from "react-toastify";

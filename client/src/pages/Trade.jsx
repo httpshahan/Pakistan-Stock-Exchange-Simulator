@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import SideNavbar from "../components/NavBar/SideNavBar";
-import TopNavbar from "../components/NavBar/TopNabar";
 import BuyForm from "../components/Trade/Buy";
 import SellForm from "../components/Trade/Sell";
 

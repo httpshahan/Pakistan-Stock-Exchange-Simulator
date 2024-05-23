@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiService from "../services/apiService";
-import SideNavbar from "../components/NavBar/SideNavBar";
-import TopNavbar from "../components/NavBar/TopNabar";
 import CompanyData from "../components/Stock/CompanyData";
 import CompanyDetails from "../components/Stock/CompanyDetails";
 import Chart from "../components/Stock/Chart";
