@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import UserManagement from "../components/Admin/UserManag";
 import Transactions from "../components/Admin/Transactions";
 
-
 const AdminDash = () => {
   const [showUsers, setShowUsers] = useState(true);
   const [showTransactions, setShowTransactions] = useState(false);
@@ -42,10 +41,10 @@ const AdminDash = () => {
               Transactions
             </button>
           </nav>
-          <button 
+          <button
             className="bg-blue-500 text-white px-4 py-2 rounded-lg m-6"
             onClick={handleLogout}
-            >
+          >
             Logout
           </button>
         </header>
