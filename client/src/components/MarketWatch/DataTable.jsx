@@ -3,6 +3,7 @@ import apiService from "../../services/apiService";
 import { FaBookmark } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Loader from "../loader/Loader";
 import {
   Card,
   Table,
@@ -61,10 +62,7 @@ const DataTable = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full border-t-4 border-green-500 border-solid h-12 w-12"></div>
-        <div className="ml-3 text-xl font-semibold text-green-500">
-          Loading...
-        </div>
+        <Loader />
       </div>
     );
   }
@@ -93,7 +91,6 @@ const DataTable = () => {
       if (error.response && error.response.status === 409) {
         // Display an alert to the user indicating that the stock already exists in the watchlist
         toast.info("Stock already exists in watchlist!");
-        
       } else {
         // Display a generic error message to the user for other errors
         toast.error("Error adding stock to watchlist. Please try again later.");
