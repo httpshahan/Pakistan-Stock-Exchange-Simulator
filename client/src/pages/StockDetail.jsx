@@ -27,14 +27,6 @@ const StockDetails = () => {
     <div className="p-10 overflow-auto">
       <div className="bg-white p-6 rounded-md shadow-md">
         <CompanyData symbol={symbol} />
-        {data && (
-          <div>
-            <p className="text-gray-600 mb-2">
-              Current Price: {data[0].current}
-            </p>
-            {/* Add more properties as needed */}
-          </div>
-        )}
       </div>
       <div className="mt-4 bg-white shadow-md rounded-md">
         <Chart symbol={symbol} />

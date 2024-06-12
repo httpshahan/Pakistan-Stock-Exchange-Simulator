@@ -7,149 +7,89 @@ const Chart = ({ symbol }) => {
   const [dataByDay, setDataByDay] = useState([]);
   const [dataByMonth, setDataByMonth] = useState([]);
   const [dataByYear, setDataByYear] = useState([]);
-  const [timeInterval, setTimeInterval] = useState("day"); // Default to all data
-  const [loading, setLoading] = useState(false);
-  const [dataLoad, setDataLoad] = useState(true);
+  const [timeInterval, setTimeInterval] = useState("day");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // if (timeInterval === "day") {
-          const response = await apiService.get(`/proxy/int/${symbol}`);
-          const Ddata = response.data.data;
-          const DsortedData = Ddata.sort((a, b) => a[0] - b[0]);
-          const formattedData = DsortedData.map((item) => ({
-            timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            }),
-            price: item[1],
-            volume: item[2],
-            date: new Date(item[0] * 1000).toLocaleString("en-US", {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            }),
-          }));
-          setDataByDay(formattedData);
-        // } else {
-          const res = await apiService.get(`/proxy/eod/${symbol}`);
-          const data = res.data.data;
+        const response = await apiService.get(`/proxy/int/${symbol}`);
+        const Ddata = response.data.data;
+        const DsortedData = Ddata.sort((a, b) => a[0] - b[0]);
+        const formattedData = DsortedData.map((item) => ({
+          timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }),
+          price: item[1],
+          volume: item[2],
+          date: new Date(item[0] * 1000).toLocaleString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }),
+        }));
+        setDataByDay(formattedData);
 
-          // Sort the data by the timestamp in ascending order
-          const sortedData = data.sort((a, b) => a[0] - b[0]);
-          const monthData = sortedData.map((item) => ({
-            timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
-            price: item[1],
-            volume: item[2],
-            date: new Date(item[0] * 1000).toLocaleString("en-US", {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
-          }));
-          setDataByMonth(monthData);
+        const res = await apiService.get(`/proxy/eod/${symbol}`);
+        const data = res.data.data;
+        const sortedData = data.sort((a, b) => a[0] - b[0]);
 
-          const yearData = sortedData.map((item) => ({
-            timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-              month: "short",
-              year: "numeric",
-            }),
-            price: item[1],
-            volume: item[2],
-            date: new Date(item[0] * 1000).toLocaleString("en-US", {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
-          }));
-          setDataByYear(yearData);
+        const monthData = sortedData.map((item) => ({
+          timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+          price: item[1],
+          volume: item[2],
+          date: new Date(item[0] * 1000).toLocaleString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+        }));
+        setDataByMonth(monthData);
 
-          const allData = sortedData.map((item) => ({
-            timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-              month: "short",
-              year: "numeric",
-            }),
-            price: item[1],
-            volume: item[2],
-            date: new Date(item[0] * 1000).toLocaleString("en-US", {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
-          }));
-          setOriginalData(allData);
+        const yearData = sortedData.map((item) => ({
+          timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+            month: "short",
+            year: "numeric",
+          }),
+          price: item[1],
+          volume: item[2],
+          date: new Date(item[0] * 1000).toLocaleString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+        }));
+        setDataByYear(yearData);
 
+        const allData = sortedData.map((item) => ({
+          timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
+            month: "short",
+            year: "numeric",
+          }),
+          price: item[1],
+          volume: item[2],
+          date: new Date(item[0] * 1000).toLocaleString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+        }));
+        setOriginalData(allData);
 
-
-          // if (timeInterval === "month") {
-          //   const formattedData = sortedData.map((item) => ({
-          //     timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-          //       month: "short",
-          //       day: "numeric",
-          //       year: "numeric",
-          //     }),
-          //     price: item[1],
-          //     volume: item[2],
-          //     date: new Date(item[0] * 1000).toLocaleString("en-US", {
-          //       weekday: "short",
-          //       month: "short",
-          //       day: "numeric",
-          //       year: "numeric",
-          //     }),
-          //   }));
-          //   setDataByMonth(formattedData);
-          // } 
-          //  if (timeInterval === "year") {
-          //   const formattedData = sortedData.map((item) => ({
-          //     timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-          //       month: "short",
-          //       year: "numeric",
-          //     }),
-          //     price: item[1],
-          //     volume: item[2],
-          //     date: new Date(item[0] * 1000).toLocaleString("en-US", {
-          //       weekday: "short",
-          //       month: "short",
-          //       day: "numeric",
-          //       year: "numeric",
-          //     }),
-          //   }));
-          //   setDataByYear(formattedData);
-          // } else {
-          //   // For "all" interval, set the original data
-          //   const formattedData = sortedData.map((item) => ({
-          //     timestamp: new Date(item[0] * 1000).toLocaleString("en-US", {
-          //       month: "short",
-          //       year: "numeric",
-          //     }),
-          //     price: item[1],
-          //     volume: item[2],
-          //     date: new Date(item[0] * 1000).toLocaleString("en-US", {
-          //       weekday: "short",
-          //       month: "short",
-          //       day: "numeric",
-          //       year: "numeric",
-          //     }),
-          //   }));
-          //   setOriginalData(formattedData);
-          //   setDataLoad(false);
-          // }
-        //}
-        setDataLoad(false);
-        
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -161,7 +101,7 @@ const Chart = ({ symbol }) => {
   const customTooltip = ({ payload, active }) => {
     if (!active || !payload) return null;
     return (
-      <div className="w-56 bg-stock-light rounded p-2 shadow border">
+      <div className="w-56 bg-white rounded p-2 shadow border">
         {payload.map((data, idx) => (
           <div key={idx} className="flex flex-1 space-x-2.5">
             <div className="space-y-1">
@@ -177,52 +117,88 @@ const Chart = ({ symbol }) => {
     );
   };
 
+  const lastClosePrice =
+    dataByMonth.length > 1 ? dataByMonth[dataByMonth.length - 1].price : 0;
+  const currentPrice =
+    dataByDay.length > 0 ? dataByDay[dataByDay.length - 1].price : 0;
+  const openPrice = dataByDay.length > 0 ? dataByDay[0].price : 0;
+  const lowPrice = Math.min(...dataByDay.map((item) => item.price));
+  const highPrice = Math.max(...dataByDay.map((item) => item.price));
+  const percentageChange =
+    ((currentPrice - lastClosePrice) / lastClosePrice) * 100;
+
   return (
     <>
       {loading ? (
         <h1>Loading</h1>
       ) : (
         <>
-          <div className="p-6">
-            <Title className="text-xl font-bold text-gray-800 mb-4">
-              {symbol}
-            </Title>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col space-y-2">
-                <p className="text-gray-600">
-                  Low:{" "}
-                  {Math.min(...dataByDay.map((min) => min.price))?.toFixed(2)}
-                </p>
-                <p className="text-gray-600">
-                  High:{" "}
-                  {Math.max(...dataByDay.map((max) => max.price))?.toFixed(2)}
+          <div className="bg-white overflow-hidden pt-4">
+            <div className="text-center py-6 px-4  text-gray-900 flex items-end justify-center gap-4">
+              <p className="text-3xl font-bold">
+                Rs. {currentPrice.toFixed(2)}
+              </p>
+              <p
+                className={`text-lg font-semibold ${
+                  percentageChange >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {percentageChange >= 0 ? "▲ " : "▼ "}
+                {(currentPrice - lastClosePrice).toFixed(2)} (
+                {Math.abs(percentageChange).toFixed(2)}%)
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-0 justify-center">
+              <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
+                <p className="text-gray-600">Low</p>
+                <p className="text-gray-900 text-lg font-semibold">
+                  {lowPrice.toFixed(2)}
                 </p>
               </div>
-              <div className="flex flex-col space-y-2">
-                <p className="text-gray-600">
-                  Open: {dataByDay[0]?.price?.toFixed(2)}
-                </p>
-                <p className="text-gray-600">
-                  Close: {dataByDay[dataByDay.length - 1]?.price?.toFixed(2)}
+              <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
+                <p className="text-gray-600">High</p>
+                <p className="text-gray-900 text-lg font-semibold">
+                  {highPrice.toFixed(2)}
                 </p>
               </div>
             </div>
-            <p className="text-gray-600 mt-4">
-              Volume:{" "}
-              {dataByDay
-                .reduce((acc, cur) => acc + cur.volume, 0)
-                .toLocaleString()}
-            </p>
+
+            <div className="grid grid-cols-2 gap-0 justify-center">
+              <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
+                <p className="text-gray-600">Open</p>
+                <p className="text-gray-900 text-lg font-semibold">
+                  {openPrice.toFixed(2)}
+                </p>
+              </div>
+              <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
+                <p className="text-gray-600">Close</p>
+                <p className="text-gray-900 text-lg font-semibold">
+                  {lastClosePrice.toFixed(2)}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-0 justify-center">
+              <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
+                <p className="text-gray-600">Volume</p>
+                <p className="text-gray-900 text-lg font-semibold">
+                  {dataByDay
+                    .reduce((acc, cur) => acc + cur.volume, 0)
+                    .toLocaleString()}
+                </p>
+              </div>
+              <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
+                <p className="text-gray-600">Day Range</p>
+                <p className="text-gray-900 text-lg font-semibold">
+                  {lowPrice.toFixed(2)} - {highPrice.toFixed(2)}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-center mt-6"></div>
           </div>
-          <div className="flex justify-between p-6">
-            <p className="text-gray-600 text-center">
-              Current Price: {dataByDay[dataByDay.length - 1]?.price}
-            </p>
-            <h1 className="text-gray-600 text-center">
-              As of {dataByDay[dataByDay.length - 1]?.date}
-            </h1>
-          </div>
-          <div className="border-t border-gray-200"></div>
+
           <div className="flex justify-center space-x-4 p-4">
             <button
               className={`${
@@ -265,32 +241,30 @@ const Chart = ({ symbol }) => {
               All
             </button>
           </div>
+
           <div className="border-t border-gray-200"></div>
+
           <div className="p-6">
-            {dataLoad ? (
-              <h1 className="h-72">Loading Chart</h1>
-            ) : (
-              <AreaChart
-                className="h-72"
-                data={
-                  timeInterval === "day"
-                    ? dataByDay
-                    : timeInterval === "month"
-                    ? dataByMonth.slice(-30)
-                    : timeInterval === "year"
-                    ? dataByYear.slice(-261)
-                    : originalData
-                }
-                index="timestamp"
-                categories={["price"]}
-                colors={["yellow-500"]}
-                showAnimation={true}
-                yAxisWidth={50}
-                customTooltip={customTooltip}
-                autoMinValue={true}
-                showLegend={false}
-              />
-            )}
+            <AreaChart
+              className="h-72"
+              data={
+                timeInterval === "day"
+                  ? dataByDay
+                  : timeInterval === "month"
+                  ? dataByMonth.slice(-30)
+                  : timeInterval === "year"
+                  ? dataByYear.slice(-261)
+                  : originalData
+              }
+              index="timestamp"
+              categories={["price"]}
+              colors={["yellow-500"]}
+              showAnimation={true}
+              yAxisWidth={50}
+              customTooltip={customTooltip}
+              autoMinValue={true}
+              showLegend={false}
+            />
           </div>
         </>
       )}
