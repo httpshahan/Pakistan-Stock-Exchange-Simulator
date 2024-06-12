@@ -131,12 +131,14 @@ const Chart = ({ symbol }) => {
   return (
     <>
       {loading ? (
-        <Loader />
+        <div className="flex justify-center items-center h-96">
+          <Loader />
+        </div>
       ) : (
         <>
           <div className="bg-white overflow-hidden pt-4">
-            <div className="text-center py-6 px-4  text-gray-900 flex items-end justify-center gap-4">
-              <p className="text-3xl font-bold">
+            <div className="text-center pt-6 px-4  text-gray-900 flex items-end justify-center gap-4">
+              <p className="text-4xl font-bold">
                 Rs. {currentPrice.toFixed(2)}
               </p>
               <p
@@ -149,6 +151,9 @@ const Chart = ({ symbol }) => {
                 {Math.abs(percentageChange).toFixed(2)}%)
               </p>
             </div>
+            <p className="text-sm text-center text-gray-600 pb-6">
+              As of {dataByDay[dataByDay.length - 1].date}
+            </p>
 
             <div className="grid grid-cols-2 gap-0 justify-center">
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
