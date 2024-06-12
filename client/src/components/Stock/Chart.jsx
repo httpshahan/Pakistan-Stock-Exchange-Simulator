@@ -119,7 +119,7 @@ const Chart = ({ symbol }) => {
   };
 
   const lastClosePrice =
-    dataByMonth.length > 1 ? dataByMonth[dataByMonth.length - 1].price : 0;
+    dataByMonth.length > 1 ? dataByMonth[dataByMonth.length - 2].price : 0;
   const currentPrice =
     dataByDay.length > 0 ? dataByDay[dataByDay.length - 1].price : 0;
   const openPrice = dataByDay.length > 0 ? dataByDay[0].price : 0;
@@ -148,6 +148,7 @@ const Chart = ({ symbol }) => {
               >
                 {percentageChange >= 0 ? "▲ " : "▼ "}
                 {(currentPrice - lastClosePrice).toFixed(2)} (
+                {percentageChange >= 0 ? "+" : "-"}
                 {Math.abs(percentageChange).toFixed(2)}%)
               </p>
             </div>
