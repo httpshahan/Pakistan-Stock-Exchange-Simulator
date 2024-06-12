@@ -178,7 +178,7 @@ const Chart = ({ symbol }) => {
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
-                <p className="text-gray-600">Close</p>
+                <p className="text-gray-600">Previous Close</p>
                 <p className="text-gray-900 text-lg font-semibold">
                   {lastClosePrice.toFixed(2)}
                 </p>
