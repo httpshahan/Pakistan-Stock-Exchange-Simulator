@@ -3,6 +3,7 @@ import apiService from "../../services/apiService";
 import StockTable from "./StockTable";
 import Indexes from "./Indexes";
 import { Card, Grid, Metric, Text } from "@tremor/react";
+import Loader from "../loader/Loader";
 
 const DashboardComp = () => {
   const [loading, setLoading] = useState(true);
@@ -82,10 +83,7 @@ const DashboardComp = () => {
     <div className="flex-1 overflow-auto p-8">
       {loading ? (
         <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full border-t-4 border-green-500 border-solid h-12 w-12"></div>
-          <div className="ml-3 text-xl font-semibold text-green-500">
-            Loading...
-          </div>
+          <Loader />
         </div>
       ) : (
         <div className="flex flex-col space-y-8">

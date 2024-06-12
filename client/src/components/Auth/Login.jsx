@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import Loader from "../Loader/Loader";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,8 +27,8 @@ const Login = () => {
         return;
       }
 
-      const data = await authService.login(email, password);
       setLoading(true);
+      const data = await authService.login(email, password);
 
       setInvalid(false);
       setInvalidPassword(false);
@@ -39,7 +40,6 @@ const Login = () => {
       sessionStorage.setItem("email", data.email);
       setLoading(false);
       navigate("/dashboard");
-
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
@@ -58,17 +58,6 @@ const Login = () => {
   };
 
   return (
-    loading ? (
-    //loding screen
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md">
-        <h2 className="text-3xl font-semibold mb-6 text-stock-primary">
-          Loading...
-        </h2>
-      </div>
-    </div> ) :
-    
-
     <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600 text-gray-800">
       <div className="flex flex-col p-6 items-center justify-center w-full md:w-1/2">
         <h2 className="text-4xl font-bold">Pakistan Stock</h2>
@@ -139,7 +128,7 @@ const Login = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm font-medium cursor-pointer"
                   onClick={togglePasswordVisibility}
                 >
-                  {showPassword ? <FaRegEyeSlash/> : <FaRegEye />}
+                  {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                 </button>
               </div>
 
@@ -159,12 +148,18 @@ const Login = () => {
                 <p className="text-sm font-sans">Invalid Password</p>
               </div>
             </div>
-            <button
-              type="submit"
-              className="w-full mt-8 bg-green-500 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
-            >
-              Login
-            </button>
+            {loading ? (
+              <div className="flex justify-center mt-8">
+                <Loader />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="w-full mt-8 bg-green-500 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
+              >
+                Login
+              </button>
+            )}
           </form>
         </div>
       </div>
