@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../../services/apiService";
-import { Card, AreaChart, Title } from "@tremor/react";
+import { AreaChart } from "@tremor/react";
+import Loader from "../loader/Loader";
 
 const Chart = ({ symbol }) => {
   const [originalData, setOriginalData] = useState([]);
@@ -130,7 +131,7 @@ const Chart = ({ symbol }) => {
   return (
     <>
       {loading ? (
-        <h1>Loading</h1>
+        <Loader />
       ) : (
         <>
           <div className="bg-white overflow-hidden pt-4">
