@@ -86,27 +86,45 @@ const DashboardComp = () => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col space-y-8">
-          <div className="text-3xl font-semibold mb-4">Dashboard Overview</div>
+        <div className="flex flex-col">
+          <div className="text-3xl font-semibold mb-8 text-center">
+            Dashboard Overview
+          </div>
 
-          <Grid numItemsSm={2} numItemsLg={4} className="gap-6">
-            <Card>
-              <Text>Portfolio Value</Text>
-              <Metric>{portfolioValue.toFixed(2)}</Metric>
-            </Card>
-            <Card>
-              <Text>Invested Amount</Text>
-              <Metric>{investedAmount.toFixed(2)}</Metric>
-            </Card>
-            <Card>
-              <Text>Growth</Text>
-              <Metric>{growth.toFixed(2)}</Metric>
-            </Card>
-            <Card>
-              <Text>Buying Power</Text>
-              <Metric>{balance}</Metric>
-            </Card>
-          </Grid>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 p-4">
+            <div className="bg-white shadow-lg rounded-lg p-6">
+              <div className="text-lg font-medium text-gray-700 mb-2">
+                Portfolio Value
+              </div>
+              <div className="text-2xl font-semibold text-blue-600">
+                {portfolioValue.toFixed(2)}
+              </div>
+            </div>
+            <div className="bg-white shadow-lg rounded-lg p-6">
+              <div className="text-lg font-medium text-gray-700 mb-2">
+                Invested Amount
+              </div>
+              <div className="text-2xl font-semibold text-green-600">
+                {investedAmount.toFixed(2)}
+              </div>
+            </div>
+            <div className="bg-white shadow-lg rounded-lg p-6">
+              <div className="text-lg font-medium text-gray-700 mb-2">
+                Growth
+              </div>
+              <div className="text-2xl font-semibold text-yellow-600">
+                {growth.toFixed(2)}
+              </div>
+            </div>
+            <div className="bg-white shadow-lg rounded-lg p-6">
+              <div className="text-lg font-medium text-gray-700 mb-2">
+                Buying Power
+              </div>
+              <div className="text-2xl font-semibold text-red-600">
+                {balance}
+              </div>
+            </div>
+          </div>
 
           <div>
             <Indexes />
