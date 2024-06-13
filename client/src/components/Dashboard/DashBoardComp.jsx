@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import apiService from "../../services/apiService";
 import StockTable from "./StockTable";
 import Indexes from "./Indexes";
-import { Card, Grid, Metric, Text } from "@tremor/react";
 import Loader from "../loader/Loader";
 
 const DashboardComp = () => {
@@ -19,11 +18,6 @@ const DashboardComp = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Simulate a delay or wait for the scraping process to complete
-        // const scrape = await apiService.get("/delay");
-        // console.log(scrape.data);
-        // console.log("Scraping Complete");
-
         // Fetch data for Top Advancers
         const topAdvancersResponse = await apiService.get("/stocks/topStocks");
         setTopAdvancers(topAdvancersResponse.data.data);
@@ -35,36 +29,30 @@ const DashboardComp = () => {
         setTopDecliners(topDeclinersResponse.data.data);
 
         // Fetch user's portfolio data
-        try {
-          const response = await apiService.get(`/stocks/userAssets/${userId}`);
-          const sortedPortfolio = response.data.data.sort((a, b) =>
+        const portfolioResponse = await apiService.get(
+          `/stocks/userAssets/${userId}`
+        );
+        setPortfolio(
+          portfolioResponse.data.data.sort((a, b) =>
             a.stock_symbol.localeCompare(b.stock_symbol)
-          );
-          setPortfolio(sortedPortfolio);
-          console.log(sortedPortfolio);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
+          )
+        );
 
         // Fetch user's watchlist data
-        try {
-          const response = await apiService.get(
-            `/stocks/getWatchlist/${userId}`
-          );
-          setWatchlist(response.data);
-          console.log(response.data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-        // Set loading to false after scraping and fetching processes complete
+        const watchlistResponse = await apiService.get(
+          `/stocks/getWatchlist/${userId}`
+        );
+        setWatchlist(watchlistResponse.data);
+
+        // Set loading to false after all data is fetched
         setLoading(false);
       } catch (error) {
-        console.error("Error running Scraper or fetching data:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [userId]); // Empty dependency array ensures that the effect runs only once on component mount
+  }, [userId]);
 
   const portfolioValue = portfolio.reduce(
     (total, stock) => total + stock.current * stock.quantity,
@@ -77,7 +65,6 @@ const DashboardComp = () => {
   const growth = portfolioValue - investedAmount;
   const growthPercentage =
     ((portfolioValue - investedAmount) / investedAmount) * 100;
-  const accountValue = balance + portfolioValue;
 
   return (
     <div className="flex-1 overflow-auto p-8">
@@ -86,58 +73,57 @@ const DashboardComp = () => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col">
-          <div className="text-3xl font-semibold mb-8 text-center">
+        <div className="flex flex-col space-y-8">
+          <div className="text-3xl font-semibold text-center">
             Dashboard Overview
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 p-4">
-            <div className="bg-white shadow-lg rounded-lg p-6">
-              <div className="text-lg font-medium text-gray-700 mb-2">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="text-lg font-medium text-gray-700">
                 Portfolio Value
               </div>
               <div className="text-2xl font-semibold text-blue-600">
-                {portfolioValue.toFixed(2)}
+                {portfolioValue.toFixed(2).toLocaleString()}
               </div>
             </div>
-            <div className="bg-white shadow-lg rounded-lg p-6">
-              <div className="text-lg font-medium text-gray-700 mb-2">
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="text-lg font-medium text-gray-700">
                 Invested Amount
               </div>
               <div className="text-2xl font-semibold text-green-600">
-                {investedAmount.toFixed(2)}
+                {investedAmount.toFixed(2).toLocaleString()}
               </div>
             </div>
-            <div className="bg-white shadow-lg rounded-lg p-6">
-              <div className="text-lg font-medium text-gray-700 mb-2">
-                Growth
-              </div>
-              <div className="text-2xl font-semibold text-yellow-600">
-                {growth.toFixed(2)}
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="text-lg font-medium text-gray-700">Growth</div>
+              <div className="text-2xl font-semibold text-yellow-600 flex items-end gap-2">
+                {growth.toFixed(2).toLocaleString()}
+                <span className="text-sm font-normal text-gray-500">
+                  {growthPercentage.toFixed(2)}%
+                </span>
               </div>
             </div>
-            <div className="bg-white shadow-lg rounded-lg p-6">
-              <div className="text-lg font-medium text-gray-700 mb-2">
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="text-lg font-medium text-gray-700">
                 Buying Power
               </div>
               <div className="text-2xl font-semibold text-red-600">
-                {balance}
+                {balance.toLocaleString()}
               </div>
             </div>
           </div>
 
-          <div>
-            <Indexes />
-          </div>
+          <Indexes />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-            <div className="border rounded-lg shadow-md">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-white shadow rounded-lg">
               <StockTable title="Top Advancers" data={topAdvancers} />
             </div>
-            <div className="border rounded-lg shadow-md ">
+            <div className="bg-white shadow rounded-lg">
               <StockTable title="Top Decliners" data={topDecliners} />
             </div>
-            <div className="border rounded-lg shadow-md">
+            <div className="bg-white shadow rounded-lg">
               <StockTable title="Watchlist" data={watchlist} />
             </div>
           </div>

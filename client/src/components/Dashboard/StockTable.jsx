@@ -14,13 +14,13 @@ const StockTable = ({ title, data }) => {
           >
             <div className="flex flex-col">
               <a
-                href={`/stock/${item.stock_symbol}`} // Replace with the actual path or URL
+                href={`/stock/${item.stock_symbol}`}
                 className="w-auto text-zinc-800 text-xs font-medium overflow-hidden overflow-ellipsis line-clamp-1 hover:underline"
               >
                 {item.company_name}
               </a>
               <a
-                href={`/stock/${item.stock_symbol}`} // Replace with the actual path or URL
+                href={`/stock/${item.stock_symbol}`}
                 className="text-zinc-500 text-xs font-medium hover:underline"
               >
                 {item.stock_symbol}
