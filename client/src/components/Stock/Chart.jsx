@@ -107,9 +107,13 @@ const Chart = ({ symbol }) => {
           <div key={idx} className="flex flex-1 space-x-2.5">
             <div className="space-y-1">
               <p className="text-sm font-semibold">{data.payload.date}</p>
-              <p className="text-sm">Price: {data.payload.price}</p>
               <p className="text-sm">
-                Volume: {data.payload.volume.toLocaleString()}
+                Price: {""}
+                {parseFloat(data.payload.price.toFixed(2)).toLocaleString()}
+              </p>
+              <p className="text-sm">
+                Volume:{" "}
+                {parseFloat(data.payload.volume.toFixed(2)).toLocaleString()}
               </p>
             </div>
           </div>
@@ -121,9 +125,12 @@ const Chart = ({ symbol }) => {
   const lastClosePrice =
     dataByMonth.length > 1 ? dataByMonth[dataByMonth.length - 2].price : 0;
   const currentPrice =
-    dataByDay.length > 0 ? dataByDay[dataByDay.length - 1].price : 0;
+    dataByDay.length > 1
+      ? dataByDay[dataByDay.length - 1].price
+      : lastClosePrice;
   const openPrice = dataByDay.length > 0 ? dataByDay[0].price : 0;
   const lowPrice = Math.min(...dataByDay.map((item) => item.price));
+  console.log(lowPrice);
   const highPrice = Math.max(...dataByDay.map((item) => item.price));
   const percentageChange =
     ((currentPrice - lastClosePrice) / lastClosePrice) * 100;
@@ -139,7 +146,7 @@ const Chart = ({ symbol }) => {
           <div className="bg-white overflow-hidden pt-4">
             <div className="text-center pt-6 px-4  text-gray-900 flex items-end justify-center gap-4">
               <p className="text-4xl font-bold">
-                Rs. {currentPrice.toFixed(2)}
+                Rs. {parseFloat(currentPrice.toFixed(2)).toLocaleString()}
               </p>
               <p
                 className={`text-lg font-semibold ${
@@ -147,26 +154,35 @@ const Chart = ({ symbol }) => {
                 }`}
               >
                 {percentageChange >= 0 ? "▲ " : "▼ "}
-                {(currentPrice - lastClosePrice).toFixed(2)} (
-                {percentageChange >= 0 ? "+" : "-"}
+                {parseFloat(
+                  (currentPrice - lastClosePrice).toFixed(2)
+                ).toLocaleString()}{" "}
+                ({percentageChange >= 0 ? "+" : "-"}
                 {Math.abs(percentageChange).toFixed(2)}%)
               </p>
             </div>
             <p className="text-sm text-center text-gray-600 pb-6">
-              As of {dataByDay[dataByDay.length - 1].date}
+              As of{" "}
+              {dataByDay.length > 0
+                ? " " + dataByDay[dataByDay.length - 1].date
+                : dataByMonth[dataByMonth.length - 1].date}
             </p>
 
             <div className="grid grid-cols-2 gap-0 justify-center">
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
                 <p className="text-gray-600">Low</p>
                 <p className="text-gray-900 text-lg font-semibold">
-                  {lowPrice.toFixed(2)}
+                  {lowPrice.toFixed(2) !== "Infinity"
+                    ? parseFloat(lowPrice.toFixed(2)).toLocaleString()
+                    : "0"}
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
                 <p className="text-gray-600">High</p>
                 <p className="text-gray-900 text-lg font-semibold">
-                  {highPrice.toFixed(2)}
+                  {highPrice.toFixed(2) !== "-Infinity"
+                    ? parseFloat(highPrice.toFixed(2)).toLocaleString()
+                    : "0"}
                 </p>
               </div>
             </div>
@@ -175,13 +191,15 @@ const Chart = ({ symbol }) => {
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
                 <p className="text-gray-600">Open</p>
                 <p className="text-gray-900 text-lg font-semibold">
-                  {openPrice.toFixed(2)}
+                  {openPrice.toFixed(2) > 0
+                    ? parseFloat(openPrice.toFixed(2)).toLocaleString()
+                    : "0"}
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
                 <p className="text-gray-600">Previous Close</p>
                 <p className="text-gray-900 text-lg font-semibold">
-                  {lastClosePrice.toFixed(2)}
+                  {parseFloat(lastClosePrice.toFixed(2)).toLocaleString()}
                 </p>
               </div>
             </div>
@@ -198,7 +216,13 @@ const Chart = ({ symbol }) => {
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
                 <p className="text-gray-600">Day Range</p>
                 <p className="text-gray-900 text-lg font-semibold">
-                  {lowPrice.toFixed(2)} - {highPrice.toFixed(2)}
+                  {lowPrice.toFixed(2) !== "Infinity"
+                    ? parseFloat(lowPrice.toFixed(2)).toLocaleString()
+                    : "0"}{" "}
+                  -{" "}
+                  {highPrice.toFixed(2) !== "-Infinity"
+                    ? parseFloat(highPrice.toFixed(2)).toLocaleString()
+                    : "0"}
                 </p>
               </div>
             </div>
