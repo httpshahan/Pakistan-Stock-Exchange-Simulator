@@ -26,7 +26,7 @@ const DashboardComp = () => {
         const topDeclinersResponse = await apiService.get(
           "/stocks/declinerStocks"
         );
-        setTopDecliners(topDeclinersResponse.data.data);
+        setTopDecliners(topDeclinersResponse.data.data); 
 
         // Fetch user's portfolio data
         const portfolioResponse = await apiService.get(
