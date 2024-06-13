@@ -187,6 +187,8 @@ const Chart = ({ symbol }) => {
               </div>
             </div>
 
+            <hr className="border-t border-gray-300" />
+
             <div className="grid grid-cols-2 gap-0 justify-center">
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
                 <p className="text-gray-600">Open</p>
@@ -204,6 +206,7 @@ const Chart = ({ symbol }) => {
               </div>
             </div>
 
+            <hr className="border-t border-gray-300" />
             <div className="grid grid-cols-2 gap-0 justify-center">
               <div className="flex flex-col items-center space-y-2 bg-gray-100 p-4">
                 <p className="text-gray-600">Volume</p>
