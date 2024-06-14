@@ -44,8 +44,10 @@ const Login = () => {
       if (error.response) {
         if (error.response.status === 401) {
           setInvalidPassword(true);
+          setLoading(false);
         } else if (error.response.status === 404) {
           setInvalid(true);
+          setLoading(false);
         }
       } else {
         console.error("Error during login:", error);
