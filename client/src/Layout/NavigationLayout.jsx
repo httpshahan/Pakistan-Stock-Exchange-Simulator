@@ -11,6 +11,11 @@ const NavigationLayout = () => {
         <div className="flex flex-col flex-1 overflow-hidden">
           <TopNav />
           <Outlet />
+          {/* <footer className="bg-white py-4 px-6 border-t m-0">
+            <p className="text-sm text-gray-600">
+              © 2024 Stock Exchange Simulator
+            </p>
+          </footer> */}
         </div>
       </div>
     </>
