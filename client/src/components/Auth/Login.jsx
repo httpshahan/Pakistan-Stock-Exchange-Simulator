@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
-import Loader from "../Loader/Loader";
+import Loader from "../loader/Loader";
 
 const Login = () => {
   const [email, setEmail] = useState("");
