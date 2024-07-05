@@ -137,7 +137,7 @@ const transactionsModel = {
       throw error;
     }
   },
-  async getTransactions(userId) {
+  async getTransaction(userId) {
     try {
       const result = await pool.query(
         "SELECT * FROM user_transactions WHERE user_id = $1 ORDER BY transaction_date DESC",
@@ -148,7 +148,7 @@ const transactionsModel = {
       throw error;
     }
   },
-  async getTransactions(){
+  async getTransactions() {
     try {
       const result = await pool.query(
         "SELECT * FROM user_transactions ORDER BY transaction_date DESC"
@@ -157,7 +157,7 @@ const transactionsModel = {
     } catch (error) {
       throw error;
     }
-  }
+  },
 };
 
 module.exports = transactionsModel;
