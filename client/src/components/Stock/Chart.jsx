@@ -123,7 +123,7 @@ const Chart = ({ symbol }) => {
   };
 
   const lastClosePrice =
-    dataByMonth.length > 1 ? dataByMonth[dataByMonth.length - 1].price : 0;
+    dataByMonth.length > 1 ? dataByMonth[dataByMonth.length - 2].price : 0;
   const currentPrice =
     dataByDay.length > 1
       ? dataByDay[dataByDay.length - 1].price
