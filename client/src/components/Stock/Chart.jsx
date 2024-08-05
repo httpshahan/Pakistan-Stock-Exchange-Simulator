@@ -154,7 +154,7 @@ const Chart = ({ symbol, type, stockData }) => {
                     {stockData[0].company_name}
                   </h1>
                   <p className="text-gray-600">
-                    {stockData[0].symbol} -<span>{stockData[0].sector}</span>
+                    {stockData[0].symbol} - <span>{stockData[0].sector}</span>
                   </p>
                 </div>
               )
