@@ -1,5 +1,5 @@
 // SideNavbar.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MdDashboard, MdLogout } from "react-icons/md";
 import {
@@ -11,18 +11,41 @@ import {
   FaEye,
 } from "react-icons/fa";
 
+const navItems = [
+  { path: "/dashboard", label: "Dashboard", icon: <MdDashboard /> },
+  { path: "/portfolio", label: "Portfolio", icon: <FaBriefcase /> },
+  { path: "/transactions", label: "Transactions", icon: <FaMoneyCheckAlt /> },
+  { path: "/trade", label: "Trade", icon: <FaExchangeAlt /> },
+  { path: "/watchlist", label: "Watchlist", icon: <FaEye /> },
+  { path: "/indices", label: "Indices", icon: <FaChartLine /> },
+  { path: "/market-watch", label: "Market Watch", icon: <FaChartBar /> },
+];
+
+const NavLink = ({ to, label, icon, isActive }) => (
+  <li className="mb-2">
+    <Link
+      to={to}
+      className={`block p-2 rounded flex items-center gap-2 ${
+        isActive
+          ? "bg-hover-primary text-stock-light font-semibold text-lg"
+          : "hover:bg-hover-secondary hover:text-hover-primary"
+      }`}
+    >
+      {icon}
+      <span>{label}</span>
+    </Link>
+  </li>
+);
+
 const SideNavbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleNav = () => {
-    console.log("toggleNav" + isOpen);
     setIsOpen(!isOpen);
-    console.log("after toggleNav" + isOpen);
   };
-  const isActive = (path) => {
-    return location.pathname === path;
-  };
+
+  const isActive = (path) => location.pathname === path;
 
   return (
     <>
@@ -31,134 +54,29 @@ const SideNavbar = () => {
           isOpen ? "hide" : "flex"
         }`}
       >
-        <div className={`flex items-center p-8 h-20`}>
+        <div className="flex items-center p-8 h-20">
           <Link to="/dashboard">
-            <span className={`text-2xl font-bold text-stock-secondary`}>
-              PSX
-            </span>
-            <span className={`text-xl font-semibold text-stock-light`}>
+            <span className="text-2xl font-bold text-stock-secondary">PSX</span>
+            <span className="text-xl font-semibold text-stock-light">
               Trade
             </span>
           </Link>
-          {/* <button
-            className="ml-6  md:hidden"
-            onClick={toggleNav}
-            aria-label="Toggle Nav"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-stock-light"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button> */}
         </div>
-        <div className={`p-5 mt-4 text-stock-light md:block`}>
-          <span className="text-xs">User Pannel</span>
+        <div className="p-5 mt-4 text-stock-light md:block">
+          <span className="text-xs">User Panel</span>
           <ul className="m-2 text-stock-light">
-            <li className="mb-2">
-              <Link
-                to="/dashboard"
-                className={`block p-2 rounded flex items-center gap-2 ${
-                  isActive("/dashboard")
-                    ? "bg-hover-primary text-stock-light font-semibold text-lg"
-                    : "hover:bg-hover-secondary hover:text-hover-primary"
-                }`}
-              >
-                <MdDashboard className="text-lg" />
-                Dashboard
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link
-                to="/portfolio"
-                className={`block p-2 rounded flex items-center gap-2 ${
-                  isActive("/portfolio")
-                    ? "bg-hover-primary text-stock-light font-semibold text-lg"
-                    : "hover:bg-hover-secondary hover:text-hover-primary"
-                }`}
-              >
-                <FaBriefcase />
-                <span>Portfolio</span>
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link
-                to="/transactions"
-                className={`block p-2 rounded flex items-center gap-2 ${
-                  isActive("/transactions")
-                    ? "bg-hover-primary text-stock-light font-semibold text-lg"
-                    : "hover:bg-hover-secondary hover:text-hover-primary"
-                }`}
-              >
-                <FaMoneyCheckAlt className="text-lg" />
-                <span> Transactions </span>
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link
-                to="/trade"
-                className={`block p-2 rounded flex items-center gap-2 ${
-                  isActive("/trade")
-                    ? "bg-hover-primary text-stock-light font-semibold text-lg"
-                    : "hover:bg-hover-secondary hover:text-hover-primary"
-                }`}
-              >
-                <FaExchangeAlt />
-                Trade
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link
-                to="/watchlist"
-                className={`block p-2 rounded flex items-center gap-2 ${
-                  isActive("/watchlist")
-                    ? "bg-hover-primary text-stock-light font-semibold text-lg"
-                    : "hover:bg-hover-secondary hover:text-hover-primary"
-                }`}
-              >
-                <FaEye />
-                Watchlist
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link
-                to="/indices"
-                className={`block p-2 rounded flex items-center gap-2 ${
-                  isActive("/indices")
-                    ? "bg-hover-primary text-stock-light font-semibold text-lg"
-                    : "hover:bg-hover-secondary hover:text-hover-primary"
-                }`}
-              >
-                <FaChartLine />
-                Indices
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link
-                to="/market-watch"
-                className={`block p-2 rounded flex items-center gap-2 ${
-                  isActive("/market-watch")
-                    ? "bg-hover-primary text-stock-light font-semibold text-lg"
-                    : "hover:bg-hover-secondary hover:text-hover-primary"
-                }`}
-              >
-                <FaChartBar />
-                Market Watch
-              </Link>
-            </li>
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                label={item.label}
+                icon={item.icon}
+                isActive={isActive(item.path)}
+              />
+            ))}
           </ul>
         </div>
-
-        <div className={`p-5  md:block`}>
+        <div className="p-5 md:block">
           <button
             className="w-full p-2 flex items-center gap-2 rounded text-stock-light hover:bg-hover-secondary hover:text-hover-primary text-left"
             onClick={() => {
@@ -168,15 +86,15 @@ const SideNavbar = () => {
               window.location.href = "/";
             }}
           >
-            <span>
-              <MdLogout className="text-lg" />
-            </span>
+            <MdLogout className="text-lg" />
             <span>Logout</span>
           </button>
         </div>
       </nav>
       <div
-        className={`md:hidden bg-stock-primary h-20 w-12 btn ${!isOpen ? "open" : ""}`} 
+        className={`md:hidden bg-stock-primary h-20 w-12 btn ${
+          !isOpen ? "open" : ""
+        }`}
       >
         <button onClick={toggleNav} aria-label="Toggle Nav">
           <svg
@@ -190,7 +108,7 @@ const SideNavbar = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d={ isOpen ? "M4 6h16M4 12h16M4 18h16" : "M6 18L18 6M6 6l12 12"}
+              d={isOpen ? "M4 6h16M4 12h16M4 18h16" : "M6 18L18 6M6 6l12 12"}
             />
           </svg>
         </button>

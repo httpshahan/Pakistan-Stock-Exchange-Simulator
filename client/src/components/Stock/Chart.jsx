@@ -14,6 +14,15 @@ const Chart = ({ symbol, type, stockData }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (
+        dataByDay.length > 0 &&
+        dataByMonth.length > 0 &&
+        dataByYear.length > 0
+      ) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await apiService.get(`/proxy/int/${symbol}`);
         const Ddata = response.data.data;
@@ -98,7 +107,7 @@ const Chart = ({ symbol, type, stockData }) => {
     };
 
     fetchData();
-  }, []);
+  }, [symbol]);
 
   const customTooltip = ({ payload, active }) => {
     if (!active || !payload) return null;
