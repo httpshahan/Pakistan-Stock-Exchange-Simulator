@@ -3,13 +3,14 @@ import apiService from "../../services/apiService";
 import { AreaChart } from "@tremor/react";
 import Loader from "../loader/Loader";
 
-const Chart = ({ symbol }) => {
+const Chart = ({ symbol, type, stockData }) => {
   const [originalData, setOriginalData] = useState([]);
   const [dataByDay, setDataByDay] = useState([]);
   const [dataByMonth, setDataByMonth] = useState([]);
   const [dataByYear, setDataByYear] = useState([]);
   const [timeInterval, setTimeInterval] = useState("day");
   const [loading, setLoading] = useState(true);
+  console.log(stockData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,7 +98,7 @@ const Chart = ({ symbol }) => {
     };
 
     fetchData();
-  }, [symbol]);
+  }, []);
 
   const customTooltip = ({ payload, active }) => {
     if (!active || !payload) return null;
@@ -130,7 +131,7 @@ const Chart = ({ symbol }) => {
       : lastClosePrice;
   const openPrice = dataByDay.length > 0 ? dataByDay[0].price : 0;
   const lowPrice = Math.min(...dataByDay.map((item) => item.price));
-  console.log(lowPrice);
+  // console.log(lowPrice);
   const highPrice = Math.max(...dataByDay.map((item) => item.price));
   const percentageChange =
     ((currentPrice - lastClosePrice) / lastClosePrice) * 100;
@@ -143,8 +144,22 @@ const Chart = ({ symbol }) => {
         </div>
       ) : (
         <>
-          <div className="bg-white overflow-hidden pt-4">
-            <div className="text-center pt-6 px-4  text-gray-900 flex items-end justify-center gap-4">
+          <div className="bg-white overflow-hidden py-4 text-center">
+            {
+              // Display the company name and symbol
+              type === "stock" && (
+                // company name, sector, symbol
+                <div className="px-10 py-6">
+                  <h1 className="text-4xl font-semibold text-gray-900 uppercase">
+                    {stockData[0].company_name}
+                  </h1>
+                  <p className="text-gray-600">
+                    {stockData[0].symbol} -<span>{stockData[0].sector}</span>
+                  </p>
+                </div>
+              )
+            }
+            <div className="justify-center text-gray-900 flex items-end gap-4 px-10">
               <p className="text-4xl font-bold">
                 Rs. {parseFloat(currentPrice.toFixed(2)).toLocaleString()}
               </p>
@@ -161,7 +176,7 @@ const Chart = ({ symbol }) => {
                 {Math.abs(percentageChange).toFixed(2)}%)
               </p>
             </div>
-            <p className="text-sm text-center text-gray-600 pb-6">
+            <p className="text-sm text-gray-600 px-10 py-2">
               As of{" "}
               {dataByDay.length > 0
                 ? " " + dataByDay[dataByDay.length - 1].date

@@ -14,22 +14,22 @@ const StockDetails = () => {
       try {
         const response = await apiService.get(`/stocks/getStock/${symbol}`);
         setData(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData(); // Call fetchData when the component mounts
-  }, [symbol]); // Re-run the effect whenever the 'symbol' parameter changes
+  }, []); // Re-run the effect whenever the 'symbol' parameter changes
 
   return (
     <div className="p-10 overflow-auto">
-      <div className="bg-white p-6 rounded-md shadow-md">
+      {/* <div className="bg-white p-6 rounded-md shadow-md">
         <CompanyData symbol={symbol} />
-      </div>
+      </div> */}
       <div className="mt-4 bg-white shadow-md rounded-md">
-        <Chart symbol={symbol} />
+        <Chart symbol={symbol} type="stock" stockData={data} />
       </div>
       <div className="mt-4 shadow-md rounded-md">
         <CompanyDetails symbol={symbol} type="symbolProfile" />
