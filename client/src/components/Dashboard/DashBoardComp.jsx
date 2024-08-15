@@ -47,6 +47,7 @@ const DashboardComp = () => {
         // Set loading to false after all data is fetched
         setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching data:", error);
       }
     };

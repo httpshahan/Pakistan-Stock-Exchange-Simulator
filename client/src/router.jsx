@@ -13,6 +13,7 @@ import Indices from "./pages/HeatMap";
 import UserProfile from "./pages/UserProfile";
 import AdminDashboard from "./pages/AdminDash";
 import ForgotPassword from "./pages/ForgotPage";
+import AdminRegister from "./components/Auth/AdminRegister";
 import NotFound	 from "./pages/NotFound";
 
 import NavigationLayout from "./Layout/NavigationLayout";
@@ -40,7 +41,8 @@ const Router = createBrowserRouter([
         element: <AuthLayout />,
         children: [
             { index: true, element: <LoginPage /> },
-            { path: "register", element: <Register /> },
+            { path: "signup", element: <Register /> },
+            { path: "admin-signup", element: <AdminRegister />},
             { path: "admin", element: <AdminLogin /> },
             { path: "admin-dashboard", element: <AdminDashboard /> },
             { path: "forgot-password", element: <ForgotPassword /> },

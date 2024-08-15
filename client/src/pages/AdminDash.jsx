@@ -27,7 +27,6 @@ const AdminDash = () => {
         <header className="flex justify-between bg-white">
           <h1 className="text-3xl font-bold p-6">Admin Dashboard</h1>
           <nav className="flex">
-            <button className="px-4 py-2 rounded-lg m-6">Dashboard</button>
             <button
               className="px-4 py-2 rounded-lg m-6"
               onClick={handleShowUsers}
