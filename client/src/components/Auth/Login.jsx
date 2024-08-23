@@ -56,7 +56,7 @@ const Login = () => {
   };
 
   const handleRegisterClick = () => {
-    navigate("/register");
+    navigate("/signup");
   };
 
   return (
