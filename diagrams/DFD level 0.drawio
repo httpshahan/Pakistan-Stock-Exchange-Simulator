@@ -4,7 +4,7 @@
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="7" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=14;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="2" target="5">
+                <mxCell id="7" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=14;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="2" target="5" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="530" y="490" as="targetPoint"/>
                         <Array as="points">
@@ -13,18 +13,28 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="2" value="PSX Simulator" style="swimlane;rounded=1;startSize=30;fontSize=14;" vertex="1" parent="1">
+                <mxCell id="9" value="required info" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" parent="7" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0102" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="PSX Simulator" style="swimlane;rounded=1;startSize=30;fontSize=14;" parent="1" vertex="1">
                     <mxGeometry x="455" y="240" width="185" height="140" as="geometry">
                         <mxRectangle x="460" y="170" width="50" height="40" as="alternateBounds"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="3" value="User Management&lt;br style=&quot;font-size: 14px;&quot;&gt;Portfolio Management&lt;br style=&quot;font-size: 14px;&quot;&gt;Watchlist Management" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;spacingTop=0;spacing=3;horizontal=1;" vertex="1" parent="2">
+                <mxCell id="3" value="User Management&lt;br style=&quot;font-size: 14px;&quot;&gt;Portfolio Management&lt;br style=&quot;font-size: 14px;&quot;&gt;Watchlist Management" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;spacingTop=0;spacing=3;horizontal=1;" parent="2" vertex="1">
                     <mxGeometry x="15" y="50" width="170" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="5" target="2">
+                <mxCell id="6" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="5" target="2" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="User" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fillColor=none;" vertex="1" parent="1">
+                <mxCell id="8" value="access" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" parent="6" vertex="1" connectable="0">
+                    <mxGeometry x="-0.2364" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="User" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="215" y="291.25" width="130" height="37.5" as="geometry"/>
                 </mxCell>
             </root>

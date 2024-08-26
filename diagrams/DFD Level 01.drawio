@@ -4,36 +4,41 @@
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="30" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="2" target="3">
+                <mxCell id="30" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="2" target="3" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="46" value="Access the PSX" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="30">
+                <mxCell id="46" value="Access the PSX" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" parent="30" vertex="1" connectable="0">
                     <mxGeometry x="-0.2138" relative="1" as="geometry">
                         <mxPoint x="6" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="2" value="User" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=14;fontStyle=0" vertex="1" parent="1">
+                <mxCell id="2" value="User" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;fontSize=14;fontStyle=0" parent="1" vertex="1">
                     <mxGeometry x="60" y="235" width="120" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="9" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="3" target="6">
+                <mxCell id="9" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="3" target="6" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="625" y="255" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="42" value="User Details" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="9">
+                <mxCell id="42" value="User Details" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" parent="9" vertex="1" connectable="0">
                     <mxGeometry x="-0.35" y="-1" relative="1" as="geometry">
                         <mxPoint x="43" y="54" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="21" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="3" target="15">
+                <mxCell id="47" value="stores/request" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="9">
+                    <mxGeometry x="-0.2" y="-2" relative="1" as="geometry">
+                        <mxPoint x="5" y="-5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="21" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="3" target="15" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="45" value="If Succesfull" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="21">
+                <mxCell id="45" value="If Succesfull" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" parent="21" vertex="1" connectable="0">
                     <mxGeometry x="-0.2172" y="-2" relative="1" as="geometry">
                         <mxPoint y="17" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="3" target="2">
+                <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="3" target="2" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="410" y="160"/>
@@ -41,18 +46,18 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="44" value="Succesfull / Error Message" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="31">
+                <mxCell id="44" value="Succesfull / Error Message" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" parent="31" vertex="1" connectable="0">
                     <mxGeometry x="0.038" y="-2" relative="1" as="geometry">
                         <mxPoint x="15" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="3" value="1. User Management" style="swimlane;fontSize=14;fillColor=none;startSize=50;rounded=1;" vertex="1" parent="1">
+                <mxCell id="3" value="1. User Management" style="swimlane;fontSize=14;fillColor=none;startSize=50;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="325" y="190" width="170" height="130" as="geometry"/>
                 </mxCell>
-                <mxCell id="7" value="Login&lt;br&gt;Register&lt;br&gt;Reset Password" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;" vertex="1" parent="3">
+                <mxCell id="7" value="Login&lt;br&gt;Register&lt;br&gt;Reset Password" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;" parent="3" vertex="1">
                     <mxGeometry x="20" y="60" width="130" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="13" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="6" target="3">
+                <mxCell id="13" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="6" target="3" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="740" y="350"/>
@@ -60,27 +65,37 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="6" value="User Data Store" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=0;fontSize=14;fillColor=none;strokeColor=default;dx=20;dy=0;align=center;" vertex="1" parent="1">
+                <mxCell id="48" value="user info" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="13">
+                    <mxGeometry x="0.0364" relative="1" as="geometry">
+                        <mxPoint y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" value="User Data Store" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=0;fontSize=14;fillColor=none;strokeColor=default;dx=20;dy=0;align=center;" parent="1" vertex="1">
                     <mxGeometry x="655" y="240" width="170" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="18" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="15" target="17">
+                <mxCell id="18" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="15" target="17" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="37" value="Portfolio Details" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="18">
+                <mxCell id="37" value="Portfolio Details" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" parent="18" vertex="1" connectable="0">
                     <mxGeometry x="-0.1803" y="2" relative="1" as="geometry">
                         <mxPoint x="30" y="46" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="15" target="24">
+                <mxCell id="49" value="stores/request" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="18">
+                    <mxGeometry x="-0.3377" y="-2" relative="1" as="geometry">
+                        <mxPoint x="16" y="-3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="15" target="24" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="15" value="2. Portfolio Management" style="swimlane;fontSize=14;fillColor=none;startSize=50;rounded=1;" vertex="1" parent="1">
+                <mxCell id="15" value="2. Portfolio Management" style="swimlane;fontSize=14;fillColor=none;startSize=50;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="320" y="506" width="188" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="16" value="View Portfolio&lt;br&gt;Buy Stocks&lt;br&gt;Sell Stocks&lt;br&gt;View Transactions" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;" vertex="1" parent="15">
+                <mxCell id="16" value="View Portfolio&lt;br&gt;Buy Stocks&lt;br&gt;Sell Stocks&lt;br&gt;View Transactions" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;" parent="15" vertex="1">
                     <mxGeometry x="15" y="51" width="140" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="17" target="15">
+                <mxCell id="22" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="17" target="15" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="744" y="670"/>
@@ -88,24 +103,34 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="17" value="Portfolio Data Store" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=0;fontSize=14;fillColor=none;strokeColor=default;dx=20;dy=0;align=center;spacingLeft=8;" vertex="1" parent="1">
+                <mxCell id="50" value="portfolio details" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="22">
+                    <mxGeometry x="-0.0115" y="-3" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="17" value="Portfolio Data Store" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=0;fontSize=14;fillColor=none;strokeColor=default;dx=20;dy=0;align=center;spacingLeft=8;" parent="1" vertex="1">
                     <mxGeometry x="659" y="561" width="170" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="23" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" edge="1" source="24" target="27" parent="1">
+                <mxCell id="23" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="24" target="27" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="43" value="Watchlist Details" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="23">
+                <mxCell id="43" value="Watchlist Details" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" parent="23" vertex="1" connectable="0">
                     <mxGeometry x="-0.245" y="-2" relative="1" as="geometry">
                         <mxPoint x="35" y="49" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="24" value="3. Watchlist Management" style="swimlane;fontSize=14;fillColor=none;startSize=50;rounded=1;" vertex="1" parent="1">
+                <mxCell id="51" value="stores/request" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="23">
+                    <mxGeometry x="-0.3113" y="3" relative="1" as="geometry">
+                        <mxPoint x="19" y="2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" value="3. Watchlist Management" style="swimlane;fontSize=14;fillColor=none;startSize=50;rounded=1;" parent="1" vertex="1">
                     <mxGeometry x="320" y="780" width="188" height="140" as="geometry"/>
                 </mxCell>
-                <mxCell id="25" value="View Watchlist&lt;br&gt;Add to Watchlist&lt;br&gt;Remove from Watchlist" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;" vertex="1" parent="24">
+                <mxCell id="25" value="View Watchlist&lt;br&gt;Add to Watchlist&lt;br&gt;Remove from Watchlist" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;" parent="24" vertex="1">
                     <mxGeometry y="61" width="170" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=14;" edge="1" source="27" target="24" parent="1">
+                <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="27" target="24" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="510" y="944"/>
@@ -113,21 +138,26 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="27" value="Watchlist Data Store" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=0;fontSize=14;fillColor=none;strokeColor=default;dx=20;dy=0;align=center;spacingLeft=8;" vertex="1" parent="1">
+                <mxCell id="52" value="watchlist info" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="26">
+                    <mxGeometry x="0.1132" y="1" relative="1" as="geometry">
+                        <mxPoint y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="27" value="Watchlist Data Store" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=0;fontSize=14;fillColor=none;strokeColor=default;dx=20;dy=0;align=center;spacingLeft=8;" parent="1" vertex="1">
                     <mxGeometry x="659" y="835" width="170" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="32" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=14;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="15" target="2">
+                <mxCell id="32" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=14;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" parent="1" source="15" target="2" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="40" value="Portfolio data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="32">
+                <mxCell id="40" value="Portfolio data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" parent="32" vertex="1" connectable="0">
                     <mxGeometry x="0.2253" y="4" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="33" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=14;" edge="1" parent="1" source="25" target="2">
+                <mxCell id="33" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=14;" parent="1" source="25" target="2" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="41" value="Watchlist Data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" vertex="1" connectable="0" parent="33">
+                <mxCell id="41" value="Watchlist Data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=14;" parent="33" vertex="1" connectable="0">
                     <mxGeometry x="-0.1308" y="-2" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
