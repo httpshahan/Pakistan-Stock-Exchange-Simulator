@@ -70,7 +70,7 @@ const Register = () => {
               <p className="text-sm font-sans">{error}</p>
             </div>
           )}
-          <form>
+          <form onSubmit={handleRegister}>
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -163,8 +163,7 @@ const Register = () => {
               )}
             </div>
             <button
-              type="button"
-              onClick={handleRegister}
+              type="submit"
               disabled={!passwordMatch}
               className={`w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 ${
                 !passwordMatch && "cursor-not-allowed opacity-50"

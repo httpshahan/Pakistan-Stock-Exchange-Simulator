@@ -37,11 +37,14 @@ const AdminRegister = () => {
       };
       console.log(userData);
 
-      const response = await fetch("http://localhost:3000/api/auth/adminRegister", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/auth/adminRegister",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userData),
+        }
+      );
       const data = await response.json();
       if (response.status === 400) {
         console.log("User already exists");
@@ -70,7 +73,7 @@ const AdminRegister = () => {
               <p className="text-sm font-sans">{error}</p>
             </div>
           )}
-          <form>
+          <form onSubmit={handleRegister}>
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -163,8 +166,7 @@ const AdminRegister = () => {
               )}
             </div>
             <button
-              type="button"
-              onClick={handleRegister}
+              type="submit"
               disabled={!passwordMatch}
               className={`w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 ${
                 !passwordMatch && "cursor-not-allowed opacity-50"
