@@ -1,26 +1,26 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
-    user: 'shahankhushdil@gmail.com',
-    pass: 'ammq rgcz woor xwbb'
-  }
+    user: "shahankhushdil@gmail.com",
+    pass: "abua xpzl opgg rdsv",
+  },
 });
 
 function sendOTP(email, otp) {
   const mailOptions = {
-    from: 'shahankhushdil+forgetpassword@gmail.com',
+    from: "shahankhushdil+forgetpassword@gmail.com",
     to: email,
-    subject: 'Password Reset OTP',
-    text: `Your OTP for password reset is: ${otp}`
+    subject: "Password Reset OTP",
+    text: `Your OTP for password reset is: ${otp}`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
     } else {
-      console.log('Email sent: ' + info.response);
+      console.log("Email sent: " + info.response);
     }
   });
 }
