@@ -1,14 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Button,
-  Dialog,
-  DialogPanel,
-  Title,
-  List,
-  ListItem,
-} from "@tremor/react";
+import { Dialog, DialogPanel, Title } from "@tremor/react";
 import apiService from "../../services/apiService";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
+import { FaSearch, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 
 const Sell = () => {
   const [quantity, setQuantity] = useState("");
@@ -53,11 +47,7 @@ const Sell = () => {
         setIsSearching(false);
       }
     };
-
-    // Attach the event listener
     document.addEventListener("click", handleClickOutside);
-
-    // Clean up the event listener on component unmount
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
@@ -80,43 +70,38 @@ const Sell = () => {
     setPrice(option.current);
     setMaxQuantity(option.quantity);
     setIsSearching(false);
+    setError(null);
   };
 
   const handleChange = (event) => {
     const inputQuantity = parseInt(event.target.value, 10);
 
-    if (
-      isNaN(inputQuantity) ||
-      inputQuantity < 1 ||
-      inputQuantity > maxQuantity
-    ) {
-      setError("Invalid quantity. Please enter a valid quantity.");
-    } else {
-      // Calculate intermediate values
-      const cost = parseFloat(inputQuantity * price).toFixed(2);
-      const brokerageFee = parseFloat(inputQuantity * 0.5).toFixed(2);
-      const totalPrice = (parseFloat(cost) - parseFloat(brokerageFee)).toFixed(
-        2
-      );
-      const newBalance = (
-        parseFloat(balence) +
-        parseFloat(cost) -
-        parseFloat(brokerageFee)
-      ).toFixed(2);
-
-      // Update state values
-      setQuantity(inputQuantity);
-      setTotalCost(cost);
-      setTotalBrokerageFee(brokerageFee);
-      setTotalPrice(totalPrice);
-      setNewBalence(newBalance);
-
-      console.log("inputQuantity", inputQuantity);
-      console.log("cost", cost);
-      console.log("brokerageFee", brokerageFee);
-      console.log("totalPrice", totalPrice);
-      console.log("newBalance", newBalance);
+    if (isNaN(inputQuantity) || inputQuantity < 0) {
+      setQuantity("");
+      setTotalCost(0);
+      setTotalPrice(0);
+      return;
     }
+
+    if (inputQuantity > maxQuantity) {
+      setError(`You only own ${maxQuantity} shares.`);
+    } else {
+      setError(null);
+    }
+
+    // Allow typing, but warn
+    setQuantity(inputQuantity);
+
+    // Calculate details regardless, but handle submit block later
+    const cost = parseFloat(inputQuantity * price).toFixed(2);
+    const fee = parseFloat(inputQuantity * 0.5).toFixed(2);
+    const total = (parseFloat(cost) - parseFloat(fee)).toFixed(2);
+    const newBal = (parseFloat(balence) + parseFloat(cost) - parseFloat(fee)).toFixed(2);
+
+    setTotalCost(cost);
+    setTotalBrokerageFee(fee);
+    setTotalPrice(total);
+    setNewBalence(newBal);
   };
 
   const handleSubmit = async (e) => {
@@ -125,32 +110,16 @@ const Sell = () => {
       setError("Please select a stock and enter a valid quantity.");
       return;
     }
+    if (quantity > maxQuantity) {
+      setError(`Cannot sell more than ${maxQuantity} shares.`);
+      return;
+    }
+    if (quantity <= 0) {
+      setError(`Quantity must be greater than 0.`);
+      return;
+    }
 
     setShowDialog(true);
-
-    // const perShare = parseFloat(price) - 0.5;
-
-    // try {
-    //   const response = await apiService.post(`/trade/sell/${userId}`, {
-    //     symbol,
-    //     quantity,
-    //     perShare,
-    //     totalPrice,
-    //   });
-    //   console.log(response.data);
-
-    //   sessionStorage.setItem("balance", newbalence);
-
-    //   // Reset form values on successful transaction
-    //   setSymbol("");
-    //   setQuantity("");
-    //   setPrice("");
-    //   setMaxQuantity(0);
-    //   setSearchTerm("");
-    //   setError(null);
-    // } catch (error) {
-    //   console.error("Error selling stock:", error);
-    // }
   };
 
   const handleDone = async () => {
@@ -167,65 +136,70 @@ const Sell = () => {
       sessionStorage.setItem("balance", newbalence);
       toast.success("Stock sold successfully");
 
-      // Reset form values on successful transaction
+      // Reset
       setSymbol("");
       setQuantity("");
       setPrice("");
       setMaxQuantity(0);
       setSearchTerm("");
       setError(null);
+      setTotalCost(0);
+      setTotalBrokerageFee(0);
+      setTotalPrice(0);
       setShowDialog(false);
+
+      // Refresh assets? ideally yes, but for now just clear
+
     } catch (error) {
       toast.error("Error selling stock");
       console.error("Error selling stock:", error);
     }
   };
+
   return (
-    <div className="max-w-md mx-auto p-6 ">
-      <form
-        onSubmit={handleSubmit}
-        onReset={() => {
-          setSymbol("");
-          setQuantity("");
-          setPrice("");
-          setMaxQuantity(0);
-          setTotalBrokerageFee(0);
-          setTotalCost(0);
-          setTotalPrice(0);
-          setSearchTerm("");
-          setError(null);
-        }}
-      >
-        <div className="flex flex-col mb-4">
-          <label htmlFor="stock" className="text-sm font-semibold mb-2">
-            Stock
-          </label>
-          <div className="relative">
+    <div className="space-y-6">
+      <form onSubmit={handleSubmit} onReset={() => {
+        setSymbol("");
+        setQuantity("");
+        setPrice("");
+        setMaxQuantity(0);
+        setTotalBrokerageFee(0);
+        setTotalCost(0);
+        setTotalPrice(0);
+        setSearchTerm("");
+        setError(null);
+      }}>
+
+        {/* Asset Search */}
+        <div className="relative z-20">
+          <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Select Asset to Sell</label>
+          <div className="relative" ref={searchInputRef}>
+            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              id="stock"
-              className="p-2 w-full border rounded-md mb-4"
-              placeholder="Enter stock symbol"
+              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-black/5 focus:border-black transition-all duration-200"
+              placeholder="Search your portfolio..."
               value={searchTerm}
               onChange={handleInputChange}
-              required
-              ref={searchInputRef}
+              autoComplete="off"
             />
-            {isSearching && (
-              <div className="absolute z-10 w-full bg-white rounded-md shadow-lg">
+
+            {isSearching && filteredOptions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white/90 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-xl overflow-hidden z-30 max-h-60 overflow-y-auto">
                 {filteredOptions.map((option) => (
                   <div
                     key={option.stock_symbol}
-                    className="p-2 cursor-pointer hover:bg-gray-200"
+                    className="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-0 flex justify-between items-center"
                     onClick={() => handleOptionClick(option)}
                   >
-                    <p className="text-gray-900 font-medium">
-                      {option.stock_symbol}
-                    </p>
-                    <p className="text-gray-600">{option.company_name}</p>
-                    <p className="text-gray-600 text-xs">
-                      Price: {option.current} - Max Quantity:{option.quantity}{" "}
-                    </p>
+                    <div>
+                      <p className="font-bold text-gray-900">{option.stock_symbol}</p>
+                      <p className="text-xs text-gray-500">{option.company_name}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold text-gray-900">Owned: {option.quantity}</p>
+                      <p className="text-xs text-gray-500">Cur: {option.current}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -233,150 +207,126 @@ const Sell = () => {
           </div>
         </div>
 
-        <div className="flex mb-4">
-          <div className="flex flex-col w-1/2 pr-2">
-            <label htmlFor="price" className="text-sm font-semibold mb-2">
-              Price
-            </label>
-            <input
-              type="text"
-              id="price"
-              className="p-2 w-full border rounded-md bg-gray-100"
-              value={price || 0}
-              readOnly
-            />
+        {/* Price & Fee */}
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Market Price</label>
+            <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-medium">
+              {price ? `Rs ${price}` : '-'}
+            </div>
           </div>
-          <div className="flex flex-col w-1/2 pl-2">
-            <label
-              htmlFor="brokerageFee"
-              className="text-sm font-semibold mb-2"
-            >
-              Brokerage Fee
-            </label>
-            <input
-              type="text"
-              id="brokerageFee"
-              className="p-2 w-full border rounded-md bg-gray-100"
-              value={brokerageFee}
-              readOnly
-            />
+          <div>
+            <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Sell Fee</label>
+            <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-500">
+              Rs {brokerageFee}
+            </div>
           </div>
         </div>
 
-        <label htmlFor="quantity" className="text-sm font-semibold mb-2">
-          Quantity{" "}
-          <span className="text-xs text-gray-600">
-            {maxQuantity ? "Max: " + maxQuantity : ""}
-          </span>
-        </label>
-        <input
-          type="number"
-          id="quantity"
-          className="p-2 w-full border rounded-md mb-4"
-          placeholder="Enter quantity"
-          value={quantity}
-          min="0"
-          max={maxQuantity || 0}
-          onChange={handleChange}
-          required
-        />
-
-        <div className="flex mb-4">
-          <div className="flex flex-col w-1/2 pr-2">
-            <label htmlFor="cashBalance" className="text-sm font-semibold mb-2">
-              Cash Balance
-            </label>
-            <input
-              type="text"
-              id="cashBalance"
-              className="p-2 w-full border rounded-md bg-gray-100"
-              value={newbalence || 0}
-              readOnly
-            />
+        {/* Quantity Input */}
+        <div className="mt-4">
+          <div className="flex justify-between items-center mb-2">
+            <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Quantity to Sell</label>
+            <div className="text-xs text-gray-500">
+              Owned: <span className="font-semibold text-gray-900">{maxQuantity || 0}</span>
+            </div>
           </div>
-          <div className="flex flex-col w-1/2 pl-2">
-            <label htmlFor="totalPrice" className="text-sm font-semibold mb-2">
-              Total Cost
-            </label>
-            <input
-              type="text"
-              id="totalPrice"
-              className="p-2 w-full border rounded-md bg-gray-100"
-              value={totalCost}
-              readOnly
-            />
+          <input
+            type="number"
+            className={`w-full px-4 py-3 bg-gray-50 border ${error ? 'border-red-400 focus:ring-red-200' : 'border-gray-200 focus:border-black focus:ring-black/5'} rounded-xl focus:outline-none focus:ring-4 transition-all duration-200`}
+            placeholder="0"
+            value={quantity}
+            min="0"
+            max={maxQuantity}
+            onChange={handleChange}
+          />
+          {error && (
+            <div className="flex items-center gap-1 mt-2 text-red-500 text-xs">
+              <FaExclamationCircle />
+              <span>{error}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Summary */}
+        <div className="bg-gray-50/50 rounded-2xl p-5 mt-6 border border-gray-100">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-500">Total Value</span>
+            <span className="text-sm font-medium text-gray-900">{totalCost || 0}</span>
+          </div>
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-sm text-gray-500">Deductions (Fee)</span>
+            <span className="text-sm font-medium text-red-500">-{totalBrokerageFee || 0}</span>
+          </div>
+          <div className="h-px bg-gray-200 w-full mb-4" />
+          <div className="flex justify-between items-center">
+            <span className="text-base font-semibold text-gray-900">Net Proceeds</span>
+            <span className="text-xl font-bold text-green-600">Rs {totalPrice || 0}</span>
           </div>
         </div>
 
-        <div className="flex flex-col border-y py-5 mb-4">
-          <div className="flex justify-between">
-            <span className="text-sm font-semibold">Total Cost</span>
-            <span className="text-sm font-semibold">{totalCost || 0}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm font-semibold">Brokerage Fee</span>
-            <span className="text-sm font-semibold">{totalBrokerageFee}</span>
-          </div>
-        </div>
-
-        <div className="flex justify-between mb-5">
-          <span className="text-md font-semibold">Total</span>
-          <span className="text-md font-semibold">{totalPrice || 0}</span>
-        </div>
-
-        <div className="text-red-500 text-sm mb-4">{error}</div>
-
-        <div className="flex space-x-4">
+        {/* Actions */}
+        <div className="flex gap-4 mt-6">
           <button
-            className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
-            type="submit"
-            disabled={!!error} // Disable the button if there's an error
+            type="reset"
+            className="flex-1 px-6 py-3 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors"
           >
-            Sell
+            Clear
           </button>
           <button
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold p-2 w-full rounded-md"
-            type="reset"
+            type="submit"
+            disabled={!!error || !symbol}
+            className={`flex-1 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-black/20 transition-all transform active:scale-95 ${!!error || !symbol
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none'
+                : 'bg-black text-white hover:bg-gray-800'
+              }`}
           >
-            Cancel
+            Sell Stock
           </button>
         </div>
       </form>
-      <Dialog
-        open={showDialog}
-        onClose={() => setShowDialog(false)}
-        className="max-w-md"
-      >
-        <DialogPanel>
-          <Title>Transaction Recipt</Title>
-          <List className="p-6">
-            <ListItem>
-              <span className="font-semibold">Symbol:</span>
-              <span> {symbol} </span>
-            </ListItem>
-            <ListItem>
-              <span className="font-semibold">Quantity:</span>
-              <span> {quantity}</span>
-            </ListItem>
-            <ListItem>
-              <span className="font-semibold">Price:</span>
-              <span>{price}</span>
-            </ListItem>
-            <ListItem>
-              <span className="font-semibold">Total Price:</span>
-              <span>{totalPrice}</span>
-            </ListItem>
-          </List>
-          <p className="text-sm text-gray-500 mt-2">
-            Click ok for succesful transaction.
-          </p>
-          <div className="flex justify-end mt-4">
-            <Button
-              className="bg-green-500 hover:bg-green-600 text-white font-semibold p-2 w-full rounded-md"
-              onClick={handleDone}
+
+      {/* Confirmation Dialog */}
+      <Dialog open={showDialog} onClose={() => setShowDialog(false)} className="z-50">
+        <DialogPanel className="bg-white/90 backdrop-blur-xl border border-white/40 shadow-2xl rounded-3xl p-8 max-w-sm mx-auto">
+          <div className="flex items-center gap-3 mb-6">
+            <FaCheckCircle className="text-green-500 text-2xl" />
+            <Title className="text-xl font-bold text-gray-900">Confirm Sale</Title>
+          </div>
+
+          <div className="space-y-4 mb-8">
+            <div className="flex justify-between">
+              <span className="text-gray-500">Symbol</span>
+              <span className="font-semibold text-gray-900">{symbol}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">Quantity</span>
+              <span className="font-semibold text-gray-900">{quantity}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-500">Price/Share</span>
+              <span className="font-semibold text-gray-900">Rs {price}</span>
+            </div>
+            <div className="h-px bg-gray-100" />
+            <div className="flex justify-between">
+              <span className="font-semibold text-gray-900">Net Total</span>
+              <span className="font-bold text-green-600 text-lg">Rs {totalPrice}</span>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={() => setShowDialog(false)}
+              className="flex-1 py-3 bg-gray-100 text-gray-600 font-semibold rounded-xl hover:bg-gray-200 transition-colors"
             >
-              OK
-            </Button>
+              Cancel
+            </button>
+            <button
+              onClick={handleDone}
+              className="flex-1 py-3 bg-black text-white font-semibold rounded-xl shadow-lg shadow-black/20 hover:bg-gray-800 transition-colors"
+            >
+              Confirm Sell
+            </button>
           </div>
         </DialogPanel>
       </Dialog>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SearchDialog from "./SearchDialog";
+import { FaSearch, FaUserCircle, FaChevronDown } from "react-icons/fa";
 
 function TopNavbar() {
   const userName = sessionStorage.getItem("username");
@@ -18,74 +19,58 @@ function TopNavbar() {
   };
 
   return (
-    <div className="flex items-center bg-stock-primary h-20 p-4 md:p-8 shadow-md">
-      <div className="flex-1">
-        <p className="text-stock-light pl-9 md:pl-6 text-lg md:text-xl font-medium">
-          Hello, {userName}
+    <div className="flex items-center justify-between h-20 px-8 py-4 bg-white/50 backdrop-blur-md sticky top-0 z-30 transition-all duration-300">
+
+      {/* Welcome Message */}
+      <div className="flex flex-col">
+        <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
+          Dashboard
+        </h1>
+        <p className="text-sm text-gray-500">
+          Welcome back, <span className="font-medium text-gray-800">{userName}</span>
         </p>
       </div>
-      <div className="flex items-center justify-between gap-2 md:gap-5">
-        {/* Conditionally render search input based on screen size */}
-        <div className="relative">
-          <div className="hidden md:block" onClick={openSearch}>
-            <input
-              type="text"
-              className="w-48 md:w-64 h-10 px-2 md:px-4 pr-12 md:pr-16 text-sm text-gray-900 placeholder-gray-500 bg-stock-light border border-stock-primary rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-stock-primary focus:border-transparent"
-              placeholder="Stocks....."
-            />
-            <div className="absolute w-5 h-5 text-stock-primary top-2 md:top-3 right-2 md:right-3">
-              <svg
-                className="w-4 h-4 text-stock-primary cursor-pointer"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-          </div>
-          <div className="md:hidden block">
-            <div
-              className="flex justify-between items-center gap-4 bg-stock-light p-2 rounded text-stock-primary cursor-text"
-              onClick={openSearch}
-            >
-              <span>Search</span>
-              <svg
-                className="w-4 h-4 text-stock-primary cursor-pointer"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
+
+      {/* Right Actions */}
+      <div className="flex items-center gap-6">
+
+        {/* Search Bar (Desktop) */}
+        <div
+          onClick={openSearch}
+          className="hidden md:flex items-center w-64 h-10 px-4 bg-gray-100/50 hover:bg-gray-100 border border-transparent hover:border-gray-200 rounded-full cursor-pointer transition-all duration-200 group"
+        >
+          <FaSearch className="text-gray-400 group-hover:text-gray-500 mr-3" size={14} />
+          <span className="text-sm text-gray-400 group-hover:text-gray-600 font-medium">Search stocks...</span>
+          <div className="ml-auto px-1.5 py-0.5 rounded-md bg-white border border-gray-200 text-[10px] font-bold text-gray-400">
+            ⌘K
           </div>
         </div>
-        <div className="flex items-center">
-          <div
-            className="relative w-auto text-stock-secondary hover:text-hover-secondary cursor-pointer"
-            onClick={openProfile}
-          >
-            Profile
+
+        {/* Search Icon (Mobile) */}
+        <button
+          onClick={openSearch}
+          className="md:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors"
+        >
+          <FaSearch size={18} />
+        </button>
+
+        {/* Profile Dropdown */}
+        <div
+          onClick={openProfile}
+          className="flex items-center gap-3 pl-4 border-l border-gray-200 cursor-pointer group"
+        >
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-700 to-black flex items-center justify-center text-white shadow-lg shadow-black/10 transition-transform group-hover:scale-105">
+            <span className="text-xs font-bold">{userName?.charAt(0).toUpperCase()}</span>
           </div>
+          <div className="hidden md:flex flex-col">
+            <span className="text-sm font-medium text-gray-700 group-hover:text-black transition-colors">{userName}</span>
+          </div>
+          <FaChevronDown className="hidden md:block text-gray-400 text-xs ml-1 group-hover:text-gray-600 transition-colors" />
         </div>
+
       </div>
 
-      {/* Conditionally render the SearchDialog component */}
+      {/* Search Dialog */}
       {isSearchOpen && <SearchDialog closeSearch={closeSearch} />}
     </div>
   );

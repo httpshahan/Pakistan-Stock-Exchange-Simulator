@@ -51,6 +51,7 @@ const Login = () => {
         }
       } else {
         console.error("Error during login:", error);
+        setLoading(false); // Ensure loading stops on other errors
       }
     }
   };
@@ -60,109 +61,105 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-green-400 to-green-600 text-gray-800">
-      <div className="flex flex-col p-6 items-center justify-center w-full md:w-1/2">
-        <h2 className="text-4xl font-bold">Pakistan Stock</h2>
-        <h2 className="text-4xl font-bold mb-6">Exchange</h2>
-        <p className="text-lg mb-8">"Invest in your future."</p>
-        <div className="flex items-center mb-8">
-          <em className="mr-2 text-sm text-hover-secondary">
-            Don't have an account?
-          </em>
-          <button
-            onClick={handleRegisterClick}
-            className="text-lg underline focus:outline-none hover:text-yellow-100 transition-colors duration-300"
-          >
-            Register now
-          </button>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7] font-sans">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-blue-100/50 blur-[100px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-100/50 blur-[100px]" />
       </div>
 
-      <div className="flex justify-center items-center w-full md:w-1/2">
-        <div className="bg-white p-8 rounded shadow-md md:w-96">
-          <h2 className="text-3xl font-semibold mb-6 text-stock-primary">
-            Login
+      <div className="relative z-10 w-full max-w-md p-8 bg-white/70 backdrop-blur-2xl rounded-3xl shadow-xl border border-white/40">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-semibold text-gray-900 tracking-tight">
+            Welcome Back
           </h2>
-          <div className="text-red-500 mb-4">
-            <p
-              className="text-sm font-sans"
-              style={{ display: invalid ? "block" : "none" }}
-            >
-              Invalid Credentials
+          <p className="text-sm text-gray-500 mt-2">
+            Sign in to continue to Pakistan Stock Exchange
+          </p>
+        </div>
+
+        {(invalid || invalidPassword) && (
+          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100/50 flex items-center gap-3">
+            <div className="w-1 h-8 rounded-full bg-red-500"></div>
+            <p className="text-sm text-red-600 font-medium">
+              {invalid ? "Account not found. Please check your email." : "Incorrect password. Please try again."}
             </p>
           </div>
-          <form onSubmit={handleLogin}>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium">
-                Email:
+        )}
+
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-xs uppercase font-bold text-gray-500 tracking-wider mb-2 ml-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="name@example.com"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-5 py-4 rounded-2xl bg-white/50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all duration-300"
+            />
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center mb-2 ml-1">
+              <label htmlFor="password" className="block text-xs uppercase font-bold text-gray-500 tracking-wider">
+                Password
               </label>
+              <a
+                href="/forgot-password"
+                className="text-xs font-medium text-blue-600 hover:text-blue-700 transition"
+              >
+                Forgot password?
+              </a>
+            </div>
+            <div className="relative">
               <input
-                type="email"
-                id="email"
-                placeholder="abc@example.com"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-                className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${
-                  invalid ? "border-red-500" : ""
-                }`}
+                className="w-full px-5 py-4 rounded-2xl bg-white/50 border border-gray-200 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all duration-300"
+                placeholder="••••••••"
               />
-            </div>
-            <div className="mt-8">
-              <label htmlFor="password" className="block text-sm font-medium">
-                Password:
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className={`mt-1 p-2 w-full border rounded-md bg-gray-100 focus:outline-none focus:border-green-400 ${
-                    invalidPassword ? "border-red-500" : ""
-                  }`}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm font-medium cursor-pointer"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
-                </button>
-              </div>
-
-              <div className="mt-4">
-                <a
-                  href="/forgot-password"
-                  className="text-sm font-medium text-stock-primary hover:underline"
-                >
-                  Forget Password?
-                </a>
-              </div>
-
-              <div
-                className="text-red-500 mt-2"
-                style={{ display: invalidPassword ? "block" : "none" }}
-              >
-                <p className="text-sm font-sans">Invalid Password</p>
-              </div>
-            </div>
-            {loading ? (
-              <div className="flex justify-center mt-8">
-                <Loader />
-              </div>
-            ) : (
               <button
-                type="submit"
-                className="w-full mt-8 bg-green-500 text-white py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
+                type="button"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                onClick={togglePasswordVisibility}
               >
-                Login
+                {showPassword ? <FaRegEyeSlash size={20} /> : <FaRegEye size={20} />}
               </button>
-            )}
-          </form>
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center py-4">
+              <Loader />
+            </div>
+          ) : (
+            <button
+              type="submit"
+              className="w-full bg-black hover:bg-gray-800 text-white font-medium py-4 rounded-2xl transition-all duration-300 transform active:scale-[0.98] shadow-lg shadow-black/20"
+            >
+              Sign In
+            </button>
+          )}
+        </form>
+
+        <div className="mt-8 text-center">
+          <p className="text-gray-500 text-sm">
+            Don't have an account?{" "}
+            <button
+              onClick={handleRegisterClick}
+              className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition-all"
+            >
+              Create Account
+            </button>
+          </p>
         </div>
       </div>
     </div>

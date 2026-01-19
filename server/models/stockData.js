@@ -37,10 +37,8 @@ const insertScrapedData = async (data) => {
       const placeholders = validValues
         .map(
           (_, index) =>
-            `($${index * 10 + 1}, $${index * 10 + 2}, $${index * 10 + 3}, $${
-              index * 10 + 4
-            }, $${index * 10 + 5}, $${index * 10 + 6}, $${index * 10 + 7}, $${
-              index * 10 + 8
+            `($${index * 10 + 1}, $${index * 10 + 2}, $${index * 10 + 3}, $${index * 10 + 4
+            }, $${index * 10 + 5}, $${index * 10 + 6}, $${index * 10 + 7}, $${index * 10 + 8
             }, $${index * 10 + 9}, $${index * 10 + 10})`
         )
         .join(",");
@@ -203,7 +201,7 @@ const getActiveStocks = async () => {
 const addWatchlist = async (userId, symbol) => {
   try {
     const result = await pool.query(
-      `INSERT INTO watchlist (user_id, stock_symbol) VALUES ($1, $2) RETURNING *`,
+      `INSERT INTO user_watchlist (user_id, stock_symbol) VALUES ($1, $2) RETURNING *`,
       [userId, symbol]
     );
     return result.rows;
@@ -216,7 +214,7 @@ const addWatchlist = async (userId, symbol) => {
 const compareWatchlist = async (userId, symbol) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM watchlist WHERE user_id = $1 AND stock_symbol = $2`,
+      `SELECT * FROM user_watchlist WHERE user_id = $1 AND stock_symbol = $2`,
       [userId, symbol]
     );
     return result.rows;
@@ -230,7 +228,7 @@ const getWatchlist = async (userId) => {
   try {
     const result = await pool.query(
       `SELECT w.*, s.*, sd.*
-      FROM watchlist w
+      FROM user_watchlist w
       JOIN stock s ON w.stock_symbol = s.symbol
       JOIN stock_data sd ON s.symbol = sd.stock_symbol
       WHERE w.user_id = $1;
@@ -247,7 +245,7 @@ const getWatchlist = async (userId) => {
 const removeWatchlistItem = async (userId, symbol) => {
   try {
     const result = await pool.query(
-      `DELETE FROM watchlist WHERE user_id = $1 AND stock_symbol = $2 RETURNING *`,
+      `DELETE FROM user_watchlist WHERE user_id = $1 AND stock_symbol = $2 RETURNING *`,
       [userId, symbol]
     );
     return result.rows;

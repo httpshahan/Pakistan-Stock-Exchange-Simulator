@@ -1,50 +1,58 @@
 import React from "react";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
-const StockTable = ({ title, data }) => {
+const StockTable = ({ title, data, type = "neutral" }) => {
   return (
-    <div className=" h-full p-4 bg-white rounded-lg shadow-md flex flex-col justify-start items-start gap-4">
-      <div className="text-center text-zinc-800 font-semibold mb-4">
-        {title}
+    <div className="h-full p-6 bg-white/60 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/5 rounded-3xl flex flex-col">
+      <div className="flex items-center gap-3 mb-6">
+        <div className={`w-1 h-5 rounded-full ${type === 'positive' ? 'bg-green-500' :
+            type === 'negative' ? 'bg-red-500' :
+              'bg-gray-800'
+          }`} />
+        <h3 className="text-gray-900 font-semibold text-lg tracking-tight">{title}</h3>
       </div>
-      <div className="w-full grid gap-3">
-        {data.map((item, index) => (
-          <div
-            key={index}
-            className="flex justify-between items-center border-b pb-2"
-          >
-            <div className="flex flex-col">
-              <a
-                href={`/stock/${item.stock_symbol}`}
-                className="w-auto text-zinc-800 text-xs font-medium overflow-hidden overflow-ellipsis line-clamp-1 hover:underline"
-              >
-                {item.company_name}
-              </a>
-              <a
-                href={`/stock/${item.stock_symbol}`}
-                className="text-zinc-500 text-xs font-medium hover:underline"
-              >
-                {item.stock_symbol}
-              </a>
-            </div>
 
-            <div className="flex flex-col items-end">
-              <div className="text-right text-zinc-800 text-sm font-normal">
-                {item.current}
-              </div>
-              <div className="text-right text-xs font-normal w-28">
-                <span
-                  className={`${
-                    item.change.startsWith("-")
-                      ? "text-red-500"
-                      : "text-green-500"
-                  }`}
+      <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+        <div className="grid gap-3">
+          {data.length > 0 ? (
+            data.map((item, index) => {
+              const isPositive = !item.change.startsWith("-");
+              return (
+                <div
+                  key={index}
+                  className="group flex justify-between items-center p-3 rounded-2xl hover:bg-white/50 border border-transparent hover:border-white/50 transition-all duration-200"
                 >
-                  {`${item.change} (${item.change_percent})`}
-                </span>
-              </div>
+                  <div className="flex flex-col gap-0.5">
+                    <a
+                      href={`/stock/${item.stock_symbol}`}
+                      className="text-gray-900 font-semibold text-sm hover:text-black transition-colors"
+                    >
+                      {item.stock_symbol}
+                    </a>
+                    <span className="text-gray-400 text-xs font-medium max-w-[120px] truncate">
+                      {item.company_name}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col items-end gap-0.5">
+                    <span className="text-gray-900 font-bold text-sm">
+                      {item.current}
+                    </span>
+                    <div className={`flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${isPositive ? 'bg-green-100/50 text-green-700' : 'bg-red-100/50 text-red-700'
+                      }`}>
+                      {isPositive ? <FaArrowUp size={8} /> : <FaArrowDown size={8} />}
+                      <span>{item.change_percent}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-center py-8 text-gray-400 text-sm">
+              No stocks found
             </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
     </div>
   );

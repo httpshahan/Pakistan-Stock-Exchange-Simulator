@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: psx-simulator-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/db.sql:/docker-entrypoint-initdb.d/01-db.sql
+      - ./db/stocks.sql:/docker-entrypoint-initdb.d/02-stocks.sql
+      - ./db/users_seed.sql:/docker-entrypoint-initdb.d/03-users_seed.sql
+
+volumes:
+  postgres_data:

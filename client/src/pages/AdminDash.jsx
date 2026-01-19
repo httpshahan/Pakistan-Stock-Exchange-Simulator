@@ -22,47 +22,49 @@ const AdminDash = () => {
   };
 
   return (
-    <div className="flex bg-gray-100 h-screen">
-      <div className="flex-1 flex flex-col">
-        <header className="flex justify-between bg-white">
-          <h1 className="text-3xl font-bold p-6">Admin Dashboard</h1>
-          <nav className="flex">
+
+    <div className="flex bg-[#F5F5F7] h-screen overflow-hidden">
+      <div className="flex-1 flex flex-col h-full">
+        <header className="flex justify-between items-center bg-white/60 backdrop-blur-md border-b border-white/40 px-8 py-4 shadow-sm z-10">
+          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">Admin Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <nav className="flex bg-gray-100/50 p-1 rounded-xl">
+              <button
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${showUsers
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+                  }`}
+                onClick={handleShowUsers}
+              >
+                Users
+              </button>
+              <button
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${showTransactions
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+                  }`}
+                onClick={handleShowTransactions}
+              >
+                Transactions
+              </button>
+            </nav>
             <button
-              className="px-4 py-2 rounded-lg m-6"
-              onClick={handleShowUsers}
+              className="bg-gray-900 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/20"
+              onClick={handleLogout}
             >
-              Users
+              Logout
             </button>
-            <button
-              className="px-4 py-2 rounded-lg m-6"
-              onClick={handleShowTransactions}
-            >
-              Transactions
-            </button>
-          </nav>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg m-6"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+          </div>
         </header>
-        <main className="flex-1 p-6 justify-center overflow-x-auto">
-          <div className="mb-8">
+
+        <main className="flex-1 p-8 overflow-y-auto">
+          <div className="max-w-7xl mx-auto">
             {showUsers && <UserManagement />}
             {showTransactions && (
-              <div className="p-8">
-                <Transactions />
-              </div>
+              <Transactions />
             )}
           </div>
         </main>
-
-        <footer className="bg-white py-4 px-6 border-t">
-          <p className="text-sm text-gray-600">
-            © 2024 Stock Exchange Simulator
-          </p>
-        </footer>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiService from "../services/apiService";
-import { Metric } from "@tremor/react";
 import { toast } from "react-toastify";
+import { FaTrash, FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 const Watchlist = () => {
   const userId = sessionStorage.getItem("userId");
@@ -31,14 +31,15 @@ const Watchlist = () => {
       }
     };
     fetchData();
-  }, [userId, watchlist]); // Include watchlist and userId in the dependency array
+  }, [userId]);
 
   const removeFromWatchlist = async (symbol) => {
     try {
       await apiService.delete(
         `/stocks/removeFromWatchlist/${userId}/${symbol}`
       );
-      // After successful removal, fetch updated watchlist data
+      setWatchlist((current) => current.filter((item) => item.symbol !== symbol));
+      if (watchlist.length === 1) setNoData(true);
       toast.success("Stock removed from watchlist");
     } catch (error) {
       console.error("Error removing item from watchlist:", error);
@@ -47,65 +48,81 @@ const Watchlist = () => {
   };
 
   return (
-    <div className="flex-1 overflow-auto bg-gray-200">
-      <div className="p-8">
-        <div className="flex justify-center">
-          <Metric>Watchlist</Metric>
+    <div className="flex-1 p-8 bg-[#F5F5F7] min-h-screen overflow-auto">
+      <div className="max-w-7xl mx-auto space-y-8 pb-10">
+        <div className="text-center">
+          <h1 className="text-3xl font-semibold text-gray-900 tracking-tight">Your Watchlist</h1>
+          <p className="text-gray-500 mt-1">Track your favorite stocks in real-time</p>
         </div>
-        <div className="mt-4">
-          {noData && (
-            <p className="text-red-500 text-center">No watchlist items found</p>
-          )}
-          {!noData && (
+
+        <div className="bg-white/60 backdrop-blur-xl border border-white/40 shadow-xl shadow-black/5 rounded-3xl p-8">
+          {noData ? (
+            <div className="text-center py-12 text-gray-400">
+              No watchlist items found. Start adding stocks to track them here.
+            </div>
+          ) : (
             <div className="overflow-x-auto">
-              <table className="w-full bg-white shadow-md rounded-lg">
+              <table className="w-full">
                 <thead>
-                  <tr className="text-left bg-gray-100">
-                    <th className="px-4 py-2">Symbol</th>
-                    <th className="px-4 py-2">Name</th>
-                    <th className="px-4 py-2">Price</th>
-                    <th className="px-4 py-2">Change</th>
-                    <th className="px-4 py-2">Change %</th>
-                    <th className="px-4 py-2">Actions</th>
+                  <tr className="border-b border-gray-200/60">
+                    {["Symbol", "Name", "Price", "Change", "Change %", "Actions"].map((header, index) => (
+                      <th key={index} className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider py-4 px-4 first:pl-2">
+                        {header}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
-                <tbody>
-                  {watchlist.map((stock) => (
-                    <tr key={stock.symbol} className="border-b">
-                      <td className="px-4 py-2">{stock.symbol}</td>
-                      <td className="px-4 py-2">{stock.company_name}</td>
-                      <td className="px-4 py-2">{stock.current}</td>
-                      <td
-                        className={`px-4 py-2 ${
-                          stock.change > 0 ? "text-green-500" : "text-red-500"
-                        }`}
-                      >
-                        {stock.change}
-                      </td>
-                      <td
-                        className={`px-4 py-2 ${
-                          stock.change > 0 ? "text-green-500" : "text-red-500"
-                        }`}
-                      >
-                        {stock.change_percent}
-                      </td>
-                      <td className="px-4 py-2">
-                        <button
-                          className="bg-red-500 text-white py-1 px-2 rounded"
-                          onClick={() => removeFromWatchlist(stock.symbol)}
-                        >
-                          Remove
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                <tbody className="divide-y divide-gray-100">
+                  {watchlist.map((stock) => {
+                    const isPositive = stock.change > 0;
+                    return (
+                      <tr key={stock.symbol} className="group hover:bg-white/50 transition-colors duration-150">
+                        <td className="py-4 px-4 first:pl-2 font-semibold text-gray-900">
+                          {stock.symbol}
+                        </td>
+                        <td className="py-4 px-4 text-gray-600 font-medium">
+                          {stock.company_name}
+                        </td>
+                        <td className="py-4 px-4 text-gray-900 font-bold">
+                          {stock.current}
+                        </td>
+                        <td className={`py-4 px-4 font-medium ${isPositive ? "text-green-600" : "text-red-600"}`}>
+                          {stock.change}
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full ${isPositive ? 'bg-green-100/50 text-green-700' : 'bg-red-100/50 text-red-700'
+                            }`}>
+                            {isPositive ? <FaArrowUp size={8} /> : <FaArrowDown size={8} />}
+                            {stock.change_percent}
+                          </div>
+                        </td>
+                        <td className="py-4 px-4">
+                          <button
+                            onClick={() => removeFromWatchlist(stock.symbol)}
+                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200"
+                            title="Remove from watchlist"
+                          >
+                            <FaTrash size={14} />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           )}
-          {loading && !noData && <p className="text-center">Loading...</p>}
+
+          {loading && !noData && (
+            <div className="text-center py-12 text-gray-500">
+              Loading watchlist...
+            </div>
+          )}
+
           {error && !noData && (
-            <p className="text-red-500 text-center">{error}</p>
+            <div className="text-center py-4 text-red-500 bg-red-50 rounded-xl mt-4">
+              {error}
+            </div>
           )}
         </div>
       </div>
